@@ -148,7 +148,7 @@
 
         .grafica {
             width: 100%;
-            height: 550px;
+            height: 650px;
         }
 
         /* =====================================================
@@ -187,13 +187,12 @@
             }
 
             .grafica {
-                height: 450px;
+                height: 560px;
             }
         }
 
     </style>
 </head>
-
 
 <body>
 
@@ -215,7 +214,6 @@
 
     </div>
 
-
     <!-- ======================================================
          CONTROLES
     ======================================================= -->
@@ -232,7 +230,6 @@
 
         </div>
 
-
         <div class="grupo-control">
 
             <label class="titulo">
@@ -242,7 +239,7 @@
             <div class="modelos-checks">
 
                 <label class="modelo-check">
-                   <input class="modelo-input" type="checkbox" value="gfs" checked>>
+                   <input class="modelo-input" type="checkbox" value="gfs" checked>
                     <span class="indicador gfs"></span>
                     GFS
                 </label>
@@ -277,11 +274,9 @@
 
     </div>
 
-
     <div class="informacion" id="informacion">
         Cargando información...
     </div>
-
 
     <!-- ======================================================
          TEMPERATURA
@@ -295,7 +290,6 @@
         </div>
 
     </div>
-
 
     <!-- ======================================================
          PRECIPITACIÓN
@@ -311,7 +305,6 @@
     </div>
 
 </div>
-
 
 <script>
 
@@ -393,11 +386,9 @@ const MODELOS = {
 
 };
 
-
 let manifiesto = null;
 let estaciones = [];
 let cacheCSV = {};
-
 
 /* ============================================================
    LECTURA CSV
@@ -409,9 +400,7 @@ async function cargarCSV(ruta) {
         return cacheCSV[ruta];
     }
 
-    const respuesta = await fetch(
-        ruta + "?v=" + Date.now()
-    );
+    const respuesta = await fetch(ruta, { cache: "no-cache" });
 
     if (!respuesta.ok) {
         throw new Error(
@@ -435,7 +424,6 @@ async function cargarCSV(ruta) {
     return resultado.data;
 }
 
-
 /* ============================================================
    TIEMPO
 ============================================================ */
@@ -451,7 +439,6 @@ function timestampUTC(cadena) {
         `${y}-${m}-${d}T${h}:00:00Z`
     );
 }
-
 
 function fechaPeru(cadena) {
 
@@ -486,7 +473,6 @@ function fechaPeru(cadena) {
         `T${datos.hour}:${datos.minute}:00`
     );
 }
-
 
 /* ============================================================
    ESTACIONES
@@ -534,7 +520,6 @@ async function cargarEstaciones() {
     }
 }
 
-
 /* ============================================================
    MANIFIESTO DE CICLOS
 ============================================================ */
@@ -542,7 +527,8 @@ async function cargarEstaciones() {
 async function cargarManifiesto() {
 
     const respuesta = await fetch(
-        "modelos/ciclos.json?v=" + Date.now()
+        "modelos/ciclos.json",
+        { cache: "no-cache" }
     );
 
     if (!respuesta.ok) {
@@ -553,7 +539,6 @@ async function cargarManifiesto() {
 
     manifiesto = await respuesta.json();
 }
-
 
 /* ============================================================
    MODELOS ACTIVOS
@@ -576,7 +561,6 @@ function modelosSeleccionados() {
     return seleccionados;
 }
 
-
 /* ============================================================
    BUSCAR ESTACIÓN EN CSV
 ============================================================ */
@@ -589,7 +573,6 @@ function obtenerFila(datos, codigo) {
             String(codigo)
     );
 }
-
 
 /* ============================================================
    CREAR SERIE DESDE FILA CSV
@@ -638,462 +621,307 @@ function filaASerie(fila) {
     return { x, y };
 }
 
-
 /* ============================================================
    OBSERVACIONES
 ============================================================ */
 
-async function crearTrazaObservada(
-    variable,
-    codigo
-) {
+function hoverObservado(variable) {
+    const valor = variable === "temp"
+        ? "Temperatura: %{y:.1f} °C"
+        : "Precipitación: %{y:.1f} mm";
 
-    const ruta =
-        variable === "temp"
+    return `<b>Observado</b><br>Fecha: %{x|%d/%m/%Y}<br>Hora local: %{x|%H:%M}<br>${valor}<extra></extra>`;
+}
+
+function hoverModelo(variable, modelo, ciclo) {
+    const dia = ciclo.slice(6, 8);
+    const mes = ciclo.slice(4, 6);
+    const hora = ciclo.slice(8, 10);
+
+    const valor = variable === "temp"
+        ? "Temperatura: %{y:.1f} °C"
+        : "Precipitación: %{y:.1f} mm";
+
+    return `<b>${MODELOS[modelo].nombre}</b><br>Inicialización: ${dia}/${mes} ${hora} UTC<br>Fecha: %{x|%d/%m/%Y}<br>Hora local: %{x|%H:%M}<br>${valor}<extra></extra>`;
+}
+
+async function crearTrazaObservada(variable, codigo) {
+    const ruta = variable === "temp"
         ? "observaciones/obs_temp.csv"
         : "observaciones/obs_pp.csv";
 
-    const datos =
-        await cargarCSV(ruta);
-
-    const fila =
-        obtenerFila(datos, codigo);
-
-    const serie =
-        filaASerie(fila);
+    const datos = await cargarCSV(ruta);
+    const fila = obtenerFila(datos, codigo);
+    const serie = filaASerie(fila);
 
     return {
-
         x: serie.x,
         y: serie.y,
-
         type: "scatter",
-        mode:
-            variable === "pp"
-            ? "lines+markers"
-            : "lines",
-
+        mode: variable === "pp" ? "lines+markers" : "lines",
         name: "Observado",
-
-        line: {
-            color: "#111111",
-            width: 3
-        },
-
-        marker: {
-            color: "#111111",
-            size: 5
-        },
-
+        legendgroup: "observado",
+        legendrank: 0,
+        line: { color: "#111111", width: 3 },
+        marker: { color: "#111111", size: 4 },
         connectgaps: false,
-
-        hovertemplate:
-            variable === "temp"
-            ? "%{y:.1f} °C<extra>Observado</extra>"
-            : "%{y:.1f} mm<extra>Observado</extra>"
-
+        hovertemplate: hoverObservado(variable)
     };
 }
-
 
 /* ============================================================
    TRAZAS DE MODELOS
 ============================================================ */
 
-async function crearTrazasModelos(
-    variable,
-    codigo
-) {
+async function crearTrazasUnModelo(variable, codigo, modelo, ciclos) {
+    const ciclosModelo = ciclos.filter(ciclo => {
+        const info = manifiesto.ciclos[ciclo];
+        return info[modelo] && info[modelo].includes(variable);
+    });
 
     const trazas = [];
 
-    const activos =
-        modelosSeleccionados();
+    for (let i = 0; i < ciclosModelo.length; i++) {
+        const ciclo = ciclosModelo[i];
+        const hora = ciclo.slice(8, 10);
+        const archivo = `modelos/${ciclo}/${modelo}_${hora}_${variable}.csv`;
 
-    const ciclos =
-        Object.keys(
-            manifiesto.ciclos
-        ).sort();
-
-    for (const modelo of activos) {
-
-        const ciclosModelo =
-            ciclos.filter(ciclo => {
-
-                const info =
-                    manifiesto.ciclos[ciclo];
-
-                return (
-                    info[modelo] &&
-                    info[modelo].includes(variable)
-                );
-            });
-
-
-        for (
-            let i = 0;
-            i < ciclosModelo.length;
-            i++
-        ) {
-
-            const ciclo =
-                ciclosModelo[i];
-
-            const hora =
-                ciclo.slice(8, 10);
-
-            const archivo =
-                `modelos/${ciclo}/` +
-                `${modelo}_${hora}_${variable}.csv`;
-
-            let datos;
-
-            try {
-
-                datos =
-                    await cargarCSV(
-                        archivo
-                    );
-
-            } catch (error) {
-
-                console.warn(error);
-                continue;
-            }
-
-
-            const fila =
-                obtenerFila(
-                    datos,
-                    codigo
-                );
-
-            if (!fila) {
-                continue;
-            }
-
-
-            const serie =
-                filaASerie(fila);
-
-
-            const colores =
-                MODELOS[modelo].colores;
-
-            /*
-               Ciclos antiguos claros.
-               Ciclos recientes oscuros.
-            */
-
-            const indiceColor =
-                ciclosModelo.length === 1
-                ? colores.length - 2
-                : Math.round(
-                    i *
-                    (colores.length - 1) /
-                    (ciclosModelo.length - 1)
-                );
-
-
-            const dia =
-                ciclo.slice(6, 8);
-
-            const mes =
-                ciclo.slice(4, 6);
-
-
-            trazas.push({
-
-                x: serie.x,
-                y: serie.y,
-
-                type: "scatter",
-
-                mode:
-                    variable === "pp"
-                    ? "lines+markers"
-                    : "lines",
-
-                name:
-                    `${MODELOS[modelo].nombre} ` +
-                    `${dia}/${mes} ${hora}Z`,
-
-                legendgroup: modelo,
-
-                line: {
-                    color:
-                        colores[indiceColor],
-                    width: 1.6
-                },
-
-                marker: {
-                    color:
-                        colores[indiceColor],
-                    size: 4
-                },
-
-                connectgaps: false,
-
-                hovertemplate:
-                    variable === "temp"
-                    ? "%{y:.1f} °C<extra>%{fullData.name}</extra>"
-                    : "%{y:.1f} mm<extra>%{fullData.name}</extra>"
-
-            });
-
+        let datos;
+        try {
+            datos = await cargarCSV(archivo);
+        } catch (error) {
+            console.warn(error);
+            continue;
         }
 
+        const fila = obtenerFila(datos, codigo);
+        if (!fila) continue;
+
+        const serie = filaASerie(fila);
+        const colores = MODELOS[modelo].colores;
+        const indiceColor = ciclosModelo.length === 1
+            ? colores.length - 2
+            : Math.round(i * (colores.length - 1) / (ciclosModelo.length - 1));
+
+        const dia = ciclo.slice(6, 8);
+        const mes = ciclo.slice(4, 6);
+
+        trazas.push({
+            x: serie.x,
+            y: serie.y,
+            type: "scatter",
+            mode: variable === "pp" ? "lines+markers" : "lines",
+            name: `${dia}/${mes} ${hora} UTC`,
+            legendgroup: modelo,
+            legendrank: 10 + Object.keys(MODELOS).indexOf(modelo),
+            legendgrouptitle: i === 0
+                ? { text: MODELOS[modelo].nombre }
+                : undefined,
+            line: {
+                color: colores[indiceColor],
+                width: 1.5
+            },
+            marker: {
+                color: colores[indiceColor],
+                size: 3
+            },
+            connectgaps: false,
+            hovertemplate: hoverModelo(variable, modelo, ciclo)
+        });
     }
 
     return trazas;
 }
 
+async function crearTrazasModelos(variable, codigo) {
+    const activos = modelosSeleccionados();
+    const ciclos = Object.keys(manifiesto.ciclos).sort();
+
+    const grupos = await Promise.all(
+        activos.map(modelo =>
+            crearTrazasUnModelo(variable, codigo, modelo, ciclos)
+        )
+    );
+
+    return grupos.flat();
+}
 
 /* ============================================================
    LÍMITE TEMPORAL
 ============================================================ */
 
-function inicioObservaciones(trazaObs) {
+function fechasValidas(traza) {
+    const fechas = [];
 
-    for (
-        let i = 0;
-        i < trazaObs.y.length;
-        i++
-    ) {
-
+    for (let i = 0; i < traza.x.length; i++) {
         if (
-            trazaObs.y[i] !== null &&
-            trazaObs.y[i] !== undefined
+            traza.y[i] !== null &&
+            traza.y[i] !== undefined &&
+            !Number.isNaN(traza.y[i])
         ) {
-            return trazaObs.x[i];
+            fechas.push(traza.x[i]);
         }
     }
 
-    return null;
+    return fechas;
 }
 
+function rangoTemporal(trazaObs, trazasModelos) {
+    const obs = fechasValidas(trazaObs);
+    const todas = [trazaObs, ...trazasModelos].flatMap(fechasValidas);
+
+    if (todas.length === 0) return null;
+
+    todas.sort();
+    const inicio = obs.length > 0 ? obs[0] : todas[0];
+    const fin = todas[todas.length - 1];
+
+    return [inicio, fin];
+}
 
 /* ============================================================
    DISEÑO PLOTLY
 ============================================================ */
 
-function crearLayout(
-    titulo,
-    unidad,
-    inicio
-) {
+function crearLayout(titulo, unidad, rango) {
+    const xaxis = {
+        title: { text: "Fecha" },
+        type: "date",
+        tickformat: "%d/%m",
+        hoverformat: "%d/%m/%Y %H:%M",
+        showgrid: true,
+        gridcolor: "#eceff1",
+        linecolor: "#78909c",
+        zeroline: false,
+        showspikes: true,
+        spikemode: "across",
+        spikesnap: "cursor",
+        spikedash: "dot",
+        spikecolor: "#90a4ae",
+        rangeslider: { visible: false }
+    };
 
-    const layout = {
+    if (rango) {
+        xaxis.range = rango;
+        xaxis.minallowed = rango[0];
+        xaxis.maxallowed = rango[1];
+    }
 
+    return {
         title: {
             text: titulo,
             x: 0.5,
             xanchor: "center",
-            font: {
-                size: 17
-            }
+            font: { size: 17 }
         },
-
         margin: {
             l: 70,
             r: 30,
             t: 70,
-            b: 150
+            b: 245
         },
-
         paper_bgcolor: "white",
         plot_bgcolor: "white",
-
-        hovermode: "x unified",
-
+        hovermode: "closest",
+        hoverdistance: 35,
+        spikedistance: 35,
         hoverlabel: {
             bgcolor: "white",
-            font: {
-                size: 12
-            }
+            bordercolor: "#90a4ae",
+            font: { size: 12 }
         },
-
-        xaxis: {
-
-            title: {
-                text: "Hora local (Perú)"
-            },
-
-            type: "date",
-
-            tickformat: "%d/%m",
-
-            hoverformat: "%d/%m/%Y %H:%M",
-
-            showgrid: true,
-            gridcolor: "#eceff1",
-            linecolor: "#78909c",
-            zeroline: false,
-
-            rangeslider: {
-                visible: false
-            }
-        },
-
+        xaxis,
         yaxis: {
-
-            title: {
-                text: unidad
-            },
-
+            title: { text: unidad },
             showgrid: true,
             gridcolor: "#e0e0e0",
             linecolor: "#78909c",
             zeroline: false
         },
-
         legend: {
-
+            title: { text: "Inicialización del pronóstico (UTC)" },
             orientation: "h",
-
-            x: 0,
-            xanchor: "left",
-
-            y: -0.25,
+            x: 0.5,
+            xanchor: "center",
+            y: -0.30,
             yanchor: "top",
-
-            font: {
-                size: 11
-            }
+            traceorder: "grouped",
+            tracegroupgap: 12,
+            groupclick: "toggleitem",
+            bgcolor: "rgba(248,250,252,0.92)",
+            bordercolor: "#d7dde2",
+            borderwidth: 1,
+            font: { size: 10 }
         },
-
         showlegend: true
     };
-
-    return layout;
 }
+
+const CONFIG_PLOTLY = {
+    responsive: true,
+    displaylogo: false,
+    scrollZoom: true
+};
 
 /* ============================================================
    ACTUALIZAR GRÁFICAS
 ============================================================ */
 
 async function actualizarGraficas() {
+    const codigo = document.getElementById("estacionSelect").value;
+    if (!codigo) return;
 
-    const codigo =
-        document.getElementById(
-            "estacionSelect"
-        ).value;
+    const estacion = estaciones.find(
+        e => String(e.codigo) === String(codigo)
+    );
 
+    document.getElementById("informacion").textContent =
+        `${estacion.estacion} (${estacion.codigo}) | Hora mostrada: Perú (UTC-5) | Pase el cursor sobre una línea para ver su detalle`;
 
-    if (!codigo) {
-        return;
-    }
+    try {
+        const [obsTemp, modelosTemp, obsPP, modelosPP] = await Promise.all([
+            crearTrazaObservada("temp", codigo),
+            crearTrazasModelos("temp", codigo),
+            crearTrazaObservada("pp", codigo),
+            crearTrazasModelos("pp", codigo)
+        ]);
 
+        const rangoTemp = rangoTemporal(obsTemp, modelosTemp);
+        const rangoPP = rangoTemporal(obsPP, modelosPP);
 
-    const estacion =
-        estaciones.find(
-            e =>
-                String(e.codigo) ===
-                String(codigo)
-        );
-
-
-    document.getElementById(
-        "informacion"
-    ).textContent =
-        `${estacion.estacion} (${estacion.codigo}) | ` +
-        `Hora mostrada: Perú (UTC-5)`;
-
-
-    /* ---------------- TEMPERATURA ---------------- */
-
-    const obsTemp =
-        await crearTrazaObservada(
-            "temp",
-            codigo
-        );
-
-    const modelosTemp =
-        await crearTrazasModelos(
-            "temp",
-            codigo
-        );
-
-    const inicioTemp =
-        inicioObservaciones(
-            obsTemp
-        );
-
-
-    Plotly.react(
-
-        "graficaTemperatura",
-
-        [
-            obsTemp,
-            ...modelosTemp
-        ],
-
-        crearLayout(
+        const layoutTemp = crearLayout(
             "Temperatura del aire a 2 m",
             "Temperatura (°C)",
-            inicioTemp
-        ),
-
-        {
-            responsive: true,
-            displaylogo: false,
-            scrollZoom: true
-        }
-    );
-
-
-    /* ---------------- PRECIPITACIÓN ---------------- */
-
-    const obsPP =
-        await crearTrazaObservada(
-            "pp",
-            codigo
+            rangoTemp
         );
 
-    const modelosPP =
-        await crearTrazasModelos(
-            "pp",
-            codigo
-        );
-
-    const inicioPP =
-        inicioObservaciones(
-            obsPP
-        );
-
-
-    const layoutPP =
-        crearLayout(
+        const layoutPP = crearLayout(
             "Precipitación acumulada cada 6 horas",
             "Precipitación (mm / 6 h)",
-            inicioPP
+            rangoPP
         );
+        layoutPP.yaxis.rangemode = "tozero";
 
-    layoutPP.yaxis.rangemode =
-        "tozero";
-
-
-    Plotly.react(
-
-        "graficaPrecipitacion",
-
-        [
-            obsPP,
-            ...modelosPP
-        ],
-
-        layoutPP,
-
-        {
-            responsive: true,
-            displaylogo: false,
-            scrollZoom: true
-        }
-    );
-
+        await Promise.all([
+            Plotly.react(
+                "graficaTemperatura",
+                [obsTemp, ...modelosTemp],
+                layoutTemp,
+                CONFIG_PLOTLY
+            ),
+            Plotly.react(
+                "graficaPrecipitacion",
+                [obsPP, ...modelosPP],
+                layoutPP,
+                CONFIG_PLOTLY
+            )
+        ]);
+    } catch (error) {
+        console.error(error);
+        document.getElementById("informacion").textContent =
+            `Error cargando datos: ${error.message}`;
+    }
 }
-
 
 /* ============================================================
    EVENTOS
@@ -1106,7 +934,6 @@ document.getElementById(
     actualizarGraficas
 );
 
-
 document.querySelectorAll(
     ".modelo-input"
 ).forEach(input => {
@@ -1118,8 +945,6 @@ document.querySelectorAll(
 
 });
 
-
-
 /* ============================================================
    INICIO
 ============================================================ */
@@ -1128,9 +953,10 @@ async function iniciar() {
 
     try {
 
-        await cargarManifiesto();
-
-        await cargarEstaciones();
+        await Promise.all([
+            cargarManifiesto(),
+            cargarEstaciones()
+        ]);
 
         await actualizarGraficas();
 
@@ -1146,7 +972,6 @@ async function iniciar() {
     }
 
 }
-
 
 iniciar();
 
