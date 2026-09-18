@@ -905,13 +905,13 @@ async function actualizarGraficas() {
         await Promise.all([
             Plotly.react(
                 "graficaTemperatura",
-                [obsTemp, ...modelosTemp],
+                [...modelosTemp, obsTemp],
                 layoutTemp,
                 CONFIG_PLOTLY
             ),
             Plotly.react(
                 "graficaPrecipitacion",
-                [obsPP, ...modelosPP],
+                [...modelosPP, obsPP],
                 layoutPP,
                 CONFIG_PLOTLY
             )
