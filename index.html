@@ -908,32 +908,23 @@ function crearLayout(
         xaxis: {
 
             title: {
-                text:
-                    "Hora local (Perú)"
+                text: "Hora local (Perú)"
             },
 
             type: "date",
 
-            tickformat:
-                "%H:%M<br>%d/%m",
+            tickformat: "%H:%M<br>%d/%m",
 
-            hoverformat:
-                "%d/%m/%Y %H:%M",
+            hoverformat: "%d/%m/%Y %H:%M",
 
             showgrid: true,
-
-            gridcolor:
-                "#eceff1",
-
-            linecolor:
-                "#78909c",
-
+            gridcolor: "#eceff1",
+            linecolor: "#78909c",
             zeroline: false,
 
             rangeslider: {
                 visible: false
             }
-
         },
 
         yaxis: {
@@ -943,15 +934,9 @@ function crearLayout(
             },
 
             showgrid: true,
-
-            gridcolor:
-                "#e0e0e0",
-
-            linecolor:
-                "#78909c",
-
+            gridcolor: "#e0e0e0",
+            linecolor: "#78909c",
             zeroline: false
-
         },
 
         legend: {
@@ -970,22 +955,10 @@ function crearLayout(
         },
 
         showlegend: true
-
     };
-
-
-    if (inicio) {
-
-        layout.xaxis.range = [
-            inicio,
-            null
-        ];
-    }
-
 
     return layout;
 }
-
 
 /* ============================================================
    ACTUALIZAR GRÁFICAS
