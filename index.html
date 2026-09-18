@@ -4,10 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Station NWP</title>
+
+    <script src="https://cdn.plot.ly/plotly-3.1.0.min.js"></script>
 </head>
-<!-- Station NWP -->
+
 <body>
+
     <h1>Station NWP</h1>
-    <p>Comparación de pronósticos de modelos numéricos y observaciones.</p>
+    <p>Primera prueba interactiva con datos reales.</p>
+
+    <div id="grafica" style="width:100%; height:600px;"></div>
+
+    <script>
+        const archivo = "2026091800/gfs_00_temp.csv";
+        const estacionBuscada = "PAMPAHUTA";
+
+        fetch(archivo)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`No se pudo leer ${archivo}`);
+                }
+                return response.text();
+            })
+            .then(texto => {
+
+                const lineas = texto.trim().split("\n");
+                const cabecera = lineas[0].split(",");
+
+                const fila = lineas
+                    .slice(1)
+                    .map(linea => linea.split(","))
+                    .find(campos => campos[1] === estacionBuscada);
+
+                if (!fila) {
+                    throw new Error(`No se encontró ${estacionBuscada}`);
+                }
+
+                const tiempos = cabecera.slice(4).map(fecha => {
+                    const anio = fecha.slice(0, 4);
+                    const mes = fecha.slice(4, 6);
+                    const dia = fecha.slice(6, 8);
+                    const hora = fecha.slice(8, 10);
+
+                    return `${anio}-${mes}-${dia}T${hora}:00:00Z`;
+                });
+
+                const temperatura = fila.slice(4).map(valor => {
+                    if (valor === "" || valor.toLowerCase() === "nan") {
+                        return null;
+                    }
+
+                    return Number(valor);
+                });
+
+                const traza = {
+                    x: tiempos,
+                    y: temperatura,
+                    type: "scatter",
+                    mode: "lines+markers",
+                    name: "GFS 00 UTC",
+                    hovertemplate:
+                        "<b>GFS</b><br>" +
+                        "%{x|%d/%m/%Y %H:%M UTC}<br>" +
+                        "Temperatura: %{y:.1f} °C" +
+                        "<extra></extra>"
+                };
+
+                const layout = {
+                    title: {
+                        text: "PAMPAHUTA | Temperatura a 2 m"
+                    },
+
+                    xaxis: {
+                        title: "Tiempo (UTC)",
+                        type: "date"
+                    },
+
+                    yaxis: {
+                        title: "Temperatura (°C)"
+                    },
+
+                    hovermode: "closest"
+                };
+
+                Plotly.newPlot(
+                    "grafica",
+                    [traza],
+                    layout,
+                    {
+                        responsive: true,
+                        displaylogo: false
+                    }
+                );
+            })
+            .catch(error => {
+                document.getElementById("grafica").innerHTML =
+                    `<p>Error: ${error.message}</p>`;
+
+                console.error(error);
+            });
+    </script>
+
 </body>
 </html>
