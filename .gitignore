@@ -1,0 +1,7 @@
+.ipynb_checkpoints/
+*.ipynb
+grafica*.py
+__pycache__/
+*.pyc
+extraer_modelos.py
+extraer_observaciones.py
