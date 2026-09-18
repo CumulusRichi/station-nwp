@@ -27,3 +27,9 @@ observaciones/
     obs_temp.csv
     obs_pp.csv
 index.html
+
+Los archivos de procesamiento y automatización utilizados en NUNA no forman parte de este repositorio público.
+
+Sitio web
+
+https://cumulusrichi.github.io/station-nwp/
