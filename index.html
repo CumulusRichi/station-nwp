@@ -242,31 +242,31 @@
             <div class="modelos-checks">
 
                 <label class="modelo-check">
-                    <input type="checkbox" value="gfs" checked>
+                   <input class="modelo-input" type="checkbox" value="gfs" checked>>
                     <span class="indicador gfs"></span>
                     GFS
                 </label>
 
                 <label class="modelo-check">
-                    <input type="checkbox" value="ecmwf" checked>
+                    <input class="modelo-input" type="checkbox" value="ecmwf" checked>
                     <span class="indicador ecmwf"></span>
                     ECMWF
                 </label>
 
                 <label class="modelo-check">
-                    <input type="checkbox" value="eta5" checked>
+                    <input class="modelo-input" type="checkbox" value="eta5" checked>
                     <span class="indicador eta5"></span>
                     ETA5
                 </label>
 
                 <label class="modelo-check">
-                    <input type="checkbox" value="wrf5" checked>
+                    <input class="modelo-input" type="checkbox" value="wrf5" checked>
                     <span class="indicador wrf5"></span>
                     WRF5
                 </label>
 
                 <label class="modelo-check">
-                    <input type="checkbox" value="mpas15" checked>
+                    <input class="modelo-input" type="checkbox" value="mpas15" checked>
                     <span class="indicador mpas15"></span>
                     MPAS15
                 </label>
@@ -561,11 +561,19 @@ async function cargarManifiesto() {
 
 function modelosSeleccionados() {
 
-    return Array.from(
-        document.querySelectorAll(
-            '.modelos-check input:checked'
-        )
-    ).map(input => input.value);
+    const seleccionados = [];
+
+    document.querySelectorAll(
+        ".modelo-input"
+    ).forEach(input => {
+
+        if (input.checked) {
+            seleccionados.push(input.value);
+        }
+
+    });
+
+    return seleccionados;
 }
 
 
@@ -1100,7 +1108,7 @@ document.getElementById(
 
 
 document.querySelectorAll(
-    ".modelos-check input"
+    ".modelo-input"
 ).forEach(input => {
 
     input.addEventListener(
@@ -1109,6 +1117,7 @@ document.querySelectorAll(
     );
 
 });
+
 
 
 /* ============================================================
