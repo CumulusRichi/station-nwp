@@ -3,139 +3,430 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comparación de modelos y observaciones</title>
+    <title>Verificación de Pronósticos de Modelos Numéricos</title>
+
     <script src="https://cdn.plot.ly/plotly-3.1.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <style>
-        :root { --azul:#17366d; --azul-oscuro:#10254d; --amarillo:#f4c430; --fondo:#f5f7fa; --borde:#d8dee8; --texto:#263238; }
-        * { box-sizing: border-box; }
-        body { margin:0; font-family:Arial,Helvetica,sans-serif; background:var(--fondo); color:var(--texto); }
-        .contenedor { width:96%; max-width:1500px; margin:20px auto; }
-        .cabecera { background:white; border:1px solid var(--borde); border-top:6px solid var(--azul); padding:22px 30px 20px; }
-        .cabecera h1 { margin:0 0 8px; color:var(--azul-oscuro); font-size:28px; font-weight:700; }
-        .cabecera p { margin:0; color:#596579; font-size:14px; }
-        .linea-amarilla { height:4px; background:var(--amarillo); }
-        .controles { background:white; border:1px solid var(--borde); border-top:none; padding:20px 25px; display:flex; flex-wrap:wrap; gap:20px; align-items:flex-end; }
-        .grupo-control { display:flex; flex-direction:column; gap:7px; }
-        .grupo-control label.titulo { font-size:13px; font-weight:bold; color:var(--azul-oscuro); }
-        select { min-width:210px; padding:9px 12px; border:1px solid #aeb9c8; border-radius:3px; background:white; color:#263238; font-size:14px; }
-        select:focus { outline:2px solid rgba(244,196,48,.35); border-color:var(--azul); }
-        #estacionSelect { min-width:300px; }
-        .modelos-checks { display:flex; flex-wrap:wrap; gap:8px; }
-        .modelo-check { display:flex; align-items:center; gap:6px; padding:8px 11px; border:1px solid #cbd3df; border-radius:3px; background:#fafbfc; cursor:pointer; user-select:none; font-size:14px; }
-        .modelo-check:hover { border-color:var(--azul); background:#f6f8fb; }
-        .modelo-check input { cursor:pointer; accent-color:var(--azul); }
-        .indicador { width:11px; height:11px; border-radius:50%; }
-        .informacion { background:#f0f4f8; border:1px solid var(--borde); border-top:none; border-left:4px solid var(--amarillo); padding:10px 21px; font-size:13px; color:#526174; }
-        .panel-mapa,.panel-grafica { background:white; border:1px solid var(--borde); margin-top:18px; border-radius:4px; }
-        .panel-mapa { padding:18px; }
-        .titulo-panel { margin:0 0 14px; color:var(--azul-oscuro); font-size:17px; font-weight:600; }
-        #mapa { width:100%; height:380px; border:1px solid #d4dae3; z-index:1; }
-        .panel-grafica { padding:10px 15px 5px; }
-        .grafica { width:100%; height:650px; }
+        :root {
+            --azul:#17366d;
+            --azul-oscuro:#10254d;
+            --amarillo:#f4c430;
+            --fondo:#f5f7fa;
+            --borde:#d8dee8;
+            --texto:#263238;
+        }
+
+        * { box-sizing:border-box; }
+
+        body {
+            margin:0;
+            font-family:Arial,Helvetica,sans-serif;
+            background:var(--fondo);
+            color:var(--texto);
+        }
+
+        .contenedor {
+            width:96%;
+            max-width:1500px;
+            margin:20px auto;
+        }
+
+        .cabecera {
+            background:white;
+            border:1px solid var(--borde);
+            border-top:6px solid var(--azul);
+            padding:22px 30px 20px;
+        }
+
+        .cabecera h1 {
+            margin:0 0 8px;
+            color:var(--azul-oscuro);
+            font-size:28px;
+            font-weight:700;
+        }
+
+        .cabecera p {
+            margin:0;
+            color:#596579;
+            font-size:14px;
+        }
+
+        .linea-amarilla {
+            height:4px;
+            background:var(--amarillo);
+        }
+
+        .controles {
+            background:white;
+            border:1px solid var(--borde);
+            border-top:none;
+            padding:20px 25px;
+            display:flex;
+            flex-wrap:wrap;
+            gap:20px;
+            align-items:flex-end;
+        }
+
+        .grupo-control {
+            display:flex;
+            flex-direction:column;
+            gap:7px;
+        }
+
+        .grupo-control label.titulo {
+            font-size:13px;
+            font-weight:bold;
+            color:var(--azul-oscuro);
+        }
+
+        select {
+            min-width:210px;
+            padding:9px 12px;
+            border:1px solid #aeb9c8;
+            border-radius:3px;
+            background:white;
+            color:#263238;
+            font-size:14px;
+        }
+
+        select:focus {
+            outline:2px solid rgba(244,196,48,.35);
+            border-color:var(--azul);
+        }
+
+        #estacionSelect {
+            min-width:300px;
+        }
+
+        .modelos-checks {
+            display:flex;
+            flex-wrap:wrap;
+            gap:8px;
+        }
+
+        .modelo-check {
+            display:flex;
+            align-items:center;
+            gap:6px;
+            padding:8px 11px;
+            border:1px solid #cbd3df;
+            border-radius:3px;
+            background:#fafbfc;
+            cursor:pointer;
+            user-select:none;
+            font-size:14px;
+        }
+
+        .modelo-check:hover {
+            border-color:var(--azul);
+            background:#f6f8fb;
+        }
+
+        .modelo-check input {
+            cursor:pointer;
+            accent-color:var(--azul);
+        }
+
+        .indicador {
+            width:11px;
+            height:11px;
+            border-radius:50%;
+        }
+
+        .informacion {
+            background:#f0f4f8;
+            border:1px solid var(--borde);
+            border-top:none;
+            border-left:4px solid var(--amarillo);
+            padding:10px 21px;
+            font-size:13px;
+            color:#526174;
+        }
+
+        .panel-mapa,
+        .panel-grafica {
+            background:white;
+            border:1px solid var(--borde);
+            margin-top:18px;
+            border-radius:4px;
+        }
+
+        .panel-mapa {
+            padding:18px;
+        }
+
+        .titulo-panel {
+            margin:0 0 14px;
+            color:var(--azul-oscuro);
+            font-size:17px;
+            font-weight:600;
+        }
+
+        #mapa {
+            width:100%;
+            height:380px;
+            border:1px solid #d4dae3;
+            z-index:1;
+        }
+
+        .panel-grafica {
+            padding:10px 15px 5px;
+        }
+
+        .grafica {
+            width:100%;
+            height:760px;
+        }
+
+        .mensaje-grafica {
+            height:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:#718096;
+            font-size:14px;
+        }
+
         .gfs { background:#1565c0; }
         .ecmwf { background:#d32f2f; }
         .eta5 { background:#388e3c; }
         .wrf5 { background:#ef6c00; }
         .mpas15 { background:#7b1fa2; }
-        .leaflet-popup-content { font-family:Arial,Helvetica,sans-serif; line-height:1.4; }
-        .leaflet-popup-content strong { color:var(--azul-oscuro); }
+
+        .leaflet-popup-content {
+            font-family:Arial,Helvetica,sans-serif;
+            line-height:1.4;
+        }
+
+        .leaflet-popup-content strong {
+            color:var(--azul-oscuro);
+        }
+
         @media (max-width:800px) {
-            .controles { flex-direction:column; align-items:stretch; }
-            select,#estacionSelect { width:100%; min-width:0; }
-            #mapa { height:330px; }
-            .grafica { height:560px; }
+            .controles {
+                flex-direction:column;
+                align-items:stretch;
+            }
+
+            select,
+            #estacionSelect {
+                width:100%;
+                min-width:0;
+            }
+
+            #mapa {
+                height:330px;
+            }
+
+            .grafica {
+                height:650px;
+            }
         }
     </style>
 </head>
+
 <body>
+
 <div class="contenedor">
+
     <div class="cabecera">
         <h1>Verificación de Pronósticos de Modelos Numéricos</h1>
         <p>Plataforma para la comparación y evaluación de pronósticos de temperatura y precipitación frente a observaciones de estaciones meteorológicas.</p>
     </div>
+
     <div class="linea-amarilla"></div>
 
     <div class="controles">
+
         <div class="grupo-control">
             <label class="titulo">Departamento</label>
             <select id="departamentoSelect"></select>
         </div>
+
         <div class="grupo-control">
             <label class="titulo">Provincia</label>
             <select id="provinciaSelect"></select>
         </div>
+
         <div class="grupo-control">
             <label class="titulo">Estación</label>
             <select id="estacionSelect"></select>
         </div>
+
         <div class="grupo-control">
             <label class="titulo">Modelos</label>
+
             <div class="modelos-checks">
-                <label class="modelo-check"><input class="modelo-input" type="checkbox" value="gfs" checked><span class="indicador gfs"></span>GFS</label>
-                <label class="modelo-check"><input class="modelo-input" type="checkbox" value="ecmwf" checked><span class="indicador ecmwf"></span>ECMWF</label>
-                <label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta5" checked><span class="indicador eta5"></span>ETA5</label>
-                <label class="modelo-check"><input class="modelo-input" type="checkbox" value="wrf5" checked><span class="indicador wrf5"></span>WRF5</label>
-                <label class="modelo-check"><input class="modelo-input" type="checkbox" value="mpas15" checked><span class="indicador mpas15"></span>MPAS15</label>
+
+                <label class="modelo-check">
+                    <input class="modelo-input" type="checkbox" value="gfs" checked>
+                    <span class="indicador gfs"></span>
+                    GFS
+                </label>
+
+                <label class="modelo-check">
+                    <input class="modelo-input" type="checkbox" value="ecmwf" checked>
+                    <span class="indicador ecmwf"></span>
+                    ECMWF
+                </label>
+
+                <label class="modelo-check">
+                    <input class="modelo-input" type="checkbox" value="eta5" checked>
+                    <span class="indicador eta5"></span>
+                    ETA5
+                </label>
+
+                <label class="modelo-check">
+                    <input class="modelo-input" type="checkbox" value="wrf5" checked>
+                    <span class="indicador wrf5"></span>
+                    WRF5
+                </label>
+
+                <label class="modelo-check">
+                    <input class="modelo-input" type="checkbox" value="mpas15" checked>
+                    <span class="indicador mpas15"></span>
+                    MPAS15
+                </label>
+
             </div>
         </div>
+
     </div>
 
-    <div class="informacion" id="informacion">Cargando información...</div>
+    <div class="informacion" id="informacion">
+        Cargando información...
+    </div>
 
     <div class="panel-mapa">
         <h2 class="titulo-panel">Ubicación de estaciones</h2>
         <div id="mapa"></div>
     </div>
 
-    <div class="panel-grafica"><div id="graficaTemperatura" class="grafica"></div></div>
-    <div class="panel-grafica"><div id="graficaPrecipitacion" class="grafica"></div></div>
+    <div class="panel-grafica">
+        <div id="graficaTemperatura" class="grafica"></div>
+    </div>
+
+    <div class="panel-grafica">
+        <div id="graficaPrecipitacion" class="grafica"></div>
+    </div>
+
 </div>
 
 <script>
+
 const MODELOS = {
-    gfs:{nombre:"GFS",colores:["#bbdefb","#90caf9","#64b5f6","#42a5f5","#2196f3","#1976d2","#1565c0","#0d47a1"]},
-    ecmwf:{nombre:"ECMWF",colores:["#ffcdd2","#ef9a9a","#e57373","#ef5350","#f44336","#e53935","#d32f2f","#b71c1c"]},
-    eta5:{nombre:"ETA5",colores:["#c8e6c9","#a5d6a7","#81c784","#66bb6a","#4caf50","#43a047","#388e3c","#1b5e20"]},
-    wrf5:{nombre:"WRF5",colores:["#ffe0b2","#ffcc80","#ffb74d","#ffa726","#ff9800","#fb8c00","#ef6c00","#e65100"]},
-    mpas15:{nombre:"MPAS15",colores:["#e1bee7","#ce93d8","#ba68c8","#ab47bc","#9c27b0","#8e24aa","#7b1fa2","#4a148c"]}
+    gfs:{
+        nombre:"GFS",
+        colores:["#bbdefb","#90caf9","#64b5f6","#42a5f5","#2196f3","#1976d2","#1565c0","#0d47a1"]
+    },
+
+    ecmwf:{
+        nombre:"ECMWF",
+        colores:["#ffcdd2","#ef9a9a","#e57373","#ef5350","#f44336","#e53935","#d32f2f","#b71c1c"]
+    },
+
+    eta5:{
+        nombre:"ETA5",
+        colores:["#c8e6c9","#a5d6a7","#81c784","#66bb6a","#4caf50","#43a047","#388e3c","#1b5e20"]
+    },
+
+    wrf5:{
+        nombre:"WRF5",
+        colores:["#ffe0b2","#ffcc80","#ffb74d","#ffa726","#ff9800","#fb8c00","#ef6c00","#e65100"]
+    },
+
+    mpas15:{
+        nombre:"MPAS15",
+        colores:["#e1bee7","#ce93d8","#ba68c8","#ab47bc","#9c27b0","#8e24aa","#7b1fa2","#4a148c"]
+    }
 };
 
 let manifiesto=null;
 let estaciones=[];
 let cacheCSV={};
+
 let mapa=null;
 let capaEstaciones=null;
 let marcadores={};
 
+
+/* =========================================================
+   CSV
+========================================================= */
+
 async function cargarCSV(ruta) {
-    if(cacheCSV[ruta]) return cacheCSV[ruta];
+
+    if(cacheCSV[ruta])
+        return cacheCSV[ruta];
+
     const respuesta=await fetch(ruta,{cache:"no-cache"});
-    if(!respuesta.ok) throw new Error(`No se pudo cargar ${ruta}`);
+
+    if(!respuesta.ok)
+        throw new Error(`No se pudo cargar ${ruta}`);
+
     const texto=await respuesta.text();
-    const resultado=Papa.parse(texto,{header:true,dynamicTyping:false,skipEmptyLines:true});
+
+    const resultado=Papa.parse(texto,{
+        header:true,
+        dynamicTyping:false,
+        skipEmptyLines:true
+    });
+
     cacheCSV[ruta]=resultado.data;
+
     return resultado.data;
 }
 
+
+/* =========================================================
+   FECHAS
+========================================================= */
+
 function timestampUTC(cadena) {
-    const y=cadena.slice(0,4),m=cadena.slice(4,6),d=cadena.slice(6,8),h=cadena.slice(8,10);
+
+    const y=cadena.slice(0,4);
+    const m=cadena.slice(4,6);
+    const d=cadena.slice(6,8);
+    const h=cadena.slice(8,10);
+
     return new Date(`${y}-${m}-${d}T${h}:00:00Z`);
 }
 
+
 function fechaPeru(cadena) {
+
     const fecha=timestampUTC(cadena);
-    const partes=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Lima",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(fecha);
+
+    const partes=new Intl.DateTimeFormat("en-CA",{
+        timeZone:"America/Lima",
+        year:"numeric",
+        month:"2-digit",
+        day:"2-digit",
+        hour:"2-digit",
+        minute:"2-digit",
+        hourCycle:"h23"
+    }).formatToParts(fecha);
+
     const datos={};
-    for(const p of partes) datos[p.type]=p.value;
+
+    for(const p of partes)
+        datos[p.type]=p.value;
+
     return `${datos.year}-${datos.month}-${datos.day}T${datos.hour}:${datos.minute}:00`;
 }
 
-/* ESTACIONES */
+
+/* =========================================================
+   ESTACIONES
+========================================================= */
 
 async function cargarEstaciones() {
+
     const [metadata,obsTemp,obsPP]=await Promise.all([
         cargarCSV("observaciones/metadata.csv"),
         cargarCSV("observaciones/obs_temp.csv"),
@@ -159,366 +450,1167 @@ async function cargarEstaciones() {
         }))
         .filter(e=>Number.isFinite(e.latitud)&&Number.isFinite(e.longitud));
 
-    estaciones.sort((a,b)=>a.estacion.localeCompare(b.estacion,"es"));
+    estaciones.sort(
+        (a,b)=>a.estacion.localeCompare(b.estacion,"es")
+    );
+
     cargarDepartamentos();
 }
 
+
+function agregarOpcionVacia(select,texto) {
+
+    const option=document.createElement("option");
+
+    option.value="";
+    option.textContent=texto;
+
+    select.appendChild(option);
+}
+
+
 function cargarDepartamentos() {
+
     const select=document.getElementById("departamentoSelect");
-    const departamentos=[...new Set(estaciones.map(e=>e.departamento).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es"));
+
+    const departamentos=[
+        ...new Set(
+            estaciones
+                .map(e=>e.departamento)
+                .filter(Boolean)
+        )
+    ].sort((a,b)=>a.localeCompare(b,"es"));
+
     select.innerHTML="";
+
+    agregarOpcionVacia(
+        select,
+        "Seleccione departamento"
+    );
+
     for(const departamento of departamentos) {
+
         const option=document.createElement("option");
+
         option.value=departamento;
         option.textContent=departamento;
+
         select.appendChild(option);
     }
+
     cargarProvincias();
 }
 
+
 function cargarProvincias() {
-    const departamento=document.getElementById("departamentoSelect").value;
-    const select=document.getElementById("provinciaSelect");
-    const provincias=[...new Set(estaciones.filter(e=>e.departamento===departamento).map(e=>e.provincia).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es"));
+
+    const departamento=
+        document.getElementById("departamentoSelect").value;
+
+    const select=
+        document.getElementById("provinciaSelect");
+
     select.innerHTML="";
-    for(const provincia of provincias) {
-        const option=document.createElement("option");
-        option.value=provincia;
-        option.textContent=provincia;
-        select.appendChild(option);
+
+    agregarOpcionVacia(
+        select,
+        "Seleccione provincia"
+    );
+
+    if(departamento) {
+
+        const provincias=[
+            ...new Set(
+                estaciones
+                    .filter(e=>e.departamento===departamento)
+                    .map(e=>e.provincia)
+                    .filter(Boolean)
+            )
+        ].sort((a,b)=>a.localeCompare(b,"es"));
+
+        for(const provincia of provincias) {
+
+            const option=document.createElement("option");
+
+            option.value=provincia;
+            option.textContent=provincia;
+
+            select.appendChild(option);
+        }
     }
+
     cargarEstacionesProvincia();
 }
 
+
 function cargarEstacionesProvincia() {
-    const departamento=document.getElementById("departamentoSelect").value;
-    const provincia=document.getElementById("provinciaSelect").value;
-    const select=document.getElementById("estacionSelect");
-    const filtradas=estaciones.filter(e=>e.departamento===departamento&&e.provincia===provincia);
+
+    const departamento=
+        document.getElementById("departamentoSelect").value;
+
+    const provincia=
+        document.getElementById("provinciaSelect").value;
+
+    const select=
+        document.getElementById("estacionSelect");
+
     select.innerHTML="";
+
+    agregarOpcionVacia(
+        select,
+        "Seleccione estación"
+    );
+
+    if(!departamento || !provincia)
+        return;
+
+    const filtradas=estaciones.filter(
+        e=>e.departamento===departamento &&
+           e.provincia===provincia
+    );
+
     for(const estacion of filtradas) {
+
         const option=document.createElement("option");
+
         option.value=estacion.codigo;
-        option.textContent=`${estacion.estacion} (${estacion.codigo})`;
+        option.textContent=
+            `${estacion.estacion} (${estacion.codigo})`;
+
         select.appendChild(option);
     }
 }
 
-/* MAPA */
+
+/* =========================================================
+   MAPA
+========================================================= */
 
 function iniciarMapa() {
-    mapa=L.map("mapa",{zoomControl:true}).setView([-9.2,-75.0],5);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
-        maxZoom:18,
-        attribution:'&copy; OpenStreetMap'
-    }).addTo(mapa);
+
+    mapa=L.map(
+        "mapa",
+        {zoomControl:true}
+    ).setView([-9.2,-75.0],5);
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            maxZoom:18,
+            attribution:"&copy; OpenStreetMap"
+        }
+    ).addTo(mapa);
+
     capaEstaciones=L.layerGroup().addTo(mapa);
 }
 
+
 function estiloMarcador(seleccionado=false) {
+
     return {
-        radius:seleccionado?9:6,
-        color:seleccionado?"#17366d":"#17366d",
-        weight:seleccionado?3:2,
-        fillColor:seleccionado?"#f4c430":"#ffffff",
-        fillOpacity:seleccionado?1:.9
+        radius:seleccionado ? 9 : 6,
+        color:"#17366d",
+        weight:seleccionado ? 3 : 2,
+        fillColor:seleccionado ? "#f4c430" : "#ffffff",
+        fillOpacity:seleccionado ? 1 : .9
     };
 }
 
-function actualizarMapa() {
-    if(!mapa) return;
 
-    const departamento=document.getElementById("departamentoSelect").value;
-    const provincia=document.getElementById("provinciaSelect").value;
-    const codigo=document.getElementById("estacionSelect").value;
-    const filtradas=estaciones.filter(e=>e.departamento===departamento&&e.provincia===provincia);
+function actualizarMapa() {
+
+    if(!mapa)
+        return;
+
+    const departamento=
+        document.getElementById("departamentoSelect").value;
+
+    const provincia=
+        document.getElementById("provinciaSelect").value;
+
+    const codigo=
+        document.getElementById("estacionSelect").value;
+
+    let filtradas=estaciones;
+
+    if(departamento) {
+        filtradas=filtradas.filter(
+            e=>e.departamento===departamento
+        );
+    }
+
+    if(provincia) {
+        filtradas=filtradas.filter(
+            e=>e.provincia===provincia
+        );
+    }
 
     capaEstaciones.clearLayers();
+
     marcadores={};
+
     const limites=[];
 
     for(const estacion of filtradas) {
+
         const marcador=L.circleMarker(
             [estacion.latitud,estacion.longitud],
             estiloMarcador(estacion.codigo===codigo)
         );
 
-        marcador.bindTooltip(`${estacion.estacion} (${estacion.codigo})`,{direction:"top"});
-        marcador.bindPopup(`<strong>${estacion.estacion}</strong><br>${estacion.provincia}, ${estacion.departamento}<br>Código: ${estacion.codigo}`);
+        marcador.bindTooltip(
+            `${estacion.estacion} (${estacion.codigo})`,
+            {direction:"top"}
+        );
 
-        marcador.on("click",async()=>{
-            document.getElementById("estacionSelect").value=estacion.codigo;
-            resaltarEstacion(estacion.codigo,true);
-            await actualizarGraficas();
-        });
+        marcador.bindPopup(
+            `<strong>${estacion.estacion}</strong><br>
+             ${estacion.provincia}, ${estacion.departamento}<br>
+             Código: ${estacion.codigo}`
+        );
+
+        marcador.on(
+            "click",
+            async()=>{
+                await seleccionarEstacionDesdeMapa(estacion);
+            }
+        );
 
         marcador.addTo(capaEstaciones);
+
         marcadores[estacion.codigo]=marcador;
-        limites.push([estacion.latitud,estacion.longitud]);
+
+        limites.push([
+            estacion.latitud,
+            estacion.longitud
+        ]);
     }
 
-    if(limites.length===1) mapa.setView(limites[0],11);
-    else if(limites.length>1) mapa.fitBounds(limites,{padding:[35,35],maxZoom:11});
+    if(limites.length===1) {
 
-    resaltarEstacion(codigo,false);
+        mapa.setView(
+            limites[0],
+            11
+        );
+
+    } else if(limites.length>1) {
+
+        mapa.fitBounds(
+            limites,
+            {
+                padding:[30,30],
+                maxZoom:11
+            }
+        );
+    }
+
+    resaltarEstacion(
+        codigo,
+        false
+    );
 }
 
+
 function resaltarEstacion(codigo,centrar=true) {
+
     for(const [id,marcador] of Object.entries(marcadores)) {
-        marcador.setStyle(estiloMarcador(id===codigo));
+
+        marcador.setStyle(
+            estiloMarcador(id===codigo)
+        );
+
         if(id===codigo) {
+
             marcador.bringToFront();
-            if(centrar) mapa.panTo(marcador.getLatLng());
+
+            if(centrar)
+                mapa.panTo(
+                    marcador.getLatLng()
+                );
         }
     }
 }
 
-/* CICLOS Y MODELOS */
+
+async function seleccionarEstacionDesdeMapa(estacion) {
+
+    document.getElementById(
+        "departamentoSelect"
+    ).value=estacion.departamento;
+
+    cargarProvincias();
+
+    document.getElementById(
+        "provinciaSelect"
+    ).value=estacion.provincia;
+
+    cargarEstacionesProvincia();
+
+    document.getElementById(
+        "estacionSelect"
+    ).value=estacion.codigo;
+
+    actualizarMapa();
+
+    resaltarEstacion(
+        estacion.codigo,
+        true
+    );
+
+    await actualizarGraficas();
+}
+
+
+/* =========================================================
+   CICLOS Y MODELOS
+========================================================= */
 
 async function cargarManifiesto() {
-    const respuesta=await fetch("modelos/ciclos.json",{cache:"no-cache"});
-    if(!respuesta.ok) throw new Error("No se pudo cargar modelos/ciclos.json");
+
+    const respuesta=await fetch(
+        "modelos/ciclos.json",
+        {cache:"no-cache"}
+    );
+
+    if(!respuesta.ok)
+        throw new Error(
+            "No se pudo cargar modelos/ciclos.json"
+        );
+
     manifiesto=await respuesta.json();
 }
 
+
 function modelosSeleccionados() {
+
     const seleccionados=[];
-    document.querySelectorAll(".modelo-input").forEach(input=>{
-        if(input.checked) seleccionados.push(input.value);
-    });
+
+    document
+        .querySelectorAll(".modelo-input")
+        .forEach(input=>{
+
+            if(input.checked)
+                seleccionados.push(
+                    input.value
+                );
+        });
+
     return seleccionados;
 }
 
+
 function obtenerFila(datos,codigo) {
-    return datos.find(fila=>String(fila.codigo)===String(codigo));
+
+    return datos.find(
+        fila=>String(fila.codigo)===String(codigo)
+    );
 }
 
+
 function filaASerie(fila) {
-    if(!fila) return {x:[],y:[]};
-    const columnas=Object.keys(fila).filter(col=>/^\d{10}$/.test(col)).sort();
-    const x=[],y=[];
+
+    if(!fila)
+        return {x:[],y:[]};
+
+    const columnas=Object.keys(fila)
+        .filter(col=>/^\d{10}$/.test(col))
+        .sort();
+
+    const x=[];
+    const y=[];
+
     for(const columna of columnas) {
-        const valor=parseFloat(fila[columna]);
-        if(fila[columna]===""||fila[columna]===null||fila[columna]===undefined||Number.isNaN(valor)) y.push(null);
-        else y.push(valor);
-        x.push(fechaPeru(columna));
+
+        const valor=parseFloat(
+            fila[columna]
+        );
+
+        if(
+            fila[columna]==="" ||
+            fila[columna]===null ||
+            fila[columna]===undefined ||
+            Number.isNaN(valor)
+        ) {
+            y.push(null);
+        } else {
+            y.push(valor);
+        }
+
+        x.push(
+            fechaPeru(columna)
+        );
     }
+
     return {x,y};
 }
 
-/* OBSERVACIONES */
+
+/* =========================================================
+   HOVER
+========================================================= */
 
 function hoverObservado(variable) {
-    const valor=variable==="temp"?"Temperatura: %{y:.1f} °C":"Precipitación: %{y:.1f} mm";
-    return `<b>Observado</b><br>Fecha: %{x|%d/%m/%Y}<br>Hora local: %{x|%H:%M}<br>${valor}<extra></extra>`;
+
+    const valor=
+        variable==="temp"
+        ? "%{y:.1f} °C"
+        : "%{y:.1f} mm";
+
+    return `<b>Observado</b>: ${valor}<extra></extra>`;
 }
+
 
 function hoverModelo(variable,modelo,ciclo) {
-    const dia=ciclo.slice(6,8),mes=ciclo.slice(4,6),hora=ciclo.slice(8,10);
-    const valor=variable==="temp"?"Temperatura: %{y:.1f} °C":"Precipitación: %{y:.1f} mm";
-    return `<b>${MODELOS[modelo].nombre}</b><br>Inicialización: ${dia}/${mes} ${hora} UTC<br>Fecha: %{x|%d/%m/%Y}<br>Hora local: %{x|%H:%M}<br>${valor}<extra></extra>`;
+
+    const dia=ciclo.slice(6,8);
+    const mes=ciclo.slice(4,6);
+    const hora=ciclo.slice(8,10);
+
+    const valor=
+        variable==="temp"
+        ? "%{y:.1f} °C"
+        : "%{y:.1f} mm";
+
+    return `<b>${MODELOS[modelo].nombre}</b> · ${dia}/${mes} ${hora} UTC: ${valor}<extra></extra>`;
 }
 
+
+/* =========================================================
+   OBSERVACIONES
+========================================================= */
+
 async function crearTrazaObservada(variable,codigo) {
-    const ruta=variable==="temp"?"observaciones/obs_temp.csv":"observaciones/obs_pp.csv";
-    const datos=await cargarCSV(ruta);
-    const fila=obtenerFila(datos,codigo);
-    const serie=filaASerie(fila);
+
+    const ruta=
+        variable==="temp"
+        ? "observaciones/obs_temp.csv"
+        : "observaciones/obs_pp.csv";
+
+    const datos=
+        await cargarCSV(ruta);
+
+    const fila=
+        obtenerFila(datos,codigo);
+
+    const serie=
+        filaASerie(fila);
 
     return {
-        x:serie.x,y:serie.y,type:"scatter",
-        mode:variable==="pp"?"lines+markers":"lines",
-        name:"Observado",legendgroup:"observado",legendrank:0,
-        line:{color:"#111111",width:3},
-        marker:{color:"#111111",size:4},
-        connectgaps:false,hovertemplate:hoverObservado(variable)
+        x:serie.x,
+        y:serie.y,
+        type:"scatter",
+
+        mode:
+            variable==="pp"
+            ? "lines+markers"
+            : "lines",
+
+        name:"Observado",
+
+        legendgroup:"observado",
+        legendrank:0,
+
+        line:{
+            color:"#111111",
+            width:3
+        },
+
+        marker:{
+            color:"#111111",
+            size:4
+        },
+
+        connectgaps:false,
+
+        hovertemplate:
+            hoverObservado(variable)
     };
 }
 
-/* PRONÓSTICOS */
 
-async function crearTrazasUnModelo(variable,codigo,modelo,ciclos) {
-    const ciclosModelo=ciclos.filter(ciclo=>{
-        const info=manifiesto.ciclos[ciclo];
-        return info[modelo]&&info[modelo].includes(variable);
-    });
+/* =========================================================
+   PRONÓSTICOS
+========================================================= */
+
+async function crearTrazasUnModelo(
+    variable,
+    codigo,
+    modelo,
+    ciclos
+) {
+
+    const ciclosModelo=
+        ciclos.filter(ciclo=>{
+
+            const info=
+                manifiesto.ciclos[ciclo];
+
+            return (
+                info[modelo] &&
+                info[modelo].includes(variable)
+            );
+        });
 
     const trazas=[];
-    for(let i=0;i<ciclosModelo.length;i++) {
-        const ciclo=ciclosModelo[i];
-        const hora=ciclo.slice(8,10);
-        const archivo=`modelos/${ciclo}/${modelo}_${hora}_${variable}.csv`;
+
+    for(
+        let i=0;
+        i<ciclosModelo.length;
+        i++
+    ) {
+
+        const ciclo=
+            ciclosModelo[i];
+
+        const hora=
+            ciclo.slice(8,10);
+
+        const archivo=
+            `modelos/${ciclo}/${modelo}_${hora}_${variable}.csv`;
 
         let datos;
-        try { datos=await cargarCSV(archivo); }
-        catch(error) { console.warn(error); continue; }
 
-        const fila=obtenerFila(datos,codigo);
-        if(!fila) continue;
+        try {
 
-        const serie=filaASerie(fila);
-        const colores=MODELOS[modelo].colores;
-        const indiceColor=ciclosModelo.length===1?colores.length-2:Math.round(i*(colores.length-1)/(ciclosModelo.length-1));
-        const dia=ciclo.slice(6,8),mes=ciclo.slice(4,6);
+            datos=
+                await cargarCSV(archivo);
+
+        } catch(error) {
+
+            console.warn(error);
+
+            continue;
+        }
+
+        const fila=
+            obtenerFila(
+                datos,
+                codigo
+            );
+
+        if(!fila)
+            continue;
+
+        const serie=
+            filaASerie(fila);
+
+        const colores=
+            MODELOS[modelo].colores;
+
+        const indiceColor=
+            ciclosModelo.length===1
+            ? colores.length-2
+            : Math.round(
+                i*(colores.length-1)/
+                (ciclosModelo.length-1)
+            );
+
+        const dia=
+            ciclo.slice(6,8);
+
+        const mes=
+            ciclo.slice(4,6);
 
         trazas.push({
-            x:serie.x,y:serie.y,type:"scatter",
-            mode:variable==="pp"?"lines+markers":"lines",
-            name:`${dia}/${mes} ${hora} UTC`,
+
+            x:serie.x,
+            y:serie.y,
+
+            type:"scatter",
+
+            mode:
+                variable==="pp"
+                ? "lines+markers"
+                : "lines",
+
+            name:
+                `${dia}/${mes} ${hora} UTC`,
+
             legendgroup:modelo,
-            legendrank:10+Object.keys(MODELOS).indexOf(modelo),
-            legendgrouptitle:i===0?{text:MODELOS[modelo].nombre}:undefined,
-            line:{color:colores[indiceColor],width:1.5},
-            marker:{color:colores[indiceColor],size:3},
+
+            legendrank:
+                10+
+                Object.keys(MODELOS)
+                    .indexOf(modelo),
+
+            legendgrouptitle:
+                i===0
+                ? {
+                    text:
+                        MODELOS[modelo].nombre
+                }
+                : undefined,
+
+            line:{
+                color:
+                    colores[indiceColor],
+                width:1.5
+            },
+
+            marker:{
+                color:
+                    colores[indiceColor],
+                size:3
+            },
+
             connectgaps:false,
-            hovertemplate:hoverModelo(variable,modelo,ciclo)
+
+            hovertemplate:
+                hoverModelo(
+                    variable,
+                    modelo,
+                    ciclo
+                )
         });
     }
+
     return trazas;
 }
 
-async function crearTrazasModelos(variable,codigo) {
-    const activos=modelosSeleccionados();
-    const ciclos=Object.keys(manifiesto.ciclos).sort();
-    const grupos=await Promise.all(activos.map(modelo=>crearTrazasUnModelo(variable,codigo,modelo,ciclos)));
+
+async function crearTrazasModelos(
+    variable,
+    codigo
+) {
+
+    const activos=
+        modelosSeleccionados();
+
+    const ciclos=
+        Object.keys(
+            manifiesto.ciclos
+        ).sort();
+
+    const grupos=
+        await Promise.all(
+            activos.map(
+                modelo=>
+                    crearTrazasUnModelo(
+                        variable,
+                        codigo,
+                        modelo,
+                        ciclos
+                    )
+            )
+        );
+
     return grupos.flat();
 }
 
-/* RANGO TEMPORAL */
+
+/* =========================================================
+   RANGO TEMPORAL
+========================================================= */
 
 function fechasValidas(traza) {
+
     const fechas=[];
-    for(let i=0;i<traza.x.length;i++) {
-        if(traza.y[i]!==null&&traza.y[i]!==undefined&&!Number.isNaN(traza.y[i])) fechas.push(traza.x[i]);
+
+    for(
+        let i=0;
+        i<traza.x.length;
+        i++
+    ) {
+
+        if(
+            traza.y[i]!==null &&
+            traza.y[i]!==undefined &&
+            !Number.isNaN(traza.y[i])
+        ) {
+            fechas.push(
+                traza.x[i]
+            );
+        }
     }
+
     return fechas;
 }
 
-function rangoTemporal(trazaObs,trazasModelos) {
-    const obs=fechasValidas(trazaObs);
-    const todas=[trazaObs,...trazasModelos].flatMap(fechasValidas);
-    if(todas.length===0) return null;
+
+function rangoTemporal(
+    trazaObs,
+    trazasModelos
+) {
+
+    const obs=
+        fechasValidas(
+            trazaObs
+        );
+
+    const todas=[
+        trazaObs,
+        ...trazasModelos
+    ].flatMap(
+        fechasValidas
+    );
+
+    if(todas.length===0)
+        return null;
+
     todas.sort();
-    const inicio=obs.length>0?obs[0]:todas[0];
-    const fin=todas[todas.length-1];
-    return [inicio,fin];
+
+    const inicio=
+        obs.length>0
+        ? obs[0]
+        : todas[0];
+
+    const fin=
+        todas[
+            todas.length-1
+        ];
+
+    return [
+        inicio,
+        fin
+    ];
 }
 
-/* PLOTLY */
 
-function crearLayout(titulo,unidad,rango) {
+/* =========================================================
+   PLOTLY
+========================================================= */
+
+function crearLayout(
+    titulo,
+    unidad,
+    rango
+) {
+
     const xaxis={
-        title:{text:"Fecha"},type:"date",tickformat:"%d/%m",
-        hoverformat:"%d/%m/%Y %H:%M",showgrid:true,gridcolor:"#edf0f4",
-        linecolor:"#8492a6",zeroline:false,showspikes:true,
-        spikemode:"across",spikesnap:"cursor",spikedash:"dot",
-        spikecolor:"#90a4ae",rangeslider:{visible:false}
+
+        title:{
+            text:"Fecha"
+        },
+
+        type:"date",
+
+        tickformat:"%d/%m",
+
+        hoverformat:
+            "%d/%m/%Y %H:%M",
+
+        showgrid:true,
+
+        gridcolor:"#edf0f4",
+
+        linecolor:"#8492a6",
+
+        zeroline:false,
+
+        showspikes:true,
+
+        spikemode:"across",
+
+        spikesnap:"cursor",
+
+        spikedash:"dot",
+
+        spikecolor:"#90a4ae",
+
+        rangeslider:{
+            visible:false
+        }
     };
 
     if(rango) {
+
         xaxis.range=rango;
-        xaxis.minallowed=rango[0];
-        xaxis.maxallowed=rango[1];
+
+        xaxis.minallowed=
+            rango[0];
+
+        xaxis.maxallowed=
+            rango[1];
     }
 
     return {
-        title:{text:titulo,x:.5,xanchor:"center",font:{size:17,color:"#10254d"}},
-        margin:{l:70,r:30,t:70,b:245},
-        paper_bgcolor:"white",plot_bgcolor:"white",
-        font:{family:"Arial, Helvetica, sans-serif",color:"#263238"},
-        hovermode:"closest",hoverdistance:35,spikedistance:35,
-        hoverlabel:{bgcolor:"white",bordercolor:"#90a4ae",font:{size:12}},
-        xaxis,
+
+        title:{
+            text:titulo,
+            x:.5,
+            xanchor:"center",
+            font:{
+                size:17,
+                color:"#10254d"
+            }
+        },
+
+        margin:{
+            l:70,
+            r:30,
+            t:70,
+            b:260
+        },
+
+        paper_bgcolor:"white",
+
+        plot_bgcolor:"white",
+
+        font:{
+            family:
+                "Arial, Helvetica, sans-serif",
+            color:"#263238"
+        },
+
+        hovermode:"x unified",
+
+        hoverdistance:60,
+
+        spikedistance:-1,
+
+        hoverlabel:{
+            bgcolor:"white",
+            bordercolor:"#aeb9c8",
+            font:{
+                size:12,
+                family:
+                    "Arial, Helvetica, sans-serif"
+            },
+            align:"left"
+        },
+
+        xaxis:xaxis,
+
         yaxis:{
-            title:{text:unidad},showgrid:true,gridcolor:"#e4e8ed",
-            linecolor:"#8492a6",zeroline:false
+            title:{
+                text:unidad
+            },
+
+            showgrid:true,
+
+            gridcolor:"#e4e8ed",
+
+            linecolor:"#8492a6",
+
+            zeroline:false
         },
+
         legend:{
-            title:{text:"Inicialización del pronóstico (UTC)"},
-            orientation:"h",x:.5,xanchor:"center",y:-.30,yanchor:"top",
-            traceorder:"grouped",tracegroupgap:12,groupclick:"toggleitem",
-            bgcolor:"rgba(248,250,252,0.95)",bordercolor:"#d8dee8",
-            borderwidth:1,font:{size:10}
+
+            title:{
+                text:
+                    "Inicialización del pronóstico (UTC)",
+                font:{
+                    size:11,
+                    color:"#10254d"
+                }
+            },
+
+            orientation:"h",
+
+            x:.5,
+
+            xanchor:"center",
+
+            y:-.28,
+
+            yanchor:"top",
+
+            traceorder:"grouped",
+
+            tracegroupgap:18,
+
+            groupclick:"toggleitem",
+
+            bgcolor:
+                "rgba(248,250,252,0.98)",
+
+            bordercolor:"#d8dee8",
+
+            borderwidth:1,
+
+            font:{
+                size:10
+            },
+
+            itemsizing:"constant"
         },
+
         showlegend:true
     };
 }
 
-const CONFIG_PLOTLY={responsive:true,displaylogo:false,scrollZoom:true};
 
-/* ACTUALIZACIÓN */
+const CONFIG_PLOTLY={
+    responsive:true,
+    displaylogo:false,
+    scrollZoom:true
+};
+
+
+/* =========================================================
+   MENSAJES SIN ESTACIÓN
+========================================================= */
+
+function mostrarSinEstacion() {
+
+    document.getElementById(
+        "informacion"
+    ).textContent=
+        "Seleccione una estación en el mapa o mediante los filtros para visualizar los pronósticos y observaciones.";
+
+    Plotly.purge(
+        "graficaTemperatura"
+    );
+
+    Plotly.purge(
+        "graficaPrecipitacion"
+    );
+
+    document.getElementById(
+        "graficaTemperatura"
+    ).innerHTML=
+        '<div class="mensaje-grafica">Seleccione una estación para visualizar la temperatura.</div>';
+
+    document.getElementById(
+        "graficaPrecipitacion"
+    ).innerHTML=
+        '<div class="mensaje-grafica">Seleccione una estación para visualizar la precipitación.</div>';
+}
+
+
+/* =========================================================
+   ACTUALIZACIÓN
+========================================================= */
 
 async function actualizarGraficas() {
-    const codigo=document.getElementById("estacionSelect").value;
-    if(!codigo) return;
 
-    const estacion=estaciones.find(e=>String(e.codigo)===String(codigo));
-    document.getElementById("informacion").textContent=
-        `${estacion.estacion} (${estacion.codigo}) | ${estacion.provincia}, ${estacion.departamento} | Hora mostrada: Perú (UTC-5) | Pase el cursor sobre una línea para ver su detalle`;
+    const codigo=
+        document.getElementById(
+            "estacionSelect"
+        ).value;
+
+    if(!codigo) {
+
+        mostrarSinEstacion();
+
+        return;
+    }
+
+    const estacion=
+        estaciones.find(
+            e=>
+                String(e.codigo)===
+                String(codigo)
+        );
+
+    if(!estacion)
+        return;
+
+    document.getElementById(
+        "informacion"
+    ).textContent=
+        `${estacion.estacion} (${estacion.codigo}) | ${estacion.provincia}, ${estacion.departamento} | Hora mostrada: Perú (UTC-5) | Pase el cursor sobre la gráfica para comparar los pronósticos disponibles`;
 
     try {
-        const [obsTemp,modelosTemp,obsPP,modelosPP]=await Promise.all([
-            crearTrazaObservada("temp",codigo),
-            crearTrazasModelos("temp",codigo),
-            crearTrazaObservada("pp",codigo),
-            crearTrazasModelos("pp",codigo)
+
+        const [
+            obsTemp,
+            modelosTemp,
+            obsPP,
+            modelosPP
+        ]=await Promise.all([
+
+            crearTrazaObservada(
+                "temp",
+                codigo
+            ),
+
+            crearTrazasModelos(
+                "temp",
+                codigo
+            ),
+
+            crearTrazaObservada(
+                "pp",
+                codigo
+            ),
+
+            crearTrazasModelos(
+                "pp",
+                codigo
+            )
         ]);
 
-        const rangoTemp=rangoTemporal(obsTemp,modelosTemp);
-        const rangoPP=rangoTemporal(obsPP,modelosPP);
-        const layoutTemp=crearLayout("Temperatura del aire a 2 m","Temperatura (°C)",rangoTemp);
-        const layoutPP=crearLayout("Precipitación acumulada cada 6 horas","Precipitación (mm / 6 h)",rangoPP);
-        layoutPP.yaxis.rangemode="tozero";
+        const rangoTemp=
+            rangoTemporal(
+                obsTemp,
+                modelosTemp
+            );
+
+        const rangoPP=
+            rangoTemporal(
+                obsPP,
+                modelosPP
+            );
+
+        const layoutTemp=
+            crearLayout(
+                "Temperatura del aire a 2 m",
+                "Temperatura (°C)",
+                rangoTemp
+            );
+
+        const layoutPP=
+            crearLayout(
+                "Precipitación acumulada cada 6 horas",
+                "Precipitación (mm / 6 h)",
+                rangoPP
+            );
+
+        layoutPP.yaxis.rangemode=
+            "tozero";
 
         await Promise.all([
-            Plotly.react("graficaTemperatura",[...modelosTemp,obsTemp],layoutTemp,CONFIG_PLOTLY),
-            Plotly.react("graficaPrecipitacion",[...modelosPP,obsPP],layoutPP,CONFIG_PLOTLY)
+
+            Plotly.react(
+                "graficaTemperatura",
+                [
+                    ...modelosTemp,
+                    obsTemp
+                ],
+                layoutTemp,
+                CONFIG_PLOTLY
+            ),
+
+            Plotly.react(
+                "graficaPrecipitacion",
+                [
+                    ...modelosPP,
+                    obsPP
+                ],
+                layoutPP,
+                CONFIG_PLOTLY
+            )
         ]);
+
     } catch(error) {
+
         console.error(error);
-        document.getElementById("informacion").textContent=`Error cargando datos: ${error.message}`;
+
+        document.getElementById(
+            "informacion"
+        ).textContent=
+            `Error cargando datos: ${error.message}`;
     }
 }
 
-/* EVENTOS */
 
-document.getElementById("departamentoSelect").addEventListener("change",async()=>{
-    cargarProvincias();
-    actualizarMapa();
-    await actualizarGraficas();
-});
+/* =========================================================
+   EVENTOS
+========================================================= */
 
-document.getElementById("provinciaSelect").addEventListener("change",async()=>{
-    cargarEstacionesProvincia();
-    actualizarMapa();
-    await actualizarGraficas();
-});
+document.getElementById(
+    "departamentoSelect"
+).addEventListener(
+    "change",
+    async()=>{
 
-document.getElementById("estacionSelect").addEventListener("change",async()=>{
-    resaltarEstacion(document.getElementById("estacionSelect").value,true);
-    await actualizarGraficas();
-});
+        cargarProvincias();
 
-document.querySelectorAll(".modelo-input").forEach(input=>{
-    input.addEventListener("change",actualizarGraficas);
-});
+        actualizarMapa();
 
-/* INICIO */
+        await actualizarGraficas();
+    }
+);
+
+
+document.getElementById(
+    "provinciaSelect"
+).addEventListener(
+    "change",
+    async()=>{
+
+        cargarEstacionesProvincia();
+
+        actualizarMapa();
+
+        await actualizarGraficas();
+    }
+);
+
+
+document.getElementById(
+    "estacionSelect"
+).addEventListener(
+    "change",
+    async()=>{
+
+        const codigo=
+            document.getElementById(
+                "estacionSelect"
+            ).value;
+
+        if(codigo) {
+
+            resaltarEstacion(
+                codigo,
+                true
+            );
+
+        } else {
+
+            actualizarMapa();
+        }
+
+        await actualizarGraficas();
+    }
+);
+
+
+document
+    .querySelectorAll(
+        ".modelo-input"
+    )
+    .forEach(input=>{
+
+        input.addEventListener(
+            "change",
+            actualizarGraficas
+        );
+    });
+
+
+/* =========================================================
+   INICIO
+========================================================= */
 
 async function iniciar() {
+
     try {
+
         iniciarMapa();
-        await Promise.all([cargarManifiesto(),cargarEstaciones()]);
+
+        await Promise.all([
+            cargarManifiesto(),
+            cargarEstaciones()
+        ]);
+
         actualizarMapa();
+
         await actualizarGraficas();
-        setTimeout(()=>mapa.invalidateSize(),100);
+
+        setTimeout(
+            ()=>mapa.invalidateSize(),
+            100
+        );
+
     } catch(error) {
+
         console.error(error);
-        document.getElementById("informacion").textContent="Error cargando datos: "+error.message;
+
+        document.getElementById(
+            "informacion"
+        ).textContent=
+            "Error cargando datos: "+
+            error.message;
     }
 }
 
+
 iniciar();
+
 </script>
+
 </body>
 </html>
