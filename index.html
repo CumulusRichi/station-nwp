@@ -120,15 +120,28 @@ function fechaPeru(cadena) {
 /* DEPARTAMENTO → PROVINCIA → ESTACIÓN */
 
 async function cargarEstaciones() {
-    const datos = await cargarCSV("observaciones/metadata.csv");
-    estaciones = datos.map(fila => ({
-        codigo: String(fila.codigo),
-        estacion: fila.estacion,
-        departamento: fila.departamento,
-        provincia: fila.provincia,
-        latitud: fila.latitud,
-        longitud: fila.longitud
-    }));
+    const [metadata, obsTemp, obsPP] = await Promise.all([
+        cargarCSV("observaciones/metadata.csv"),
+        cargarCSV("observaciones/obs_temp.csv"),
+        cargarCSV("observaciones/obs_pp.csv")
+    ]);
+
+    const codigosDisponibles = new Set([
+        ...obsTemp.map(fila => String(fila.codigo)),
+        ...obsPP.map(fila => String(fila.codigo))
+    ]);
+
+    estaciones = metadata
+        .filter(fila => codigosDisponibles.has(String(fila.codigo)))
+        .map(fila => ({
+            codigo: String(fila.codigo),
+            estacion: fila.estacion,
+            departamento: fila.departamento,
+            provincia: fila.provincia,
+            latitud: fila.latitud,
+            longitud: fila.longitud
+        }));
+
     estaciones.sort((a,b) => a.estacion.localeCompare(b.estacion,"es"));
     cargarDepartamentos();
 }
