@@ -48,13 +48,6 @@ select:focus{outline:2px solid rgba(244,196,48,.35);border-color:var(--azul)}
 .gfs{background:#1565c0}.ecmwf{background:#d32f2f}.eta5{background:#388e3c}.wrf5{background:#ef6c00}.mpas15{background:#7b1fa2}
 .leaflet-popup-content{font-family:Arial,Helvetica,sans-serif;line-height:1.4}
 .leaflet-popup-content strong{color:var(--azul-oscuro)}
-#hoverPersonalizado{display:none;position:fixed;z-index:9999;min-width:190px;max-width:250px;max-height:calc(100vh - 20px);overflow-y:auto;background:rgba(255,255,255,.97);border:1px solid #aeb9c8;box-shadow:0 2px 8px rgba(0,0,0,.14);padding:7px 9px;font-size:9px;line-height:1.25;color:#263238;pointer-events:none}
-.hover-fecha{font-size:9px;font-weight:700;color:#10254d;border-bottom:1px solid #d8dee8;padding-bottom:4px;margin-bottom:4px}
-.hover-grupo{margin-top:5px}
-.hover-modelo{font-size:9px;font-weight:700;color:#10254d;margin-bottom:2px}
-.hover-fila{display:flex;align-items:center;gap:5px;white-space:nowrap;min-height:14px}
-.hover-linea{width:25px;height:2px;flex:0 0 25px}
-.hover-observado{margin-top:6px;padding-top:5px;border-top:1px solid #d8dee8}
 @media(max-width:900px){.leyenda-modelos{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:800px){.controles{flex-direction:column;align-items:stretch}select,#estacionSelect{width:100%;min-width:0}#mapa{height:330px}.grafica{height:560px}.leyenda-modelos{grid-template-columns:1fr}}
 </style>
@@ -95,7 +88,6 @@ select:focus{outline:2px solid rgba(244,196,48,.35);border-color:var(--azul)}
 <div id="leyendaPrecipitacion"></div>
 </div>
 </div>
-<div id="hoverPersonalizado"></div>
 <script>
 const MODELOS={
 gfs:{nombre:"GFS",colores:["#bbdefb","#90caf9","#64b5f6","#42a5f5","#2196f3","#1976d2","#1565c0","#0d47a1"]},
@@ -104,7 +96,6 @@ eta5:{nombre:"ETA5",colores:["#c8e6c9","#a5d6a7","#81c784","#66bb6a","#4caf50","
 wrf5:{nombre:"WRF5",colores:["#ffe0b2","#ffcc80","#ffb74d","#ffa726","#ff9800","#fb8c00","#ef6c00","#e65100"]},
 mpas15:{nombre:"MPAS15",colores:["#e1bee7","#ce93d8","#ba68c8","#ab47bc","#9c27b0","#8e24aa","#7b1fa2","#4a148c"]}
 };
-const ORDEN_MODELOS=["gfs","ecmwf","eta5","wrf5","mpas15"];
 let manifiesto=null;
 let estaciones=[];
 let cacheCSV={};
@@ -289,15 +280,28 @@ x.push(fechaPeru(columna));
 return{x,y};
 }
 
+function hoverObservado(variable){
+const valor=variable==="temp"?"%{y:.1f} °C":"%{y:.1f} mm";
+return `<b>OBSERVADO</b> (${valor})<extra></extra>`;
+}
+
+function hoverModelo(variable,modelo,ciclo){
+const dia=ciclo.slice(6,8);
+const mes=ciclo.slice(4,6);
+const hora=ciclo.slice(8,10);
+const valor=variable==="temp"?"%{y:.1f} °C":"%{y:.1f} mm";
+return `<b>${MODELOS[modelo].nombre}</b> ${dia}/${mes} ${hora}Z (${valor})<extra></extra>`;
+}
+
 async function crearTrazaObservada(variable,codigo){
 const ruta=variable==="temp"?"observaciones/obs_temp.csv":"observaciones/obs_pp.csv";
 const datos=await cargarCSV(ruta);
 const fila=obtenerFila(datos,codigo);
 const serie=filaASerie(fila);
 return{
-x:serie.x,y:serie.y,type:"scatter",mode:variable==="pp"?"lines+markers":"lines",name:"OBSERVADO",
-line:{color:"#111111",width:3},marker:{color:"#111111",size:4},connectgaps:false,
-hoverinfo:"none",showlegend:false,meta:{tipo:"observado",variable:variable}
+x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:"OBSERVADO",
+line:{color:"#111111",width:3},marker:{color:"#111111",size:3},
+connectgaps:false,hovertemplate:hoverObservado(variable),showlegend:false
 };
 }
 
@@ -321,10 +325,14 @@ const indiceColor=ciclosModelo.length===1?colores.length-2:Math.round(i*(colores
 const dia=ciclo.slice(6,8);
 const mes=ciclo.slice(4,6);
 trazas.push({
-x:serie.x,y:serie.y,type:"scatter",mode:variable==="pp"?"lines+markers":"lines",
-name:`${dia}/${mes} ${hora}Z`,line:{color:colores[indiceColor],width:1.5},
-marker:{color:colores[indiceColor],size:3},connectgaps:false,hoverinfo:"none",showlegend:false,
-meta:{tipo:"modelo",modelo:modelo,nombreModelo:MODELOS[modelo].nombre,ciclo:ciclo,etiqueta:`${dia}/${mes} ${hora}Z`,color:colores[indiceColor],variable:variable}
+x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",
+name:`${dia}/${mes} ${hora}Z`,
+line:{color:colores[indiceColor],width:1.5},
+marker:{color:colores[indiceColor],size:3},
+connectgaps:false,
+hovertemplate:hoverModelo(variable,modelo,ciclo),
+showlegend:false,
+meta:{modelo:modelo,nombreModelo:MODELOS[modelo].nombre,ciclo:ciclo,etiqueta:`${dia}/${mes} ${hora}Z`,color:colores[indiceColor]}
 });
 }
 return trazas;
@@ -389,7 +397,10 @@ title:{text:titulo,x:.5,xanchor:"center",font:{size:17,color:"#10254d"}},
 margin:{l:70,r:30,t:70,b:75},
 paper_bgcolor:"white",plot_bgcolor:"white",
 font:{family:"Arial, Helvetica, sans-serif",color:"#263238"},
-hovermode:"x",hoverdistance:80,spikedistance:-1,
+hovermode:"closest",
+hoverdistance:25,
+spikedistance:25,
+hoverlabel:{bgcolor:"white",bordercolor:"#aeb9c8",font:{size:11,family:"Arial, Helvetica, sans-serif"},align:"left"},
 xaxis:xaxis,
 yaxis:{title:{text:unidad},showgrid:true,gridcolor:"#e4e8ed",linecolor:"#8492a6",zeroline:false},
 showlegend:false
@@ -398,93 +409,8 @@ showlegend:false
 
 const CONFIG_PLOTLY={responsive:true,displaylogo:false,scrollZoom:true};
 
-function formatearFechaHover(valor){
-const fecha=new Date(valor);
-if(Number.isNaN(fecha.getTime())) return "";
-const dia=String(fecha.getDate()).padStart(2,"0");
-const mes=String(fecha.getMonth()+1).padStart(2,"0");
-const hora=String(fecha.getHours()).padStart(2,"0");
-const minuto=String(fecha.getMinutes()).padStart(2,"0");
-return `${dia}/${mes} ${hora}:${minuto}`;
-}
-
-function unidadVariable(variable){
-return variable==="temp"?"°C":"mm";
-}
-
-function mostrarHoverPersonalizado(data,event){
-const tooltip=document.getElementById("hoverPersonalizado");
-if(!data||!data.points||data.points.length===0) return;
-const puntos=data.points.filter(p=>p.y!==null&&p.y!==undefined&&!Number.isNaN(Number(p.y)));
-if(puntos.length===0){ocultarHoverPersonalizado();return}
-const grupos={};
-let observado=null;
-for(const punto of puntos){
-const meta=punto.data.meta||{};
-if(meta.tipo==="observado"){
-observado=punto;
-continue;
-}
-if(meta.tipo==="modelo"&&meta.modelo){
-if(!grupos[meta.modelo]) grupos[meta.modelo]=[];
-grupos[meta.modelo].push(punto);
-}
-}
-const fecha=formatearFechaHover(puntos[0].x);
-let html=`<div class="hover-fecha">Hora local: ${fecha}</div>`;
-for(const modelo of ORDEN_MODELOS){
-if(!grupos[modelo]) continue;
-grupos[modelo].sort((a,b)=>(a.data.meta.ciclo||"").localeCompare(b.data.meta.ciclo||""));
-html+=`<div class="hover-grupo"><div class="hover-modelo">${MODELOS[modelo].nombre}</div>`;
-for(const punto of grupos[modelo]){
-const meta=punto.data.meta;
-const valor=Number(punto.y);
-html+=`<div class="hover-fila"><span class="hover-linea" style="background:${meta.color}"></span><span>${meta.etiqueta} (${valor.toFixed(1)} ${unidadVariable(meta.variable)})</span></div>`;
-}
-html+=`</div>`;
-}
-if(observado){
-const meta=observado.data.meta||{};
-const valor=Number(observado.y);
-html+=`<div class="hover-observado"><div class="hover-modelo">OBSERVADO</div><div class="hover-fila"><span class="hover-linea" style="background:#111"></span><span>${valor.toFixed(1)} ${unidadVariable(meta.variable)}</span></div></div>`;
-}
-tooltip.innerHTML=html;
-tooltip.style.display="block";
-posicionarHover(event);
-}
-
-function posicionarHover(event){
-const tooltip=document.getElementById("hoverPersonalizado");
-const margen=10;
-let x=event.clientX+15;
-let y=event.clientY+15;
-const rect=tooltip.getBoundingClientRect();
-if(x+rect.width>window.innerWidth-margen) x=event.clientX-rect.width-15;
-if(y+rect.height>window.innerHeight-margen) y=window.innerHeight-rect.height-margen;
-if(y<margen) y=margen;
-if(x<margen) x=margen;
-tooltip.style.left=`${x}px`;
-tooltip.style.top=`${y}px`;
-}
-
-function ocultarHoverPersonalizado(){
-document.getElementById("hoverPersonalizado").style.display="none";
-}
-
-function activarHoverPersonalizado(idGrafica){
-const grafica=document.getElementById(idGrafica);
-grafica.removeAllListeners("plotly_hover");
-grafica.removeAllListeners("plotly_unhover");
-grafica.on("plotly_hover",data=>{
-const evento=data.event||window.event;
-if(evento) mostrarHoverPersonalizado(data,evento);
-});
-grafica.on("plotly_unhover",ocultarHoverPersonalizado);
-}
-
 function mostrarSinEstacion(){
 document.getElementById("informacion").textContent="Seleccione una estación en el mapa o mediante los filtros para visualizar los pronósticos y observaciones.";
-ocultarHoverPersonalizado();
 Plotly.purge("graficaTemperatura");
 Plotly.purge("graficaPrecipitacion");
 document.getElementById("graficaTemperatura").innerHTML='<div class="mensaje-grafica">Seleccione una estación para visualizar la temperatura.</div>';
@@ -498,7 +424,7 @@ const codigo=document.getElementById("estacionSelect").value;
 if(!codigo){mostrarSinEstacion();return}
 const estacion=estaciones.find(e=>String(e.codigo)===String(codigo));
 if(!estacion) return;
-document.getElementById("informacion").textContent=`${estacion.estacion} (${estacion.codigo}) | ${estacion.provincia}, ${estacion.departamento} | Hora mostrada: Perú (UTC-5) | Pase el cursor sobre la gráfica para comparar los pronósticos disponibles`;
+document.getElementById("informacion").textContent=`${estacion.estacion} (${estacion.codigo}) | ${estacion.provincia}, ${estacion.departamento} | Hora mostrada: Perú (UTC-5) | Pase el cursor sobre una línea para ver su detalle`;
 try{
 const [obsTemp,modelosTemp,obsPP,modelosPP]=await Promise.all([
 crearTrazaObservada("temp",codigo),
@@ -511,22 +437,16 @@ const rangoPP=rangoTemporal(obsPP,modelosPP);
 const layoutTemp=crearLayout("Temperatura del aire a 2 m","Temperatura (°C)",rangoTemp);
 const layoutPP=crearLayout("Precipitación acumulada cada 6 horas","Precipitación (mm / 6 h)",rangoPP);
 layoutPP.yaxis.rangemode="tozero";
-
-ocultarHoverPersonalizado();
 Plotly.purge("graficaTemperatura");
 Plotly.purge("graficaPrecipitacion");
 document.getElementById("graficaTemperatura").innerHTML="";
 document.getElementById("graficaPrecipitacion").innerHTML="";
-
 await Promise.all([
 Plotly.newPlot("graficaTemperatura",[...modelosTemp,obsTemp],layoutTemp,CONFIG_PLOTLY),
 Plotly.newPlot("graficaPrecipitacion",[...modelosPP,obsPP],layoutPP,CONFIG_PLOTLY)
 ]);
-
 crearLeyendaPersonalizada("leyendaTemperatura",modelosTemp);
 crearLeyendaPersonalizada("leyendaPrecipitacion",modelosPP);
-activarHoverPersonalizado("graficaTemperatura");
-activarHoverPersonalizado("graficaPrecipitacion");
 }catch(error){
 console.error(error);
 document.getElementById("informacion").textContent=`Error cargando datos: ${error.message}`;
@@ -555,9 +475,6 @@ await actualizarGraficas();
 document.querySelectorAll(".modelo-input").forEach(input=>{
 input.addEventListener("change",actualizarGraficas);
 });
-
-window.addEventListener("scroll",ocultarHoverPersonalizado,{passive:true});
-window.addEventListener("resize",ocultarHoverPersonalizado);
 
 async function iniciar(){
 try{
