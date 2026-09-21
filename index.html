@@ -175,12 +175,12 @@
         }
 
         .panel-grafica {
-            padding:10px 15px 5px;
+            padding:10px 15px 15px;
         }
 
         .grafica {
             width:100%;
-            height:760px;
+            height:600px;
         }
 
         .mensaje-grafica {
@@ -190,6 +190,82 @@
             justify-content:center;
             color:#718096;
             font-size:14px;
+        }
+
+        .leyenda-pronosticos {
+            max-width:920px;
+            margin:0 auto 10px;
+            padding:12px 18px 14px;
+            border:1px solid var(--borde);
+            background:#fafbfc;
+        }
+
+        .leyenda-titulo {
+            text-align:center;
+            color:var(--azul-oscuro);
+            font-size:12px;
+            font-weight:700;
+            margin-bottom:12px;
+            letter-spacing:.15px;
+        }
+
+        .leyenda-modelos {
+            display:grid;
+            grid-template-columns:repeat(5,1fr);
+            gap:22px;
+            align-items:start;
+            justify-content:center;
+        }
+
+        .leyenda-modelo {
+            min-width:0;
+            text-align:center;
+        }
+
+        .leyenda-modelo-titulo {
+            font-size:12px;
+            font-weight:700;
+            margin-bottom:7px;
+            color:#263238;
+        }
+
+        .leyenda-ciclo {
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:7px;
+            min-height:18px;
+            font-size:10px;
+            white-space:nowrap;
+            color:#455a64;
+        }
+
+        .leyenda-linea {
+            display:inline-block;
+            width:27px;
+            height:3px;
+            flex:0 0 27px;
+        }
+
+        .leyenda-observado {
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            margin-top:14px;
+            padding-top:11px;
+            border-top:1px solid #e1e6ec;
+            font-size:11px;
+            font-weight:700;
+            color:#111;
+        }
+
+        .leyenda-observado-linea {
+            display:block;
+            width:42px;
+            height:4px;
+            margin-top:5px;
+            background:#111;
         }
 
         .gfs { background:#1565c0; }
@@ -205,6 +281,12 @@
 
         .leaflet-popup-content strong {
             color:var(--azul-oscuro);
+        }
+
+        @media (max-width:900px) {
+            .leyenda-modelos {
+                grid-template-columns:repeat(2,1fr);
+            }
         }
 
         @media (max-width:800px) {
@@ -224,7 +306,11 @@
             }
 
             .grafica {
-                height:650px;
+                height:560px;
+            }
+
+            .leyenda-modelos {
+                grid-template-columns:1fr;
             }
         }
     </style>
@@ -265,32 +351,27 @@
 
                 <label class="modelo-check">
                     <input class="modelo-input" type="checkbox" value="gfs" checked>
-                    <span class="indicador gfs"></span>
-                    GFS
+                    <span class="indicador gfs"></span>GFS
                 </label>
 
                 <label class="modelo-check">
                     <input class="modelo-input" type="checkbox" value="ecmwf" checked>
-                    <span class="indicador ecmwf"></span>
-                    ECMWF
+                    <span class="indicador ecmwf"></span>ECMWF
                 </label>
 
                 <label class="modelo-check">
                     <input class="modelo-input" type="checkbox" value="eta5" checked>
-                    <span class="indicador eta5"></span>
-                    ETA5
+                    <span class="indicador eta5"></span>ETA5
                 </label>
 
                 <label class="modelo-check">
                     <input class="modelo-input" type="checkbox" value="wrf5" checked>
-                    <span class="indicador wrf5"></span>
-                    WRF5
+                    <span class="indicador wrf5"></span>WRF5
                 </label>
 
                 <label class="modelo-check">
                     <input class="modelo-input" type="checkbox" value="mpas15" checked>
-                    <span class="indicador mpas15"></span>
-                    MPAS15
+                    <span class="indicador mpas15"></span>MPAS15
                 </label>
 
             </div>
@@ -298,9 +379,7 @@
 
     </div>
 
-    <div class="informacion" id="informacion">
-        Cargando información...
-    </div>
+    <div class="informacion" id="informacion">Cargando información...</div>
 
     <div class="panel-mapa">
         <h2 class="titulo-panel">Ubicación de estaciones</h2>
@@ -309,10 +388,12 @@
 
     <div class="panel-grafica">
         <div id="graficaTemperatura" class="grafica"></div>
+        <div id="leyendaTemperatura"></div>
     </div>
 
     <div class="panel-grafica">
         <div id="graficaPrecipitacion" class="grafica"></div>
+        <div id="leyendaPrecipitacion"></div>
     </div>
 
 </div>
@@ -320,36 +401,16 @@
 <script>
 
 const MODELOS = {
-    gfs:{
-        nombre:"GFS",
-        colores:["#bbdefb","#90caf9","#64b5f6","#42a5f5","#2196f3","#1976d2","#1565c0","#0d47a1"]
-    },
-
-    ecmwf:{
-        nombre:"ECMWF",
-        colores:["#ffcdd2","#ef9a9a","#e57373","#ef5350","#f44336","#e53935","#d32f2f","#b71c1c"]
-    },
-
-    eta5:{
-        nombre:"ETA5",
-        colores:["#c8e6c9","#a5d6a7","#81c784","#66bb6a","#4caf50","#43a047","#388e3c","#1b5e20"]
-    },
-
-    wrf5:{
-        nombre:"WRF5",
-        colores:["#ffe0b2","#ffcc80","#ffb74d","#ffa726","#ff9800","#fb8c00","#ef6c00","#e65100"]
-    },
-
-    mpas15:{
-        nombre:"MPAS15",
-        colores:["#e1bee7","#ce93d8","#ba68c8","#ab47bc","#9c27b0","#8e24aa","#7b1fa2","#4a148c"]
-    }
+    gfs:{nombre:"GFS",colores:["#bbdefb","#90caf9","#64b5f6","#42a5f5","#2196f3","#1976d2","#1565c0","#0d47a1"]},
+    ecmwf:{nombre:"ECMWF",colores:["#ffcdd2","#ef9a9a","#e57373","#ef5350","#f44336","#e53935","#d32f2f","#b71c1c"]},
+    eta5:{nombre:"ETA5",colores:["#c8e6c9","#a5d6a7","#81c784","#66bb6a","#4caf50","#43a047","#388e3c","#1b5e20"]},
+    wrf5:{nombre:"WRF5",colores:["#ffe0b2","#ffcc80","#ffb74d","#ffa726","#ff9800","#fb8c00","#ef6c00","#e65100"]},
+    mpas15:{nombre:"MPAS15",colores:["#e1bee7","#ce93d8","#ba68c8","#ab47bc","#9c27b0","#8e24aa","#7b1fa2","#4a148c"]}
 };
 
 let manifiesto=null;
 let estaciones=[];
 let cacheCSV={};
-
 let mapa=null;
 let capaEstaciones=null;
 let marcadores={};
@@ -360,9 +421,7 @@ let marcadores={};
 ========================================================= */
 
 async function cargarCSV(ruta) {
-
-    if(cacheCSV[ruta])
-        return cacheCSV[ruta];
+    if(cacheCSV[ruta]) return cacheCSV[ruta];
 
     const respuesta=await fetch(ruta,{cache:"no-cache"});
 
@@ -388,7 +447,6 @@ async function cargarCSV(ruta) {
 ========================================================= */
 
 function timestampUTC(cadena) {
-
     const y=cadena.slice(0,4);
     const m=cadena.slice(4,6);
     const d=cadena.slice(6,8);
@@ -399,7 +457,6 @@ function timestampUTC(cadena) {
 
 
 function fechaPeru(cadena) {
-
     const fecha=timestampUTC(cadena);
 
     const partes=new Intl.DateTimeFormat("en-CA",{
@@ -450,21 +507,16 @@ async function cargarEstaciones() {
         }))
         .filter(e=>Number.isFinite(e.latitud)&&Number.isFinite(e.longitud));
 
-    estaciones.sort(
-        (a,b)=>a.estacion.localeCompare(b.estacion,"es")
-    );
+    estaciones.sort((a,b)=>a.estacion.localeCompare(b.estacion,"es"));
 
     cargarDepartamentos();
 }
 
 
 function agregarOpcionVacia(select,texto) {
-
     const option=document.createElement("option");
-
     option.value="";
     option.textContent=texto;
-
     select.appendChild(option);
 }
 
@@ -489,12 +541,9 @@ function cargarDepartamentos() {
     );
 
     for(const departamento of departamentos) {
-
         const option=document.createElement("option");
-
         option.value=departamento;
         option.textContent=departamento;
-
         select.appendChild(option);
     }
 
@@ -504,11 +553,8 @@ function cargarDepartamentos() {
 
 function cargarProvincias() {
 
-    const departamento=
-        document.getElementById("departamentoSelect").value;
-
-    const select=
-        document.getElementById("provinciaSelect");
+    const departamento=document.getElementById("departamentoSelect").value;
+    const select=document.getElementById("provinciaSelect");
 
     select.innerHTML="";
 
@@ -529,12 +575,9 @@ function cargarProvincias() {
         ].sort((a,b)=>a.localeCompare(b,"es"));
 
         for(const provincia of provincias) {
-
             const option=document.createElement("option");
-
             option.value=provincia;
             option.textContent=provincia;
-
             select.appendChild(option);
         }
     }
@@ -545,14 +588,9 @@ function cargarProvincias() {
 
 function cargarEstacionesProvincia() {
 
-    const departamento=
-        document.getElementById("departamentoSelect").value;
-
-    const provincia=
-        document.getElementById("provinciaSelect").value;
-
-    const select=
-        document.getElementById("estacionSelect");
+    const departamento=document.getElementById("departamentoSelect").value;
+    const provincia=document.getElementById("provinciaSelect").value;
+    const select=document.getElementById("estacionSelect");
 
     select.innerHTML="";
 
@@ -570,12 +608,10 @@ function cargarEstacionesProvincia() {
     );
 
     for(const estacion of filtradas) {
-
         const option=document.createElement("option");
 
         option.value=estacion.codigo;
-        option.textContent=
-            `${estacion.estacion} (${estacion.codigo})`;
+        option.textContent=`${estacion.estacion} (${estacion.codigo})`;
 
         select.appendChild(option);
     }
@@ -622,14 +658,9 @@ function actualizarMapa() {
     if(!mapa)
         return;
 
-    const departamento=
-        document.getElementById("departamentoSelect").value;
-
-    const provincia=
-        document.getElementById("provinciaSelect").value;
-
-    const codigo=
-        document.getElementById("estacionSelect").value;
+    const departamento=document.getElementById("departamentoSelect").value;
+    const provincia=document.getElementById("provinciaSelect").value;
+    const codigo=document.getElementById("estacionSelect").value;
 
     let filtradas=estaciones;
 
@@ -646,7 +677,6 @@ function actualizarMapa() {
     }
 
     capaEstaciones.clearLayers();
-
     marcadores={};
 
     const limites=[];
@@ -669,12 +699,9 @@ function actualizarMapa() {
              Código: ${estacion.codigo}`
         );
 
-        marcador.on(
-            "click",
-            async()=>{
-                await seleccionarEstacionDesdeMapa(estacion);
-            }
-        );
+        marcador.on("click",async()=>{
+            await seleccionarEstacionDesdeMapa(estacion);
+        });
 
         marcador.addTo(capaEstaciones);
 
@@ -687,14 +714,8 @@ function actualizarMapa() {
     }
 
     if(limites.length===1) {
-
-        mapa.setView(
-            limites[0],
-            11
-        );
-
+        mapa.setView(limites[0],11);
     } else if(limites.length>1) {
-
         mapa.fitBounds(
             limites,
             {
@@ -704,10 +725,7 @@ function actualizarMapa() {
         );
     }
 
-    resaltarEstacion(
-        codigo,
-        false
-    );
+    resaltarEstacion(codigo,false);
 }
 
 
@@ -734,21 +752,18 @@ function resaltarEstacion(codigo,centrar=true) {
 
 async function seleccionarEstacionDesdeMapa(estacion) {
 
-    document.getElementById(
-        "departamentoSelect"
-    ).value=estacion.departamento;
+    document.getElementById("departamentoSelect").value=
+        estacion.departamento;
 
     cargarProvincias();
 
-    document.getElementById(
-        "provinciaSelect"
-    ).value=estacion.provincia;
+    document.getElementById("provinciaSelect").value=
+        estacion.provincia;
 
     cargarEstacionesProvincia();
 
-    document.getElementById(
-        "estacionSelect"
-    ).value=estacion.codigo;
+    document.getElementById("estacionSelect").value=
+        estacion.codigo;
 
     actualizarMapa();
 
@@ -788,11 +803,8 @@ function modelosSeleccionados() {
     document
         .querySelectorAll(".modelo-input")
         .forEach(input=>{
-
             if(input.checked)
-                seleccionados.push(
-                    input.value
-                );
+                seleccionados.push(input.value);
         });
 
     return seleccionados;
@@ -856,7 +868,7 @@ function hoverObservado(variable) {
         ? "%{y:.1f} °C"
         : "%{y:.1f} mm";
 
-    return `<b>Observado</b>: ${valor}<extra></extra>`;
+    return `${valor}<extra></extra>`;
 }
 
 
@@ -871,7 +883,7 @@ function hoverModelo(variable,modelo,ciclo) {
         ? "%{y:.1f} °C"
         : "%{y:.1f} mm";
 
-    return `<b>${MODELOS[modelo].nombre}</b> · ${dia}/${mes} ${hora} UTC: ${valor}<extra></extra>`;
+    return `${dia}/${mes} ${hora}: ${valor}<extra></extra>`;
 }
 
 
@@ -905,10 +917,9 @@ async function crearTrazaObservada(variable,codigo) {
             ? "lines+markers"
             : "lines",
 
-        name:"Observado",
+        name:"OBSERVADO",
 
         legendgroup:"observado",
-        legendrank:0,
 
         line:{
             color:"#111111",
@@ -923,7 +934,9 @@ async function crearTrazaObservada(variable,codigo) {
         connectgaps:false,
 
         hovertemplate:
-            hoverObservado(variable)
+            hoverObservado(variable),
+
+        showlegend:false
     };
 }
 
@@ -978,7 +991,6 @@ async function crearTrazasUnModelo(
         } catch(error) {
 
             console.warn(error);
-
             continue;
         }
 
@@ -1024,22 +1036,9 @@ async function crearTrazasUnModelo(
                 : "lines",
 
             name:
-                `${dia}/${mes} ${hora} UTC`,
+                `${dia}/${mes} ${hora}`,
 
             legendgroup:modelo,
-
-            legendrank:
-                10+
-                Object.keys(MODELOS)
-                    .indexOf(modelo),
-
-            legendgrouptitle:
-                i===0
-                ? {
-                    text:
-                        MODELOS[modelo].nombre
-                }
-                : undefined,
 
             line:{
                 color:
@@ -1060,7 +1059,17 @@ async function crearTrazasUnModelo(
                     variable,
                     modelo,
                     ciclo
-                )
+                ),
+
+            showlegend:false,
+
+            meta:{
+                modelo:modelo,
+                nombreModelo:MODELOS[modelo].nombre,
+                ciclo:ciclo,
+                etiqueta:`${dia}/${mes} ${hora}`,
+                color:colores[indiceColor]
+            }
         });
     }
 
@@ -1095,6 +1104,81 @@ async function crearTrazasModelos(
         );
 
     return grupos.flat();
+}
+
+
+/* =========================================================
+   LEYENDA PERSONALIZADA
+========================================================= */
+
+function crearLeyendaPersonalizada(
+    idContenedor,
+    trazasModelos
+) {
+
+    const contenedor=
+        document.getElementById(
+            idContenedor
+        );
+
+    const activos=
+        modelosSeleccionados();
+
+    let html=
+        `<div class="leyenda-pronosticos">
+            <div class="leyenda-titulo">
+                INICIALIZACIÓN DEL PRONÓSTICO
+            </div>
+            <div class="leyenda-modelos">`;
+
+    for(const modelo of activos) {
+
+        const trazas=
+            trazasModelos.filter(
+                traza=>
+                    traza.meta &&
+                    traza.meta.modelo===modelo
+            );
+
+        html+=
+            `<div class="leyenda-modelo">
+                <div class="leyenda-modelo-titulo">
+                    ${MODELOS[modelo].nombre}
+                </div>`;
+
+        if(trazas.length===0) {
+
+            html+=
+                `<div class="leyenda-ciclo">
+                    Sin datos
+                </div>`;
+
+        } else {
+
+            for(const traza of trazas) {
+
+                html+=
+                    `<div class="leyenda-ciclo">
+                        <span class="leyenda-linea"
+                              style="background:${traza.meta.color}">
+                        </span>
+                        <span>${traza.meta.etiqueta}</span>
+                    </div>`;
+            }
+        }
+
+        html+=`</div>`;
+    }
+
+    html+=
+        `</div>
+         <div class="leyenda-observado">
+            OBSERVADO
+            <span class="leyenda-observado-linea"></span>
+         </div>
+        </div>`;
+
+    contenedor.innerHTML=html;
 }
 
 
@@ -1239,7 +1323,7 @@ function crearLayout(
             l:70,
             r:30,
             t:70,
-            b:260
+            b:75
         },
 
         paper_bgcolor:"white",
@@ -1254,7 +1338,7 @@ function crearLayout(
 
         hovermode:"x unified",
 
-        hoverdistance:60,
+        hoverdistance:80,
 
         spikedistance:-1,
 
@@ -1262,11 +1346,12 @@ function crearLayout(
             bgcolor:"white",
             bordercolor:"#aeb9c8",
             font:{
-                size:12,
+                size:9,
                 family:
                     "Arial, Helvetica, sans-serif"
             },
-            align:"left"
+            align:"left",
+            namelength:-1
         },
 
         xaxis:xaxis,
@@ -1285,48 +1370,7 @@ function crearLayout(
             zeroline:false
         },
 
-        legend:{
-
-            title:{
-                text:
-                    "Inicialización del pronóstico (UTC)",
-                font:{
-                    size:11,
-                    color:"#10254d"
-                }
-            },
-
-            orientation:"h",
-
-            x:.5,
-
-            xanchor:"center",
-
-            y:-.28,
-
-            yanchor:"top",
-
-            traceorder:"grouped",
-
-            tracegroupgap:18,
-
-            groupclick:"toggleitem",
-
-            bgcolor:
-                "rgba(248,250,252,0.98)",
-
-            bordercolor:"#d8dee8",
-
-            borderwidth:1,
-
-            font:{
-                size:10
-            },
-
-            itemsizing:"constant"
-        },
-
-        showlegend:true
+        showlegend:false
     };
 }
 
@@ -1366,6 +1410,14 @@ function mostrarSinEstacion() {
         "graficaPrecipitacion"
     ).innerHTML=
         '<div class="mensaje-grafica">Seleccione una estación para visualizar la precipitación.</div>';
+
+    document.getElementById(
+        "leyendaTemperatura"
+    ).innerHTML="";
+
+    document.getElementById(
+        "leyendaPrecipitacion"
+    ).innerHTML="";
 }
 
 
@@ -1483,6 +1535,16 @@ async function actualizarGraficas() {
                 CONFIG_PLOTLY
             )
         ]);
+
+        crearLeyendaPersonalizada(
+            "leyendaTemperatura",
+            modelosTemp
+        );
+
+        crearLeyendaPersonalizada(
+            "leyendaPrecipitacion",
+            modelosPP
+        );
 
     } catch(error) {
 
