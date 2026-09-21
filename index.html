@@ -1,677 +1,259 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Comparación de modelos y observaciones</title>
-
     <script src="https://cdn.plot.ly/plotly-3.1.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-
     <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f8;
-            color: #263238;
-        }
-
-        .contenedor {
-            width: 96%;
-            max-width: 1500px;
-            margin: 20px auto;
-        }
-
-        /* =====================================================
-           CABECERA
-        ===================================================== */
-
-        .cabecera {
-            background: #29465b;
-            color: white;
-            padding: 20px 25px;
-            border-radius: 6px 6px 0 0;
-        }
-
-        .cabecera h1 {
-            margin: 0 0 8px 0;
-            font-size: 25px;
-            font-weight: 500;
-        }
-
-        .cabecera p {
-            margin: 0;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        /* =====================================================
-           CONTROLES
-        ===================================================== */
-
-        .controles {
-            background: white;
-            border: 1px solid #d7dde2;
-            border-top: none;
-            padding: 20px 25px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-            align-items: flex-end;
-        }
-
-        .grupo-control {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-
-        .grupo-control label.titulo {
-            font-size: 13px;
-            font-weight: bold;
-            color: #455a64;
-        }
-
-        select {
-            min-width: 280px;
-            padding: 9px 12px;
-            border: 1px solid #b0bec5;
-            border-radius: 4px;
-            background: white;
-            font-size: 14px;
-        }
-
-        .modelos-checks {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .modelo-check {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 12px;
-            border: 1px solid #cfd8dc;
-            border-radius: 4px;
-            background: #fafafa;
-            cursor: pointer;
-            user-select: none;
-            font-size: 14px;
-        }
-
-        .modelo-check:hover {
-            background: #f0f3f5;
-        }
-
-        .modelo-check input {
-            cursor: pointer;
-        }
-
-        .indicador {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        /* =====================================================
-           INFORMACIÓN
-        ===================================================== */
-
-        .informacion {
-            background: #eef3f5;
-            border-left: 1px solid #d7dde2;
-            border-right: 1px solid #d7dde2;
-            padding: 10px 25px;
-            font-size: 13px;
-            color: #546e7a;
-        }
-
-        /* =====================================================
-           GRÁFICAS
-        ===================================================== */
-
-        .panel-grafica {
-            background: white;
-            border: 1px solid #d7dde2;
-            margin-top: 18px;
-            padding: 10px 15px 5px 15px;
-            border-radius: 5px;
-        }
-
-        .grafica {
-            width: 100%;
-            height: 650px;
-        }
-
-        /* =====================================================
-           MODELO COLORES
-        ===================================================== */
-
-        .gfs {
-            background: #1565c0;
-        }
-
-        .ecmwf {
-            background: #d32f2f;
-        }
-
-        .eta5 {
-            background: #388e3c;
-        }
-
-        .wrf5 {
-            background: #ef6c00;
-        }
-
-        .mpas15 {
-            background: #7b1fa2;
-        }
-
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #f4f6f8; color: #263238; }
+        .contenedor { width: 96%; max-width: 1500px; margin: 20px auto; }
+        .cabecera { background: #29465b; color: white; padding: 20px 25px; border-radius: 6px 6px 0 0; }
+        .cabecera h1 { margin: 0 0 8px 0; font-size: 25px; font-weight: 500; }
+        .cabecera p { margin: 0; font-size: 14px; opacity: 0.9; }
+        .controles { background: white; border: 1px solid #d7dde2; border-top: none; padding: 20px 25px; display: flex; flex-wrap: wrap; gap: 25px; align-items: flex-end; }
+        .grupo-control { display: flex; flex-direction: column; gap: 7px; }
+        .grupo-control label.titulo { font-size: 13px; font-weight: bold; color: #455a64; }
+        select { min-width: 220px; padding: 9px 12px; border: 1px solid #b0bec5; border-radius: 4px; background: white; font-size: 14px; }
+        #estacionSelect { min-width: 300px; }
+        .modelos-checks { display: flex; flex-wrap: wrap; gap: 10px; }
+        .modelo-check { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid #cfd8dc; border-radius: 4px; background: #fafafa; cursor: pointer; user-select: none; font-size: 14px; }
+        .modelo-check:hover { background: #f0f3f5; }
+        .modelo-check input { cursor: pointer; }
+        .indicador { width: 12px; height: 12px; border-radius: 50%; }
+        .informacion { background: #eef3f5; border-left: 1px solid #d7dde2; border-right: 1px solid #d7dde2; padding: 10px 25px; font-size: 13px; color: #546e7a; }
+        .panel-grafica { background: white; border: 1px solid #d7dde2; margin-top: 18px; padding: 10px 15px 5px 15px; border-radius: 5px; }
+        .grafica { width: 100%; height: 650px; }
+        .gfs { background: #1565c0; }
+        .ecmwf { background: #d32f2f; }
+        .eta5 { background: #388e3c; }
+        .wrf5 { background: #ef6c00; }
+        .mpas15 { background: #7b1fa2; }
         @media (max-width: 800px) {
-
-            .controles {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            select {
-                width: 100%;
-            }
-
-            .grafica {
-                height: 560px;
-            }
+            .controles { flex-direction: column; align-items: stretch; }
+            select, #estacionSelect { width: 100%; }
+            .grafica { height: 560px; }
         }
-
     </style>
 </head>
-
 <body>
-
 <div class="contenedor">
-
-    <!-- ======================================================
-         CABECERA
-    ======================================================= -->
-
     <div class="cabecera">
-
-        <h1>
-            Datos Observados vs Pronosticados
-        </h1>
-
-        <p>
-            Comparación de modelos numéricos y observaciones de estaciones
-        </p>
-
+        <h1>Datos Observados vs Pronosticados</h1>
+        <p>Comparación de modelos numéricos y observaciones de estaciones</p>
     </div>
-
-    <!-- ======================================================
-         CONTROLES
-    ======================================================= -->
 
     <div class="controles">
-
         <div class="grupo-control">
-
-            <label class="titulo">
-                Estación
-            </label>
-
+            <label class="titulo">Departamento</label>
+            <select id="departamentoSelect"></select>
+        </div>
+        <div class="grupo-control">
+            <label class="titulo">Provincia</label>
+            <select id="provinciaSelect"></select>
+        </div>
+        <div class="grupo-control">
+            <label class="titulo">Estación</label>
             <select id="estacionSelect"></select>
-
         </div>
-
         <div class="grupo-control">
-
-            <label class="titulo">
-                Modelos
-            </label>
-
+            <label class="titulo">Modelos</label>
             <div class="modelos-checks">
-
-                <label class="modelo-check">
-                   <input class="modelo-input" type="checkbox" value="gfs" checked>
-                    <span class="indicador gfs"></span>
-                    GFS
-                </label>
-
-                <label class="modelo-check">
-                    <input class="modelo-input" type="checkbox" value="ecmwf" checked>
-                    <span class="indicador ecmwf"></span>
-                    ECMWF
-                </label>
-
-                <label class="modelo-check">
-                    <input class="modelo-input" type="checkbox" value="eta5" checked>
-                    <span class="indicador eta5"></span>
-                    ETA5
-                </label>
-
-                <label class="modelo-check">
-                    <input class="modelo-input" type="checkbox" value="wrf5" checked>
-                    <span class="indicador wrf5"></span>
-                    WRF5
-                </label>
-
-                <label class="modelo-check">
-                    <input class="modelo-input" type="checkbox" value="mpas15" checked>
-                    <span class="indicador mpas15"></span>
-                    MPAS15
-                </label>
-
+                <label class="modelo-check"><input class="modelo-input" type="checkbox" value="gfs" checked><span class="indicador gfs"></span>GFS</label>
+                <label class="modelo-check"><input class="modelo-input" type="checkbox" value="ecmwf" checked><span class="indicador ecmwf"></span>ECMWF</label>
+                <label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta5" checked><span class="indicador eta5"></span>ETA5</label>
+                <label class="modelo-check"><input class="modelo-input" type="checkbox" value="wrf5" checked><span class="indicador wrf5"></span>WRF5</label>
+                <label class="modelo-check"><input class="modelo-input" type="checkbox" value="mpas15" checked><span class="indicador mpas15"></span>MPAS15</label>
             </div>
-
         </div>
-
     </div>
 
-    <div class="informacion" id="informacion">
-        Cargando información...
-    </div>
-
-    <!-- ======================================================
-         TEMPERATURA
-    ======================================================= -->
-
-    <div class="panel-grafica">
-
-        <div
-            id="graficaTemperatura"
-            class="grafica">
-        </div>
-
-    </div>
-
-    <!-- ======================================================
-         PRECIPITACIÓN
-    ======================================================= -->
-
-    <div class="panel-grafica">
-
-        <div
-            id="graficaPrecipitacion"
-            class="grafica">
-        </div>
-
-    </div>
-
+    <div class="informacion" id="informacion">Cargando información...</div>
+    <div class="panel-grafica"><div id="graficaTemperatura" class="grafica"></div></div>
+    <div class="panel-grafica"><div id="graficaPrecipitacion" class="grafica"></div></div>
 </div>
 
 <script>
-
-/* ============================================================
-   CONFIGURACIÓN
-============================================================ */
-
 const MODELOS = {
-
-    gfs: {
-        nombre: "GFS",
-        colores: [
-            "#bbdefb",
-            "#90caf9",
-            "#64b5f6",
-            "#42a5f5",
-            "#2196f3",
-            "#1976d2",
-            "#1565c0",
-            "#0d47a1"
-        ]
-    },
-
-    ecmwf: {
-        nombre: "ECMWF",
-        colores: [
-            "#ffcdd2",
-            "#ef9a9a",
-            "#e57373",
-            "#ef5350",
-            "#f44336",
-            "#e53935",
-            "#d32f2f",
-            "#b71c1c"
-        ]
-    },
-
-    eta5: {
-        nombre: "ETA5",
-        colores: [
-            "#c8e6c9",
-            "#a5d6a7",
-            "#81c784",
-            "#66bb6a",
-            "#4caf50",
-            "#43a047",
-            "#388e3c",
-            "#1b5e20"
-        ]
-    },
-
-    wrf5: {
-        nombre: "WRF5",
-        colores: [
-            "#ffe0b2",
-            "#ffcc80",
-            "#ffb74d",
-            "#ffa726",
-            "#ff9800",
-            "#fb8c00",
-            "#ef6c00",
-            "#e65100"
-        ]
-    },
-
-    mpas15: {
-        nombre: "MPAS15",
-        colores: [
-            "#e1bee7",
-            "#ce93d8",
-            "#ba68c8",
-            "#ab47bc",
-            "#9c27b0",
-            "#8e24aa",
-            "#7b1fa2",
-            "#4a148c"
-        ]
-    }
-
+    gfs: { nombre: "GFS", colores: ["#bbdefb","#90caf9","#64b5f6","#42a5f5","#2196f3","#1976d2","#1565c0","#0d47a1"] },
+    ecmwf: { nombre: "ECMWF", colores: ["#ffcdd2","#ef9a9a","#e57373","#ef5350","#f44336","#e53935","#d32f2f","#b71c1c"] },
+    eta5: { nombre: "ETA5", colores: ["#c8e6c9","#a5d6a7","#81c784","#66bb6a","#4caf50","#43a047","#388e3c","#1b5e20"] },
+    wrf5: { nombre: "WRF5", colores: ["#ffe0b2","#ffcc80","#ffb74d","#ffa726","#ff9800","#fb8c00","#ef6c00","#e65100"] },
+    mpas15: { nombre: "MPAS15", colores: ["#e1bee7","#ce93d8","#ba68c8","#ab47bc","#9c27b0","#8e24aa","#7b1fa2","#4a148c"] }
 };
 
 let manifiesto = null;
 let estaciones = [];
 let cacheCSV = {};
 
-/* ============================================================
-   LECTURA CSV
-============================================================ */
-
 async function cargarCSV(ruta) {
-
-    if (cacheCSV[ruta]) {
-        return cacheCSV[ruta];
-    }
-
+    if (cacheCSV[ruta]) return cacheCSV[ruta];
     const respuesta = await fetch(ruta, { cache: "no-cache" });
-
-    if (!respuesta.ok) {
-        throw new Error(
-            `No se pudo cargar ${ruta}`
-        );
-    }
-
+    if (!respuesta.ok) throw new Error(`No se pudo cargar ${ruta}`);
     const texto = await respuesta.text();
-
-    const resultado = Papa.parse(
-        texto,
-        {
-            header: true,
-            dynamicTyping: false,
-            skipEmptyLines: true
-        }
-    );
-
+    const resultado = Papa.parse(texto, { header: true, dynamicTyping: false, skipEmptyLines: true });
     cacheCSV[ruta] = resultado.data;
-
     return resultado.data;
 }
 
-/* ============================================================
-   TIEMPO
-============================================================ */
-
 function timestampUTC(cadena) {
-
-    const y = cadena.slice(0, 4);
-    const m = cadena.slice(4, 6);
-    const d = cadena.slice(6, 8);
-    const h = cadena.slice(8, 10);
-
-    return new Date(
-        `${y}-${m}-${d}T${h}:00:00Z`
-    );
+    const y = cadena.slice(0,4);
+    const m = cadena.slice(4,6);
+    const d = cadena.slice(6,8);
+    const h = cadena.slice(8,10);
+    return new Date(`${y}-${m}-${d}T${h}:00:00Z`);
 }
 
 function fechaPeru(cadena) {
-
     const fecha = timestampUTC(cadena);
-
-    const partes = new Intl.DateTimeFormat(
-        "en-CA",
-        {
-            timeZone: "America/Lima",
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            hourCycle: "h23"
-        }
-    ).formatToParts(fecha);
-
+    const partes = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "America/Lima", year: "numeric", month: "2-digit",
+        day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+    }).formatToParts(fecha);
     const datos = {};
-
-    for (const p of partes) {
-        datos[p.type] = p.value;
-    }
-
-    /*
-       Se entrega a Plotly como fecha local explícita,
-       sin cambiar los datos originales UTC.
-    */
-
-    return (
-        `${datos.year}-${datos.month}-${datos.day}` +
-        `T${datos.hour}:${datos.minute}:00`
-    );
+    for (const p of partes) datos[p.type] = p.value;
+    return `${datos.year}-${datos.month}-${datos.day}T${datos.hour}:${datos.minute}:00`;
 }
 
-/* ============================================================
-   ESTACIONES
-============================================================ */
+/* DEPARTAMENTO → PROVINCIA → ESTACIÓN */
 
 async function cargarEstaciones() {
-
-    const datos = await cargarCSV(
-        "observaciones/obs_temp.csv"
-    );
-
+    const datos = await cargarCSV("observaciones/metadata.csv");
     estaciones = datos.map(fila => ({
         codigo: String(fila.codigo),
         estacion: fila.estacion,
+        departamento: fila.departamento,
+        provincia: fila.provincia,
         latitud: fila.latitud,
         longitud: fila.longitud
     }));
+    estaciones.sort((a,b) => a.estacion.localeCompare(b.estacion,"es"));
+    cargarDepartamentos();
+}
 
-    estaciones.sort(
-        (a, b) =>
-            a.estacion.localeCompare(
-                b.estacion,
-                "es"
-            )
-    );
-
-    const select =
-        document.getElementById(
-            "estacionSelect"
-        );
+function cargarDepartamentos() {
+    const select = document.getElementById("departamentoSelect");
+    const departamentos = [...new Set(estaciones.map(e => e.departamento).filter(Boolean))]
+        .sort((a,b) => a.localeCompare(b,"es"));
 
     select.innerHTML = "";
+    for (const departamento of departamentos) {
+        const option = document.createElement("option");
+        option.value = departamento;
+        option.textContent = departamento;
+        select.appendChild(option);
+    }
+    cargarProvincias();
+}
 
-    for (const estacion of estaciones) {
+function cargarProvincias() {
+    const departamento = document.getElementById("departamentoSelect").value;
+    const select = document.getElementById("provinciaSelect");
+    const provincias = [...new Set(
+        estaciones.filter(e => e.departamento === departamento).map(e => e.provincia).filter(Boolean)
+    )].sort((a,b) => a.localeCompare(b,"es"));
 
-        const option =
-            document.createElement("option");
+    select.innerHTML = "";
+    for (const provincia of provincias) {
+        const option = document.createElement("option");
+        option.value = provincia;
+        option.textContent = provincia;
+        select.appendChild(option);
+    }
+    cargarEstacionesProvincia();
+}
 
+function cargarEstacionesProvincia() {
+    const departamento = document.getElementById("departamentoSelect").value;
+    const provincia = document.getElementById("provinciaSelect").value;
+    const select = document.getElementById("estacionSelect");
+    const filtradas = estaciones.filter(e =>
+        e.departamento === departamento && e.provincia === provincia
+    );
+
+    select.innerHTML = "";
+    for (const estacion of filtradas) {
+        const option = document.createElement("option");
         option.value = estacion.codigo;
-
-        option.textContent =
-            `${estacion.estacion} (${estacion.codigo})`;
-
+        option.textContent = `${estacion.estacion} (${estacion.codigo})`;
         select.appendChild(option);
     }
 }
 
-/* ============================================================
-   MANIFIESTO DE CICLOS
-============================================================ */
+/* CICLOS Y MODELOS */
 
 async function cargarManifiesto() {
-
-    const respuesta = await fetch(
-        "modelos/ciclos.json",
-        { cache: "no-cache" }
-    );
-
-    if (!respuesta.ok) {
-        throw new Error(
-            "No se pudo cargar modelos/ciclos.json"
-        );
-    }
-
+    const respuesta = await fetch("modelos/ciclos.json", { cache: "no-cache" });
+    if (!respuesta.ok) throw new Error("No se pudo cargar modelos/ciclos.json");
     manifiesto = await respuesta.json();
 }
 
-/* ============================================================
-   MODELOS ACTIVOS
-============================================================ */
-
 function modelosSeleccionados() {
-
     const seleccionados = [];
-
-    document.querySelectorAll(
-        ".modelo-input"
-    ).forEach(input => {
-
-        if (input.checked) {
-            seleccionados.push(input.value);
-        }
-
+    document.querySelectorAll(".modelo-input").forEach(input => {
+        if (input.checked) seleccionados.push(input.value);
     });
-
     return seleccionados;
 }
 
-/* ============================================================
-   BUSCAR ESTACIÓN EN CSV
-============================================================ */
-
 function obtenerFila(datos, codigo) {
-
-    return datos.find(
-        fila =>
-            String(fila.codigo) ===
-            String(codigo)
-    );
+    return datos.find(fila => String(fila.codigo) === String(codigo));
 }
 
-/* ============================================================
-   CREAR SERIE DESDE FILA CSV
-============================================================ */
-
 function filaASerie(fila) {
-
-    if (!fila) {
-        return {
-            x: [],
-            y: []
-        };
-    }
-
-    const columnas =
-        Object.keys(fila)
-        .filter(col =>
-            /^\d{10}$/.test(col)
-        )
-        .sort();
-
+    if (!fila) return { x: [], y: [] };
+    const columnas = Object.keys(fila).filter(col => /^\d{10}$/.test(col)).sort();
     const x = [];
     const y = [];
 
     for (const columna of columnas) {
-
-        const valor =
-            parseFloat(fila[columna]);
-
-        if (
-            fila[columna] === "" ||
-            fila[columna] === null ||
-            fila[columna] === undefined ||
-            Number.isNaN(valor)
-        ) {
-            y.push(null);
-        } else {
-            y.push(valor);
-        }
-
-        x.push(
-            fechaPeru(columna)
-        );
+        const valor = parseFloat(fila[columna]);
+        if (fila[columna] === "" || fila[columna] === null ||
+            fila[columna] === undefined || Number.isNaN(valor)) y.push(null);
+        else y.push(valor);
+        x.push(fechaPeru(columna));
     }
-
     return { x, y };
 }
 
-/* ============================================================
-   OBSERVACIONES
-============================================================ */
+/* OBSERVACIONES */
 
 function hoverObservado(variable) {
     const valor = variable === "temp"
         ? "Temperatura: %{y:.1f} °C"
         : "Precipitación: %{y:.1f} mm";
-
     return `<b>Observado</b><br>Fecha: %{x|%d/%m/%Y}<br>Hora local: %{x|%H:%M}<br>${valor}<extra></extra>`;
 }
 
 function hoverModelo(variable, modelo, ciclo) {
-    const dia = ciclo.slice(6, 8);
-    const mes = ciclo.slice(4, 6);
-    const hora = ciclo.slice(8, 10);
-
+    const dia = ciclo.slice(6,8);
+    const mes = ciclo.slice(4,6);
+    const hora = ciclo.slice(8,10);
     const valor = variable === "temp"
         ? "Temperatura: %{y:.1f} °C"
         : "Precipitación: %{y:.1f} mm";
-
     return `<b>${MODELOS[modelo].nombre}</b><br>Inicialización: ${dia}/${mes} ${hora} UTC<br>Fecha: %{x|%d/%m/%Y}<br>Hora local: %{x|%H:%M}<br>${valor}<extra></extra>`;
 }
 
 async function crearTrazaObservada(variable, codigo) {
-    const ruta = variable === "temp"
-        ? "observaciones/obs_temp.csv"
-        : "observaciones/obs_pp.csv";
-
+    const ruta = variable === "temp" ? "observaciones/obs_temp.csv" : "observaciones/obs_pp.csv";
     const datos = await cargarCSV(ruta);
     const fila = obtenerFila(datos, codigo);
     const serie = filaASerie(fila);
 
     return {
-        x: serie.x,
-        y: serie.y,
-        type: "scatter",
+        x: serie.x, y: serie.y, type: "scatter",
         mode: variable === "pp" ? "lines+markers" : "lines",
-        name: "Observado",
-        legendgroup: "observado",
-        legendrank: 0,
+        name: "Observado", legendgroup: "observado", legendrank: 0,
         line: { color: "#111111", width: 3 },
         marker: { color: "#111111", size: 4 },
-        connectgaps: false,
-        hovertemplate: hoverObservado(variable)
+        connectgaps: false, hovertemplate: hoverObservado(variable)
     };
 }
 
-/* ============================================================
-   TRAZAS DE MODELOS
-============================================================ */
+/* PRONÓSTICOS */
 
 async function crearTrazasUnModelo(variable, codigo, modelo, ciclos) {
     const ciclosModelo = ciclos.filter(ciclo => {
@@ -680,10 +262,9 @@ async function crearTrazasUnModelo(variable, codigo, modelo, ciclos) {
     });
 
     const trazas = [];
-
     for (let i = 0; i < ciclosModelo.length; i++) {
         const ciclo = ciclosModelo[i];
-        const hora = ciclo.slice(8, 10);
+        const hora = ciclo.slice(8,10);
         const archivo = `modelos/${ciclo}/${modelo}_${hora}_${variable}.csv`;
 
         let datos;
@@ -703,102 +284,64 @@ async function crearTrazasUnModelo(variable, codigo, modelo, ciclos) {
             ? colores.length - 2
             : Math.round(i * (colores.length - 1) / (ciclosModelo.length - 1));
 
-        const dia = ciclo.slice(6, 8);
-        const mes = ciclo.slice(4, 6);
+        const dia = ciclo.slice(6,8);
+        const mes = ciclo.slice(4,6);
 
         trazas.push({
-            x: serie.x,
-            y: serie.y,
-            type: "scatter",
+            x: serie.x, y: serie.y, type: "scatter",
             mode: variable === "pp" ? "lines+markers" : "lines",
             name: `${dia}/${mes} ${hora} UTC`,
             legendgroup: modelo,
             legendrank: 10 + Object.keys(MODELOS).indexOf(modelo),
-            legendgrouptitle: i === 0
-                ? { text: MODELOS[modelo].nombre }
-                : undefined,
-            line: {
-                color: colores[indiceColor],
-                width: 1.5
-            },
-            marker: {
-                color: colores[indiceColor],
-                size: 3
-            },
+            legendgrouptitle: i === 0 ? { text: MODELOS[modelo].nombre } : undefined,
+            line: { color: colores[indiceColor], width: 1.5 },
+            marker: { color: colores[indiceColor], size: 3 },
             connectgaps: false,
             hovertemplate: hoverModelo(variable, modelo, ciclo)
         });
     }
-
     return trazas;
 }
 
 async function crearTrazasModelos(variable, codigo) {
     const activos = modelosSeleccionados();
     const ciclos = Object.keys(manifiesto.ciclos).sort();
-
     const grupos = await Promise.all(
-        activos.map(modelo =>
-            crearTrazasUnModelo(variable, codigo, modelo, ciclos)
-        )
+        activos.map(modelo => crearTrazasUnModelo(variable, codigo, modelo, ciclos))
     );
-
     return grupos.flat();
 }
 
-/* ============================================================
-   LÍMITE TEMPORAL
-============================================================ */
+/* RANGO TEMPORAL */
 
 function fechasValidas(traza) {
     const fechas = [];
-
     for (let i = 0; i < traza.x.length; i++) {
-        if (
-            traza.y[i] !== null &&
-            traza.y[i] !== undefined &&
-            !Number.isNaN(traza.y[i])
-        ) {
+        if (traza.y[i] !== null && traza.y[i] !== undefined && !Number.isNaN(traza.y[i]))
             fechas.push(traza.x[i]);
-        }
     }
-
     return fechas;
 }
 
 function rangoTemporal(trazaObs, trazasModelos) {
     const obs = fechasValidas(trazaObs);
     const todas = [trazaObs, ...trazasModelos].flatMap(fechasValidas);
-
     if (todas.length === 0) return null;
-
     todas.sort();
     const inicio = obs.length > 0 ? obs[0] : todas[0];
     const fin = todas[todas.length - 1];
-
     return [inicio, fin];
 }
 
-/* ============================================================
-   DISEÑO PLOTLY
-============================================================ */
+/* PLOTLY */
 
 function crearLayout(titulo, unidad, rango) {
     const xaxis = {
-        title: { text: "Fecha" },
-        type: "date",
-        tickformat: "%d/%m",
-        hoverformat: "%d/%m/%Y %H:%M",
-        showgrid: true,
-        gridcolor: "#eceff1",
-        linecolor: "#78909c",
-        zeroline: false,
-        showspikes: true,
-        spikemode: "across",
-        spikesnap: "cursor",
-        spikedash: "dot",
-        spikecolor: "#90a4ae",
-        rangeslider: { visible: false }
+        title: { text: "Fecha" }, type: "date", tickformat: "%d/%m",
+        hoverformat: "%d/%m/%Y %H:%M", showgrid: true, gridcolor: "#eceff1",
+        linecolor: "#78909c", zeroline: false, showspikes: true,
+        spikemode: "across", spikesnap: "cursor", spikedash: "dot",
+        spikecolor: "#90a4ae", rangeslider: { visible: false }
     };
 
     if (rango) {
@@ -808,50 +351,22 @@ function crearLayout(titulo, unidad, rango) {
     }
 
     return {
-        title: {
-            text: titulo,
-            x: 0.5,
-            xanchor: "center",
-            font: { size: 17 }
-        },
-        margin: {
-            l: 70,
-            r: 30,
-            t: 70,
-            b: 245
-        },
-        paper_bgcolor: "white",
-        plot_bgcolor: "white",
-        hovermode: "closest",
-        hoverdistance: 35,
-        spikedistance: 35,
-        hoverlabel: {
-            bgcolor: "white",
-            bordercolor: "#90a4ae",
-            font: { size: 12 }
-        },
+        title: { text: titulo, x: 0.5, xanchor: "center", font: { size: 17 } },
+        margin: { l: 70, r: 30, t: 70, b: 245 },
+        paper_bgcolor: "white", plot_bgcolor: "white",
+        hovermode: "closest", hoverdistance: 35, spikedistance: 35,
+        hoverlabel: { bgcolor: "white", bordercolor: "#90a4ae", font: { size: 12 } },
         xaxis,
         yaxis: {
-            title: { text: unidad },
-            showgrid: true,
-            gridcolor: "#e0e0e0",
-            linecolor: "#78909c",
-            zeroline: false
+            title: { text: unidad }, showgrid: true, gridcolor: "#e0e0e0",
+            linecolor: "#78909c", zeroline: false
         },
         legend: {
             title: { text: "Inicialización del pronóstico (UTC)" },
-            orientation: "h",
-            x: 0.5,
-            xanchor: "center",
-            y: -0.30,
-            yanchor: "top",
-            traceorder: "grouped",
-            tracegroupgap: 12,
-            groupclick: "toggleitem",
-            bgcolor: "rgba(248,250,252,0.92)",
-            bordercolor: "#d7dde2",
-            borderwidth: 1,
-            font: { size: 10 }
+            orientation: "h", x: 0.5, xanchor: "center", y: -0.30, yanchor: "top",
+            traceorder: "grouped", tracegroupgap: 12, groupclick: "toggleitem",
+            bgcolor: "rgba(248,250,252,0.92)", bordercolor: "#d7dde2",
+            borderwidth: 1, font: { size: 10 }
         },
         showlegend: true
     };
@@ -863,20 +378,16 @@ const CONFIG_PLOTLY = {
     scrollZoom: true
 };
 
-/* ============================================================
-   ACTUALIZAR GRÁFICAS
-============================================================ */
+/* ACTUALIZACIÓN */
 
 async function actualizarGraficas() {
     const codigo = document.getElementById("estacionSelect").value;
     if (!codigo) return;
 
-    const estacion = estaciones.find(
-        e => String(e.codigo) === String(codigo)
-    );
+    const estacion = estaciones.find(e => String(e.codigo) === String(codigo));
 
     document.getElementById("informacion").textContent =
-        `${estacion.estacion} (${estacion.codigo}) | Hora mostrada: Perú (UTC-5) | Pase el cursor sobre una línea para ver su detalle`;
+        `${estacion.estacion} (${estacion.codigo}) | ${estacion.provincia}, ${estacion.departamento} | Hora mostrada: Perú (UTC-5) | Pase el cursor sobre una línea para ver su detalle`;
 
     try {
         const [obsTemp, modelosTemp, obsPP, modelosPP] = await Promise.all([
@@ -888,33 +399,13 @@ async function actualizarGraficas() {
 
         const rangoTemp = rangoTemporal(obsTemp, modelosTemp);
         const rangoPP = rangoTemporal(obsPP, modelosPP);
-
-        const layoutTemp = crearLayout(
-            "Temperatura del aire a 2 m",
-            "Temperatura (°C)",
-            rangoTemp
-        );
-
-        const layoutPP = crearLayout(
-            "Precipitación acumulada cada 6 horas",
-            "Precipitación (mm / 6 h)",
-            rangoPP
-        );
+        const layoutTemp = crearLayout("Temperatura del aire a 2 m", "Temperatura (°C)", rangoTemp);
+        const layoutPP = crearLayout("Precipitación acumulada cada 6 horas", "Precipitación (mm / 6 h)", rangoPP);
         layoutPP.yaxis.rangemode = "tozero";
 
         await Promise.all([
-            Plotly.react(
-                "graficaTemperatura",
-                [...modelosTemp, obsTemp],
-                layoutTemp,
-                CONFIG_PLOTLY
-            ),
-            Plotly.react(
-                "graficaPrecipitacion",
-                [...modelosPP, obsPP],
-                layoutPP,
-                CONFIG_PLOTLY
-            )
+            Plotly.react("graficaTemperatura", [...modelosTemp, obsTemp], layoutTemp, CONFIG_PLOTLY),
+            Plotly.react("graficaPrecipitacion", [...modelosPP, obsPP], layoutPP, CONFIG_PLOTLY)
         ]);
     } catch (error) {
         console.error(error);
@@ -923,59 +414,38 @@ async function actualizarGraficas() {
     }
 }
 
-/* ============================================================
-   EVENTOS
-============================================================ */
+/* EVENTOS */
 
-document.getElementById(
-    "estacionSelect"
-).addEventListener(
-    "change",
-    actualizarGraficas
-);
-
-document.querySelectorAll(
-    ".modelo-input"
-).forEach(input => {
-
-    input.addEventListener(
-        "change",
-        actualizarGraficas
-    );
-
+document.getElementById("departamentoSelect").addEventListener("change", async () => {
+    cargarProvincias();
+    await actualizarGraficas();
 });
 
-/* ============================================================
-   INICIO
-============================================================ */
+document.getElementById("provinciaSelect").addEventListener("change", async () => {
+    cargarEstacionesProvincia();
+    await actualizarGraficas();
+});
+
+document.getElementById("estacionSelect").addEventListener("change", actualizarGraficas);
+
+document.querySelectorAll(".modelo-input").forEach(input => {
+    input.addEventListener("change", actualizarGraficas);
+});
+
+/* INICIO */
 
 async function iniciar() {
-
     try {
-
-        await Promise.all([
-            cargarManifiesto(),
-            cargarEstaciones()
-        ]);
-
+        await Promise.all([cargarManifiesto(), cargarEstaciones()]);
         await actualizarGraficas();
-
     } catch (error) {
-
         console.error(error);
-
-        document.getElementById(
-            "informacion"
-        ).textContent =
-            "Error cargando datos: " +
-            error.message;
+        document.getElementById("informacion").textContent =
+            "Error cargando datos: " + error.message;
     }
-
 }
 
 iniciar();
-
 </script>
-
 </body>
 </html>
