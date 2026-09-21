@@ -282,7 +282,7 @@ return{x,y};
 
 function hoverObservado(variable){
 const valor=variable==="temp"?"%{y:.1f} °C":"%{y:.1f} mm";
-return `<b>OBSERVADO</b> (${valor})<extra></extra>`;
+return `<b>Hora local: %{x|%d/%m %H:%M}</b><br><b>OBSERVADO</b> (${valor})<extra></extra>`;
 }
 
 function hoverModelo(variable,modelo,ciclo){
@@ -290,7 +290,7 @@ const dia=ciclo.slice(6,8);
 const mes=ciclo.slice(4,6);
 const hora=ciclo.slice(8,10);
 const valor=variable==="temp"?"%{y:.1f} °C":"%{y:.1f} mm";
-return `<b>${MODELOS[modelo].nombre}</b> ${dia}/${mes} ${hora}Z (${valor})<extra></extra>`;
+return `<b>Hora local: %{x|%d/%m %H:%M}</b><br><b>${MODELOS[modelo].nombre}</b> ${dia}/${mes} ${hora}Z (${valor})<extra></extra>`;
 }
 
 async function crearTrazaObservada(variable,codigo){
