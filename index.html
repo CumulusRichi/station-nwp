@@ -36,20 +36,29 @@ select:focus{outline:2px solid rgba(244,196,48,.35);border-color:var(--azul)}
 .panel-grafica{padding:10px 15px 15px}
 .grafica{width:100%;height:600px}
 .mensaje-grafica{height:100%;display:flex;align-items:center;justify-content:center;color:#718096;font-size:14px}
-.leyenda-pronosticos{max-width:920px;margin:0 auto 10px;padding:12px 18px 14px;border:1px solid var(--borde);background:#fafbfc}
-.leyenda-titulo{text-align:center;color:var(--azul-oscuro);font-size:12px;font-weight:700;margin-bottom:12px;letter-spacing:.15px}
-.leyenda-modelos{display:grid;grid-template-columns:repeat(5,1fr);gap:22px;align-items:start;justify-content:center}
+.leyenda-pronosticos{max-width:920px;margin:0 auto 7px;padding:9px 16px 10px;border:1px solid var(--borde);background:#fafbfc}
+.leyenda-titulo{text-align:center;color:var(--azul-oscuro);font-size:11px;font-weight:700;margin-bottom:8px;letter-spacing:.1px}
+.leyenda-modelos{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;align-items:start;justify-content:center}
 .leyenda-modelo{min-width:0;text-align:center}
-.leyenda-modelo-titulo{font-size:12px;font-weight:700;margin-bottom:7px;color:#263238}
-.leyenda-ciclo{display:flex;justify-content:center;align-items:center;gap:7px;min-height:18px;font-size:10px;white-space:nowrap;color:#455a64}
-.leyenda-linea{display:inline-block;width:27px;height:3px;flex:0 0 27px}
-.leyenda-observado{display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:14px;padding-top:11px;border-top:1px solid #e1e6ec;font-size:11px;font-weight:700;color:#111}
-.leyenda-observado-linea{display:block;width:42px;height:4px;margin-top:5px;background:#111}
+.leyenda-modelo-titulo{font-size:11px;font-weight:700;margin-bottom:4px;color:#263238}
+.leyenda-ciclo{display:flex;justify-content:center;align-items:center;gap:6px;min-height:14px;line-height:14px;font-size:9px;white-space:nowrap;color:#455a64}
+.leyenda-linea{display:inline-block;width:24px;height:2px;flex:0 0 24px}
+.leyenda-observado{display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:9px;padding-top:7px;border-top:1px solid #e1e6ec;font-size:10px;font-weight:700;color:#111}
+.leyenda-observado-linea{display:block;width:38px;height:3px;margin-top:4px;background:#111}
+.estadisticos-bloque{max-width:920px;margin:0 auto 5px;padding:9px 14px 11px;border:1px solid var(--borde);background:#fff}
+.estadisticos-titulo{text-align:center;color:var(--azul-oscuro);font-size:11px;font-weight:700;margin-bottom:3px;letter-spacing:.1px}
+.estadisticos-periodo{text-align:center;color:#6b7788;font-size:9px;margin-bottom:7px}
+.estadisticos-tabla-wrap{display:flex;justify-content:center;overflow-x:auto}
+.estadisticos-tabla{border-collapse:collapse;width:auto;min-width:650px;font-size:10px;text-align:center}
+.estadisticos-tabla th,.estadisticos-tabla td{border:1px solid #dfe4eb;padding:4px 9px;text-align:center;vertical-align:middle}
+.estadisticos-tabla th{background:#f4f6f9;color:var(--azul-oscuro);font-weight:700}
+.estadisticos-tabla td:first-child{font-weight:700;white-space:nowrap}
+.estadisticos-vacio{text-align:center;color:#718096;font-size:10px;padding:5px}
 .gfs{background:#1565c0}.ecmwf{background:#d32f2f}.eta5{background:#388e3c}.wrf5{background:#ef6c00}.mpas15{background:#7b1fa2}
 .leaflet-popup-content{font-family:Arial,Helvetica,sans-serif;line-height:1.4}
 .leaflet-popup-content strong{color:var(--azul-oscuro)}
 @media(max-width:900px){.leyenda-modelos{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:800px){.controles{flex-direction:column;align-items:stretch}select,#estacionSelect{width:100%;min-width:0}#mapa{height:330px}.grafica{height:560px}.leyenda-modelos{grid-template-columns:1fr}}
+@media(max-width:800px){.controles{flex-direction:column;align-items:stretch}select,#estacionSelect{width:100%;min-width:0}#mapa{height:330px}.grafica{height:560px}.leyenda-modelos{grid-template-columns:1fr}.estadisticos-tabla{min-width:600px}}
 </style>
 </head>
 <body>
@@ -82,10 +91,12 @@ select:focus{outline:2px solid rgba(244,196,48,.35);border-color:var(--azul)}
 <div class="panel-grafica">
 <div id="graficaTemperatura" class="grafica"></div>
 <div id="leyendaTemperatura"></div>
+<div id="estadisticosTemperatura"></div>
 </div>
 <div class="panel-grafica">
 <div id="graficaPrecipitacion" class="grafica"></div>
 <div id="leyendaPrecipitacion"></div>
+<div id="estadisticosPrecipitacion"></div>
 </div>
 </div>
 <script>
@@ -96,12 +107,16 @@ eta5:{nombre:"ETA5",colores:["#c8e6c9","#a5d6a7","#81c784","#66bb6a","#4caf50","
 wrf5:{nombre:"WRF5",colores:["#ffe0b2","#ffcc80","#ffb74d","#ffa726","#ff9800","#fb8c00","#ef6c00","#e65100"]},
 mpas15:{nombre:"MPAS15",colores:["#e1bee7","#ce93d8","#ba68c8","#ab47bc","#9c27b0","#8e24aa","#7b1fa2","#4a148c"]}
 };
+
 let manifiesto=null;
 let estaciones=[];
 let cacheCSV={};
 let mapa=null;
 let capaEstaciones=null;
 let marcadores={};
+
+const FORMATEADOR_PERU=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Lima",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
+const FORMATEADOR_DIA_PERU=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Lima",year:"numeric",month:"2-digit",day:"2-digit"});
 
 async function cargarCSV(ruta){
 if(cacheCSV[ruta]) return cacheCSV[ruta];
@@ -119,11 +134,22 @@ return new Date(`${y}-${m}-${d}T${h}:00:00Z`);
 }
 
 function fechaPeru(cadena){
-const fecha=timestampUTC(cadena);
-const partes=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Lima",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(fecha);
+const partes=FORMATEADOR_PERU.formatToParts(timestampUTC(cadena));
 const datos={};
 for(const p of partes) datos[p.type]=p.value;
 return `${datos.year}-${datos.month}-${datos.day}T${datos.hour}:${datos.minute}:00`;
+}
+
+function fechaActualPeru(){
+const partes=FORMATEADOR_DIA_PERU.formatToParts(new Date());
+const datos={};
+for(const p of partes) datos[p.type]=p.value;
+return `${datos.year}${datos.month}${datos.day}`;
+}
+
+function fechaCorta(cadena){
+if(!cadena||cadena.length!==8) return cadena||"";
+return `${cadena.slice(6,8)}/${cadena.slice(4,6)}/${cadena.slice(0,4)}`;
 }
 
 async function cargarEstaciones(){
@@ -174,8 +200,7 @@ const option=document.createElement("option");
 option.value=provincia;
 option.textContent=provincia;
 select.appendChild(option);
-}
-}
+}}
 cargarEstacionesProvincia();
 }
 
@@ -192,8 +217,7 @@ const option=document.createElement("option");
 option.value=estacion.codigo;
 option.textContent=`${estacion.estacion} (${estacion.codigo})`;
 select.appendChild(option);
-}
-}
+}}
 
 function iniciarMapa(){
 mapa=L.map("mapa",{zoomControl:true}).setView([-9.2,-75.0],5);
@@ -236,8 +260,7 @@ marcador.setStyle(estiloMarcador(id===codigo));
 if(id===codigo){
 marcador.bringToFront();
 if(centrar) mapa.panTo(marcador.getLatLng());
-}
-}
+}}
 }
 
 async function seleccionarEstacionDesdeMapa(estacion){
@@ -298,11 +321,7 @@ const ruta=variable==="temp"?"observaciones/obs_temp.csv":"observaciones/obs_pp.
 const datos=await cargarCSV(ruta);
 const fila=obtenerFila(datos,codigo);
 const serie=filaASerie(fila);
-return{
-x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:"OBSERVADO",
-line:{color:"#111111",width:3},marker:{color:"#111111",size:3},
-connectgaps:false,hovertemplate:hoverObservado(variable),showlegend:false
-};
+return{x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:"OBSERVADO",line:{color:"#111111",width:3},marker:{color:"#111111",size:3},connectgaps:false,hovertemplate:hoverObservado(variable),showlegend:false};
 }
 
 async function crearTrazasUnModelo(variable,codigo,modelo,ciclos){
@@ -325,13 +344,9 @@ const indiceColor=ciclosModelo.length===1?colores.length-2:Math.round(i*(colores
 const dia=ciclo.slice(6,8);
 const mes=ciclo.slice(4,6);
 trazas.push({
-x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",
-name:`${dia}/${mes} ${hora}Z`,
-line:{color:colores[indiceColor],width:1.5},
-marker:{color:colores[indiceColor],size:3},
-connectgaps:false,
-hovertemplate:hoverModelo(variable,modelo,ciclo),
-showlegend:false,
+x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:`${dia}/${mes} ${hora}Z`,
+line:{color:colores[indiceColor],width:1.5},marker:{color:colores[indiceColor],size:3},
+connectgaps:false,hovertemplate:hoverModelo(variable,modelo,ciclo),showlegend:false,
 meta:{modelo:modelo,nombreModelo:MODELOS[modelo].nombre,ciclo:ciclo,etiqueta:`${dia}/${mes} ${hora}Z`,color:colores[indiceColor]}
 });
 }
@@ -353,14 +368,50 @@ for(const modelo of activos){
 const trazas=trazasModelos.filter(t=>t.meta&&t.meta.modelo===modelo);
 html+=`<div class="leyenda-modelo"><div class="leyenda-modelo-titulo">${MODELOS[modelo].nombre}</div>`;
 if(trazas.length===0) html+=`<div class="leyenda-ciclo">Sin datos</div>`;
-else{
-for(const traza of trazas){
-html+=`<div class="leyenda-ciclo"><span class="leyenda-linea" style="background:${traza.meta.color}"></span><span>${traza.meta.etiqueta}</span></div>`;
-}
-}
+else for(const traza of trazas) html+=`<div class="leyenda-ciclo"><span class="leyenda-linea" style="background:${traza.meta.color}"></span><span>${traza.meta.etiqueta}</span></div>`;
 html+=`</div>`;
 }
 html+=`</div><div class="leyenda-observado">OBSERVADO<span class="leyenda-observado-linea"></span></div></div>`;
+contenedor.innerHTML=html;
+}
+
+function valorEstadistico(valor,decimales=2){
+if(valor===undefined||valor===null||valor===""||valor==="S/D") return "S/D";
+const numero=parseFloat(valor);
+return Number.isFinite(numero)?numero.toFixed(decimales):"S/D";
+}
+
+async function crearTablaEstadisticos(variable,codigo,idContenedor){
+const contenedor=document.getElementById(idContenedor);
+const fecha=fechaActualPeru();
+const ruta=`estadisticos/estadisticos_${variable}_${fecha}.csv`;
+let datos;
+try{datos=await cargarCSV(ruta)}
+catch(error){
+console.warn(error);
+contenedor.innerHTML=`<div class="estadisticos-bloque"><div class="estadisticos-titulo">DESEMPEÑO ÚLTIMOS 30 DÍAS · PRONÓSTICO A 1 DÍA</div><div class="estadisticos-vacio">Estadísticos no disponibles para ${fechaCorta(fecha)}.</div></div>`;
+return;
+}
+const activos=modelosSeleccionados();
+const filas=datos.filter(f=>String(f.codigo)===String(codigo)&&activos.includes(String(f.modelo)));
+let periodo="";
+if(filas.length>0) periodo=`Periodo evaluado: ${fechaCorta(filas[0].periodo_inicio)} al ${fechaCorta(filas[0].periodo_fin)}`;
+let html=`<div class="estadisticos-bloque"><div class="estadisticos-titulo">DESEMPEÑO ÚLTIMOS 30 DÍAS · PRONÓSTICO A 1 DÍA</div>`;
+if(periodo) html+=`<div class="estadisticos-periodo">${periodo}</div>`;
+if(filas.length===0){
+html+=`<div class="estadisticos-vacio">Sin estadísticos disponibles para esta estación.</div></div>`;
+contenedor.innerHTML=html;
+return;
+}
+html+=`<div class="estadisticos-tabla-wrap"><table class="estadisticos-tabla"><thead><tr><th>MODELO</th><th>BIAS</th><th>MAE</th><th>RMSE</th><th>SPEARMAN</th><th>N</th></tr></thead><tbody>`;
+for(const modelo of activos){
+const fila=filas.find(f=>String(f.modelo)===modelo);
+if(!fila) continue;
+const unidad=variable==="temp"?" °C":" mm";
+const n=parseInt(fila.n,10);
+html+=`<tr><td>${MODELOS[modelo].nombre}</td><td>${valorEstadistico(fila.bias)}${fila.bias==="S/D"?"":unidad}</td><td>${valorEstadistico(fila.mae)}${fila.mae==="S/D"?"":unidad}</td><td>${valorEstadistico(fila.rmse)}${fila.rmse==="S/D"?"":unidad}</td><td>${valorEstadistico(fila.spearman)}</td><td>${Number.isFinite(n)?n:0}</td></tr>`;
+}
+html+=`</tbody></table></div></div>`;
 contenedor.innerHTML=html;
 }
 
@@ -397,9 +448,7 @@ title:{text:titulo,x:.5,xanchor:"center",font:{size:17,color:"#10254d"}},
 margin:{l:70,r:30,t:70,b:75},
 paper_bgcolor:"white",plot_bgcolor:"white",
 font:{family:"Arial, Helvetica, sans-serif",color:"#263238"},
-hovermode:"closest",
-hoverdistance:25,
-spikedistance:25,
+hovermode:"closest",hoverdistance:25,spikedistance:25,
 hoverlabel:{bgcolor:"white",bordercolor:"#aeb9c8",font:{size:11,family:"Arial, Helvetica, sans-serif"},align:"left"},
 xaxis:xaxis,
 yaxis:{title:{text:unidad},showgrid:true,gridcolor:"#e4e8ed",linecolor:"#8492a6",zeroline:false},
@@ -417,6 +466,8 @@ document.getElementById("graficaTemperatura").innerHTML='<div class="mensaje-gra
 document.getElementById("graficaPrecipitacion").innerHTML='<div class="mensaje-grafica">Seleccione una estación para visualizar la precipitación.</div>';
 document.getElementById("leyendaTemperatura").innerHTML="";
 document.getElementById("leyendaPrecipitacion").innerHTML="";
+document.getElementById("estadisticosTemperatura").innerHTML="";
+document.getElementById("estadisticosPrecipitacion").innerHTML="";
 }
 
 async function actualizarGraficas(){
@@ -447,6 +498,10 @@ Plotly.newPlot("graficaPrecipitacion",[...modelosPP,obsPP],layoutPP,CONFIG_PLOTL
 ]);
 crearLeyendaPersonalizada("leyendaTemperatura",modelosTemp);
 crearLeyendaPersonalizada("leyendaPrecipitacion",modelosPP);
+await Promise.all([
+crearTablaEstadisticos("temp",codigo,"estadisticosTemperatura"),
+crearTablaEstadisticos("pp",codigo,"estadisticosPrecipitacion")
+]);
 }catch(error){
 console.error(error);
 document.getElementById("informacion").textContent=`Error cargando datos: ${error.message}`;
