@@ -57,6 +57,12 @@ select:focus{outline:2px solid rgba(244,196,48,.35);border-color:var(--azul)}
 .gfs{background:#1565c0}.ecmwf{background:#d32f2f}.eta5{background:#388e3c}.wrf5{background:#ef6c00}.mpas15{background:#7b1fa2}
 .leaflet-popup-content{font-family:Arial,Helvetica,sans-serif;line-height:1.4}
 .leaflet-popup-content strong{color:var(--azul-oscuro)}
+.notas{width:96%;max-width:1500px;margin:18px auto 0;background:white;border:1px solid var(--borde);font-size:11px;color:#526174}
+.notas-titulo{padding:8px 14px;background:var(--azul);color:white;font-size:12px;font-weight:700;border-bottom:3px solid var(--amarillo)}
+.notas-contenido{padding:10px 14px 12px}
+.nota{display:flex;align-items:flex-start;gap:8px;margin:6px 0;line-height:1.45}
+.nota-numero{display:inline-flex;align-items:center;justify-content:center;flex:0 0 18px;width:18px;height:18px;background:var(--azul);color:white;border-radius:2px;font-size:9px;font-weight:700}
+.pie-pagina{width:96%;max-width:1500px;margin:8px auto 18px;text-align:right;color:#8a96a6;font-size:9px}
 @media(max-width:900px){.leyenda-modelos{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:800px){.controles{flex-direction:column;align-items:stretch}select,#estacionSelect{width:100%;min-width:0}#mapa{height:330px}.grafica{height:560px}.leyenda-modelos{grid-template-columns:1fr}.estadisticos-tabla{min-width:600px}}
 </style>
@@ -64,7 +70,7 @@ select:focus{outline:2px solid rgba(244,196,48,.35);border-color:var(--azul)}
 <body>
 <div class="contenedor">
 <div class="cabecera">
-<h1>VERIFICACIÒN DE PRONÒSTICOS DE MODELOS ATMOSFERICOS</h1>
+<h1>VERIFICACION DE PRONOSTICOS DE MODELOS ATMOSFERICOS</h1>
 <p>Plataforma para la comparación y evaluación de pronósticos de temperatura y precipitación con las observaciones de estaciones meteorológicas.</p>
 <p>Modelos evaluados: GFS 0.25° (27km), ECMWF 0.25°(27km), ETA 5 km, WRF 5 km y MPAS 15 km.</p>
 <p>Subdirección de Cambio Climático y Modelamiento Atmosférico - SENAMHI</p>
@@ -101,6 +107,18 @@ select:focus{outline:2px solid rgba(244,196,48,.35);border-color:var(--azul)}
 <div id="estadisticosPrecipitacion"></div>
 </div>
 </div>
+<div class="notas">
+<div class="notas-titulo">Notas</div>
+<div class="notas-contenido">
+<div class="nota"><span class="nota-numero">1</span><span>GFS corresponde al Global Forecast System de NOAA/NCEP, con una resolución horizontal de 0.25°.</span></div>
+<div class="nota"><span class="nota-numero">2</span><span>ECMWF corresponde al modelo de pronóstico del European Centre for Medium-Range Weather Forecasts, con una resolución horizontal de 0.25°.</span></div>
+<div class="nota"><span class="nota-numero">3</span><span>ETA5 y WRF5 corresponden a modelos regionales ejecutados con una resolución horizontal aproximada de 5 km.</span></div>
+<div class="nota"><span class="nota-numero">4</span><span>MPAS15 corresponde al modelo MPAS-Atmosphere, ejecutado con una resolución horizontal aproximada de 15 km.</span></div>
+<div class="nota"><span class="nota-numero">5</span><span>Las observaciones corresponden a estaciones meteorológicas y se actualizan automáticamente cada hora. Los pronósticos se incorporan conforme están disponibles los nuevos ciclos de los modelos.</span></div>
+<div class="nota"><span class="nota-numero">6</span><span>Los estadísticos de desempeño corresponden a los últimos 30 días completos y al pronóstico a un día. N representa el número de pares válidos pronóstico-observación utilizados en el cálculo.</span></div>
+</div>
+</div>
+<div class="pie-pagina">Subdirección de Cambio Climático y Modelamiento Atmosférico · SENAMHI</div>
 <script>
 const MODELOS={
 gfs:{nombre:"GFS",colores:["#bbdefb","#90caf9","#64b5f6","#42a5f5","#2196f3","#1976d2","#1565c0","#0d47a1"]},
