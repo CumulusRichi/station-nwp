@@ -70,3 +70,13 @@ station-nwp/
 │   ├── estadisticos_temp_YYYYMMDD.csv
 │   └── estadisticos_pp_YYYYMMDD.csv
 └── index.html
+
+## Sitio web
+
+La plataforma se encuentra disponible públicamente en:
+
+[https://cumulusrichi.github.io/station-nwp/](https://cumulusrichi.github.io/station-nwp/)
+
+## Institución
+
+Desarrollado por la **Subdirección de Cambio Climático y Modelamiento Atmosférico del SENAMHI**.
