@@ -10,7 +10,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root{--navy:#0a1c48;--navy-700:#123067;--blue:#0b6bb8;--blue-600:#0a5c9e;--yellow:#f4c430;--ink:#1c2430;--muted:#5a6675;--line:#d9e0e8;--surface:#fff;--canvas:#eef2f6;--accent:#f3f7fb;--radius:12px;--radius-sm:8px;--shadow:0 2px 10px rgb(10 28 72 / 8%);--font:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:var(--font);background:var(--canvas);color:var(--ink)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:var(--font);background:var(--navy);color:var(--ink)}
 .masthead{position:sticky;top:0;z-index:1000;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 1px 6px rgb(10 28 72 / 5%)}
 .masthead-scale{height:3px;background:linear-gradient(90deg,var(--navy) 0%,var(--blue) 58%,var(--yellow) 100%)}
 .masthead-bar{max-width:1500px;margin:auto;min-height:64px;padding:8px 2%;display:flex;align-items:center;gap:22px}
@@ -20,27 +20,26 @@
 .panel-opciones{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.panel-opciones summary{list-style:none;cursor:pointer;padding:13px 18px;color:var(--navy);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:space-between;user-select:none}.panel-opciones summary::-webkit-details-marker{display:none}.panel-opciones summary::after{content:"▾";font-size:15px;color:var(--blue);transition:transform .18s}.panel-opciones:not([open]) summary::after{transform:rotate(-90deg)}.panel-opciones[open] summary{border-bottom:1px solid var(--line)}
 .controles{padding:16px 18px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;background:#fff}.grupo-control{display:flex;flex-direction:column;gap:6px}.grupo-control label.titulo{font-size:12px;font-weight:700;color:var(--navy)}select{min-width:210px;padding:9px 11px;border:1px solid #b9c4d2;border-radius:var(--radius-sm);background:white;color:var(--ink);font-size:13px}select:focus{outline:3px solid rgb(11 107 184 / 18%);border-color:var(--blue)}#estacionSelect{min-width:300px}
 .modelos-checks{display:flex;flex-wrap:wrap;gap:7px}.modelo-check{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;cursor:pointer;user-select:none;font-size:12px;font-weight:600;color:var(--muted);transition:.15s}.modelo-check:hover{border-color:#9fb2c9;color:var(--navy)}.modelo-check:has(input:checked){background:var(--accent);border-color:#aac4dd;color:var(--navy)}.modelo-check input{cursor:pointer;accent-color:var(--blue)}.indicador{width:9px;height:9px;border-radius:50%}
-.informacion{margin-top:10px;background:#f8fafc;border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:var(--radius-sm);padding:9px 14px;font-size:12px;color:var(--muted)}
 .panel-mapa,.panel-grafica{background:var(--surface);border:1px solid var(--line);margin-top:16px;border-radius:var(--radius);box-shadow:var(--shadow)}.panel-mapa{padding:16px}.titulo-panel{margin:0 0 12px;color:var(--navy);font-size:16px;font-weight:700}#mapa{width:100%;height:380px;border:1px solid var(--line);border-radius:var(--radius-sm);z-index:1}.panel-grafica{padding:10px 14px 14px}.grafica{width:100%;height:600px}.mensaje-grafica{height:100%;display:flex;align-items:center;justify-content:center;color:#718096;font-size:14px}
-.leyenda-pronosticos{max-width:920px;margin:0 auto 7px;padding:9px 16px 10px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fafbfd}.leyenda-titulo{text-align:center;color:var(--navy);font-size:11px;font-weight:700;margin-bottom:8px}.leyenda-modelos{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}.leyenda-modelo{text-align:center;min-width:0}.leyenda-modelo-titulo{font-size:11px;font-weight:700;margin-bottom:4px}.leyenda-ciclo{display:flex;justify-content:center;align-items:center;gap:6px;min-height:14px;line-height:14px;font-size:9px;white-space:nowrap;color:#455a64}.leyenda-linea{display:inline-block;width:24px;height:2px;flex:0 0 24px}.leyenda-observado{display:flex;flex-direction:column;align-items:center;margin-top:9px;padding-top:7px;border-top:1px solid #e1e6ec;font-size:10px;font-weight:700;color:#111}.leyenda-observado-linea{display:block;width:38px;height:3px;margin-top:4px;background:#111}
-.estadisticos-bloque{max-width:920px;margin:0 auto 5px;padding:9px 14px 11px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff}.estadisticos-titulo{text-align:center;color:var(--navy);font-size:11px;font-weight:700;margin-bottom:3px}.estadisticos-periodo{text-align:center;color:#6b7788;font-size:9px;margin-bottom:7px}.estadisticos-tabla-wrap{display:flex;justify-content:center;overflow-x:auto}.estadisticos-tabla{border-collapse:collapse;width:auto;min-width:650px;font-size:10px;text-align:center}.estadisticos-tabla th,.estadisticos-tabla td{border:1px solid #dfe4eb;padding:4px 9px;text-align:center}.estadisticos-tabla th{background:var(--accent);color:var(--navy);font-weight:700}.estadisticos-tabla td:first-child{font-weight:700;white-space:nowrap}.estadisticos-vacio{text-align:center;color:#718096;font-size:10px;padding:5px}
-.gfs{background:#1565c0}.ecmwf{background:#d32f2f}.eta5{background:#388e3c}.wrf5{background:#ef6c00}.mpas15{background:#7b1fa2}.leaflet-popup-content{font-family:var(--font);line-height:1.4}.leaflet-popup-content strong{color:var(--navy)}
-.notas{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.notas-titulo{padding:12px 16px;background:var(--navy);color:white;font-size:13px;font-weight:700}.notas-contenido{padding:10px 16px 12px}.nota{display:flex;align-items:flex-start;gap:8px;margin:7px 0;line-height:1.45;font-size:11px;color:var(--muted)}.nota-numero{display:inline-flex;align-items:center;justify-content:center;flex:0 0 19px;width:19px;height:19px;background:var(--blue);color:white;border-radius:50%;font-size:9px;font-weight:700}
+.leyenda-pronosticos{max-width:1040px;margin:0 auto 6px;padding:7px 10px 8px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fafbfd}.leyenda-titulo{text-align:center;color:var(--navy);font-size:10px;font-weight:700;margin-bottom:5px}.leyenda-modelos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.leyenda-modelo{text-align:center;min-width:0}.leyenda-modelo-titulo{font-size:10px;font-weight:700;margin-bottom:3px}.leyenda-ciclos{display:flex;flex-wrap:wrap;justify-content:center;gap:3px 8px}.leyenda-ciclo{display:inline-flex;justify-content:center;align-items:center;gap:4px;min-height:11px;line-height:11px;font-size:8px;white-space:nowrap;color:#455a64}.leyenda-linea{display:inline-block;width:18px;height:2px;flex:0 0 18px}.leyenda-observado{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:6px;padding-top:5px;border-top:1px solid #e1e6ec;font-size:9px;font-weight:700;color:#111}.leyenda-observado-linea{display:block;width:30px;height:3px;background:#111}
+.estadisticos-bloque{max-width:920px;margin:0 auto 5px;padding:9px 10px 11px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff}.estadisticos-titulo{text-align:center;color:var(--navy);font-size:11px;font-weight:700;margin-bottom:3px}.estadisticos-periodo{text-align:center;color:#6b7788;font-size:9px;margin-bottom:7px}.estadisticos-tabla-wrap{width:100%;overflow:hidden}.estadisticos-tabla{border-collapse:collapse;width:100%;table-layout:fixed;font-size:10px;text-align:center}.estadisticos-tabla th,.estadisticos-tabla td{border:1px solid #dfe4eb;padding:4px 4px;text-align:center;width:16.666%;overflow-wrap:anywhere}.estadisticos-tabla th{background:var(--accent);color:var(--navy);font-weight:700}.estadisticos-tabla td:first-child{font-weight:700}.estadisticos-vacio{text-align:center;color:#718096;font-size:10px;padding:5px}
+.gfs{background:#1565c0}.ecmwf{background:#d32f2f}.eta5{background:#388e3c}.wrf5{background:#d4a017}.mpas15{background:#7b1fa2}.leaflet-popup-content{font-family:var(--font);line-height:1.4}.leaflet-popup-content strong{color:var(--navy)}
+.notas{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.notas-titulo{padding:12px 16px;background:var(--navy);color:white;font-size:13px;font-weight:700}.notas-contenido{padding:12px 16px 14px}.descripcion-texto{margin:0 0 10px;color:var(--muted);font-size:11px;line-height:1.5}.tabla-modelos-wrap{overflow-x:auto;margin:8px 0 10px}.tabla-modelos{width:100%;border-collapse:collapse;font-size:10px;text-align:center;background:#fff}.tabla-modelos th,.tabla-modelos td{border:1px solid #dfe4eb;padding:6px 7px}.tabla-modelos th{background:var(--accent);color:var(--navy);font-weight:700}.tabla-modelos td:first-child{font-weight:700;color:var(--navy)}.notas-subtitulo{margin:10px 0 5px;color:var(--navy);font-size:11px;font-weight:700}.nota{display:flex;align-items:flex-start;gap:8px;margin:6px 0;line-height:1.45;font-size:11px;color:var(--muted)}.nota-numero{display:inline-flex;align-items:center;justify-content:center;flex:0 0 19px;width:19px;height:19px;background:var(--blue);color:white;border-radius:50%;font-size:9px;font-weight:700}
 .footer{background:var(--navy);color:#a9c0da;font-size:11px}.footer-scale{height:3px;background:linear-gradient(90deg,var(--yellow) 0%,var(--blue) 45%,#78aede 100%)}.footer-inner{width:96%;max-width:1500px;margin:auto;padding:10px 0;display:flex;align-items:center;gap:14px}.footer strong{color:white;letter-spacing:.12em}.footer span{margin-left:auto;text-align:right}
-@media(max-width:900px){.leyenda-modelos{grid-template-columns:repeat(2,1fr)}.masthead-bar{padding-inline:4%}.marca small{white-space:normal}}
-@media(max-width:800px){.masthead-bar{flex-wrap:wrap;gap:6px;padding-top:9px;padding-bottom:9px}.nav{width:100%;margin-left:0}.nav a{flex:1;text-align:center}.controles{flex-direction:column;align-items:stretch}select,#estacionSelect{width:100%;min-width:0}#mapa{height:330px}.grafica{height:560px}.leyenda-modelos{grid-template-columns:1fr}.estadisticos-tabla{min-width:600px}.footer-inner{align-items:flex-start;flex-direction:column}.footer span{margin-left:0;text-align:left}}
+@media(max-width:900px){.leyenda-modelos{grid-template-columns:repeat(3,minmax(0,1fr))}.masthead-bar{padding-inline:4%}.marca small{white-space:normal}}
+@media(max-width:800px){.masthead-bar{flex-wrap:wrap;gap:6px;padding-top:9px;padding-bottom:9px}.nav{width:100%;margin-left:0}.nav a{flex:1;text-align:center}.controles{flex-direction:column;align-items:stretch}select,#estacionSelect{width:100%;min-width:0}#mapa{height:330px}.grafica{height:560px}.footer-inner{align-items:flex-start;flex-direction:column}.footer span{margin-left:0;text-align:left}}
+@media(max-width:650px){.leyenda-modelos{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.leyenda-pronosticos{padding:6px}.leyenda-ciclo{font-size:7.5px}.estadisticos-bloque{padding:8px 5px 9px}.estadisticos-tabla{font-size:8px}.estadisticos-tabla th,.estadisticos-tabla td{padding:3px 1px;line-height:1.12}.estadisticos-titulo{font-size:10px}.estadisticos-periodo{font-size:8px}.tabla-modelos{min-width:620px}}
 </style>
 </head>
 <body>
-<header class="masthead"><div class="masthead-scale"></div><div class="masthead-bar"><div class="marca"><strong>SENAMHI</strong><small>Subdirección de Cambio Climático y Modelamiento Atmosférico</small></div><nav class="nav"><a class="activo" href="#visor">Visor</a><a href="#descripcion">Descripción</a></nav></div></header>
+<header class="masthead"><div class="masthead-scale"></div><div class="masthead-bar"><div class="marca"><strong>SENAMHI</strong><small>Subdirección de Cambio Climático y Modelamiento Atmosférico</small></div><nav class="nav"><a class="activo" href="#pronosticos">Pronósticos</a><a href="#descripcion">Descripción</a></nav></div></header>
 <main class="contenedor" id="visor">
 <section class="cabecera"><h1>VERIFICACIÓN DE PRONÓSTICOS DE MODELOS ATMOSFÉRICOS</h1><p>Plataforma para la comparación y evaluación de pronósticos de temperatura y precipitación con observaciones de estaciones meteorológicas.</p><p>Modelos evaluados: GFS 0.25° (27 km), ECMWF 0.25° (27 km), ETA 5 km, WRF 5 km y MPAS 15 km.</p><p class="institucion">Subdirección de Cambio Climático y Modelamiento Atmosférico · SENAMHI</p></section>
 <details class="panel-opciones" open><summary>Opciones de visualización</summary><div class="controles"><div class="grupo-control"><label class="titulo">Departamento</label><select id="departamentoSelect"></select></div><div class="grupo-control"><label class="titulo">Provincia</label><select id="provinciaSelect"></select></div><div class="grupo-control"><label class="titulo">Estación</label><select id="estacionSelect"></select></div><div class="grupo-control"><label class="titulo">Modelos</label><div class="modelos-checks"><label class="modelo-check"><input class="modelo-input" type="checkbox" value="gfs" checked><span class="indicador gfs"></span>GFS</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="ecmwf" checked><span class="indicador ecmwf"></span>ECMWF</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta5" checked><span class="indicador eta5"></span>ETA5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="wrf5" checked><span class="indicador wrf5"></span>WRF5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="mpas15" checked><span class="indicador mpas15"></span>MPAS15</label></div></div></div></details>
-<div class="informacion" id="informacion">Cargando información...</div>
 <section class="panel-mapa"><h2 class="titulo-panel">Ubicación de estaciones</h2><div id="mapa"></div></section>
-<section class="panel-grafica"><div id="graficaTemperatura" class="grafica"></div><div id="leyendaTemperatura"></div><div id="estadisticosTemperatura"></div></section>
+<section class="panel-grafica" id="pronosticos"><div id="graficaTemperatura" class="grafica"></div><div id="leyendaTemperatura"></div><div id="estadisticosTemperatura"></div></section>
 <section class="panel-grafica"><div id="graficaPrecipitacion" class="grafica"></div><div id="leyendaPrecipitacion"></div><div id="estadisticosPrecipitacion"></div></section>
-<section class="notas" id="descripcion"><div class="notas-titulo">Descripción y notas del producto</div><div class="notas-contenido"><div class="nota"><span class="nota-numero">1</span><span>GFS corresponde al Global Forecast System de NOAA/NCEP, con una resolución horizontal de 0.25°.</span></div><div class="nota"><span class="nota-numero">2</span><span>ECMWF corresponde al modelo de pronóstico del European Centre for Medium-Range Weather Forecasts, con una resolución horizontal de 0.25°.</span></div><div class="nota"><span class="nota-numero">3</span><span>ETA5 y WRF5 corresponden a modelos regionales ejecutados con una resolución horizontal aproximada de 5 km.</span></div><div class="nota"><span class="nota-numero">4</span><span>MPAS15 corresponde al modelo MPAS-Atmosphere, ejecutado con una resolución horizontal aproximada de 15 km.</span></div><div class="nota"><span class="nota-numero">5</span><span>Las observaciones corresponden a estaciones meteorológicas y se actualizan automáticamente cada hora. Los pronósticos se incorporan conforme están disponibles los nuevos ciclos de los modelos.</span></div><div class="nota"><span class="nota-numero">6</span><span>Los estadísticos de desempeño corresponden a los últimos 30 días completos y al pronóstico a un día. N representa el número de pares válidos pronóstico-observación utilizados en el cálculo.</span></div></div></section>
+<section class="notas" id="descripcion"><div class="notas-titulo">Descripción y notas del producto</div><div class="notas-contenido"><p class="descripcion-texto">La plataforma compara pronósticos de modelos atmosféricos con observaciones de estaciones meteorológicas. La temperatura se presenta con la resolución temporal disponible de cada modelo y la precipitación como acumulados cada 6 horas. Los estadísticos permiten evaluar el desempeño reciente por estación y modelo; la correlación mostrada corresponde al coeficiente de Spearman.</p><div class="tabla-modelos-wrap"><table class="tabla-modelos"><thead><tr><th>MODELO</th><th>RESOLUCIÓN ESPACIAL</th><th>SALIDA TEMPORAL</th><th>CICLOS USADOS</th></tr></thead><tbody><tr><td>GFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ECMWF / IFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ETA5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>WRF5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>MPAS15</td><td>15 km</td><td>3 h</td><td>00 UTC</td></tr></tbody></table></div><div class="notas-subtitulo">Notas del producto</div><div class="nota"><span class="nota-numero">1</span><span>Las observaciones corresponden a estaciones meteorológicas y se actualizan automáticamente cada hora. Los pronósticos se incorporan conforme están disponibles los nuevos ciclos de los modelos.</span></div><div class="nota"><span class="nota-numero">2</span><span>Los estadísticos de desempeño corresponden a los últimos 30 días completos y al pronóstico a un día. Pares válidos representa el número de pares pronóstico-observación utilizados en el cálculo.</span></div></div></section>
 </main>
 <footer class="footer"><div class="footer-scale"></div><div class="footer-inner"><strong>SENAMHI</strong><span>Subdirección de Cambio Climático y Modelamiento Atmosférico</span></div></footer>
 <script>
@@ -48,7 +47,7 @@ const MODELOS={
 gfs:{nombre:"GFS",colores:["#bbdefb","#90caf9","#64b5f6","#42a5f5","#2196f3","#1976d2","#1565c0","#0d47a1"]},
 ecmwf:{nombre:"ECMWF",colores:["#ffcdd2","#ef9a9a","#e57373","#ef5350","#f44336","#e53935","#d32f2f","#b71c1c"]},
 eta5:{nombre:"ETA5",colores:["#c8e6c9","#a5d6a7","#81c784","#66bb6a","#4caf50","#43a047","#388e3c","#1b5e20"]},
-wrf5:{nombre:"WRF5",colores:["#ffe0b2","#ffcc80","#ffb74d","#ffa726","#ff9800","#fb8c00","#ef6c00","#e65100"]},
+wrf5:{nombre:"WRF5",colores:["#f6c945","#edbb2f","#e2ad1b","#d39a00","#c18a00","#ae7b00","#986b00","#7f5900"]},
 mpas15:{nombre:"MPAS15",colores:["#e1bee7","#ce93d8","#ba68c8","#ab47bc","#9c27b0","#8e24aa","#7b1fa2","#4a148c"]}
 };
 
@@ -265,7 +264,8 @@ const ruta=variable==="temp"?"observaciones/obs_temp.csv":"observaciones/obs_pp.
 const datos=await cargarCSV(ruta);
 const fila=obtenerFila(datos,codigo);
 const serie=filaASerie(fila);
-return{x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:"OBSERVADO",line:{color:"#111111",width:3},marker:{color:"#111111",size:3},connectgaps:false,hovertemplate:hoverObservado(variable),showlegend:false};
+const linea=variable==="pp"?{color:"#111111",width:3,shape:"spline",smoothing:.45}:{color:"#111111",width:3};
+return{x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:"OBSERVADO",line:linea,marker:{color:"#111111",size:3},connectgaps:false,hovertemplate:hoverObservado(variable),showlegend:false};
 }
 
 async function crearTrazasUnModelo(variable,codigo,modelo,ciclos){
@@ -287,9 +287,10 @@ const colores=MODELOS[modelo].colores;
 const indiceColor=ciclosModelo.length===1?colores.length-2:Math.round(i*(colores.length-1)/(ciclosModelo.length-1));
 const dia=ciclo.slice(6,8);
 const mes=ciclo.slice(4,6);
+const linea=variable==="pp"?{color:colores[indiceColor],width:1.5,shape:"spline",smoothing:.45}:{color:colores[indiceColor],width:1.5};
 trazas.push({
 x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:`${dia}/${mes} ${hora}Z`,
-line:{color:colores[indiceColor],width:1.5},marker:{color:colores[indiceColor],size:3},
+line:linea,marker:{color:colores[indiceColor],size:3},
 connectgaps:false,hovertemplate:hoverModelo(variable,modelo,ciclo),showlegend:false,
 meta:{modelo:modelo,nombreModelo:MODELOS[modelo].nombre,ciclo:ciclo,etiqueta:`${dia}/${mes} ${hora}Z`,color:colores[indiceColor]}
 });
@@ -310,10 +311,10 @@ const activos=modelosSeleccionados();
 let html=`<div class="leyenda-pronosticos"><div class="leyenda-titulo">INICIALIZACIÓN DEL PRONÓSTICO</div><div class="leyenda-modelos">`;
 for(const modelo of activos){
 const trazas=trazasModelos.filter(t=>t.meta&&t.meta.modelo===modelo);
-html+=`<div class="leyenda-modelo"><div class="leyenda-modelo-titulo">${MODELOS[modelo].nombre}</div>`;
+html+=`<div class="leyenda-modelo"><div class="leyenda-modelo-titulo">${MODELOS[modelo].nombre}</div><div class="leyenda-ciclos">`;
 if(trazas.length===0) html+=`<div class="leyenda-ciclo">Sin datos</div>`;
 else for(const traza of trazas) html+=`<div class="leyenda-ciclo"><span class="leyenda-linea" style="background:${traza.meta.color}"></span><span>${traza.meta.etiqueta}</span></div>`;
-html+=`</div>`;
+html+=`</div></div>`;
 }
 html+=`</div><div class="leyenda-observado">OBSERVADO<span class="leyenda-observado-linea"></span></div></div>`;
 contenedor.innerHTML=html;
@@ -347,7 +348,7 @@ html+=`<div class="estadisticos-vacio">Sin estadísticos disponibles para esta e
 contenedor.innerHTML=html;
 return;
 }
-html+=`<div class="estadisticos-tabla-wrap"><table class="estadisticos-tabla"><thead><tr><th>MODELO</th><th>BIAS</th><th>MAE</th><th>RMSE</th><th>SPEARMAN</th><th>N</th></tr></thead><tbody>`;
+html+=`<div class="estadisticos-tabla-wrap"><table class="estadisticos-tabla"><thead><tr><th>MODELO</th><th>BIAS</th><th>MAE</th><th>RMSE</th><th>CORRELACIÓN</th><th>PARES VÁLIDOS</th></tr></thead><tbody>`;
 for(const modelo of activos){
 const fila=filas.find(f=>String(f.modelo)===modelo);
 if(!fila) continue;
@@ -403,7 +404,6 @@ showlegend:false
 const CONFIG_PLOTLY={responsive:true,displaylogo:false,scrollZoom:true};
 
 function mostrarSinEstacion(){
-document.getElementById("informacion").textContent="Seleccione una estación en el mapa o mediante los filtros para visualizar los pronósticos y observaciones.";
 Plotly.purge("graficaTemperatura");
 Plotly.purge("graficaPrecipitacion");
 document.getElementById("graficaTemperatura").innerHTML='<div class="mensaje-grafica">Seleccione una estación para visualizar la temperatura.</div>';
@@ -419,7 +419,6 @@ const codigo=document.getElementById("estacionSelect").value;
 if(!codigo){mostrarSinEstacion();return}
 const estacion=estaciones.find(e=>String(e.codigo)===String(codigo));
 if(!estacion) return;
-document.getElementById("informacion").textContent=`${estacion.estacion} (${estacion.codigo}) | ${estacion.provincia}, ${estacion.departamento} | Hora mostrada: Perú (UTC-5) | Pase el cursor sobre una línea para ver su detalle`;
 try{
 const [obsTemp,modelosTemp,obsPP,modelosPP]=await Promise.all([
 crearTrazaObservada("temp",codigo),
@@ -448,7 +447,6 @@ crearTablaEstadisticos("pp",codigo,"estadisticosPrecipitacion")
 ]);
 }catch(error){
 console.error(error);
-document.getElementById("informacion").textContent=`Error cargando datos: ${error.message}`;
 }
 }
 
@@ -484,7 +482,6 @@ await actualizarGraficas();
 setTimeout(()=>mapa.invalidateSize(),100);
 }catch(error){
 console.error(error);
-document.getElementById("informacion").textContent="Error cargando datos: "+error.message;
 }
 }
 
