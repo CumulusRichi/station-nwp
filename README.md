@@ -55,6 +55,14 @@ El flujo operativo comprende:
 
 Las observaciones se actualizan de forma horaria y los pronósticos se incorporan conforme se encuentran disponibles nuevos ciclos de los modelos.
 
+## Sitio web
+
+La plataforma se encuentra disponible públicamente en:
+
+[https://cumulusrichi.github.io/station-nwp/](https://cumulusrichi.github.io/station-nwp/)
+
+Desarrollado por la **Subdirección de Cambio Climático y Modelamiento Atmosférico del SENAMHI**.
+
 ## Estructura principal
 
 ```text
@@ -70,13 +78,3 @@ station-nwp/
 │   ├── estadisticos_temp_YYYYMMDD.csv
 │   └── estadisticos_pp_YYYYMMDD.csv
 └── index.html
-
-## Sitio web
-
-La plataforma se encuentra disponible públicamente en:
-
-[https://cumulusrichi.github.io/station-nwp/](https://cumulusrichi.github.io/station-nwp/)
-
-## Institución
-
-Desarrollado por la **Subdirección de Cambio Climático y Modelamiento Atmosférico del SENAMHI**.
