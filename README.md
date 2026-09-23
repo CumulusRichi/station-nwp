@@ -2,68 +2,70 @@
 
 Plataforma web para la **comparación y verificación de pronósticos de modelos atmosféricos** frente a observaciones de estaciones meteorológicas.
 
-El sistema permite visualizar y evaluar el comportamiento de distintos modelos numéricos de predicción del tiempo a escala de estación, utilizando series temporales observadas y pronosticadas.
+Permite visualizar series temporales por estación y evaluar el desempeño reciente de distintos modelos numéricos de predicción del tiempo.
 
-## Modelos incluidos
+## Modelos
 
-Actualmente se consideran los siguientes modelos:
+- GFS 0.25°
+- ECMWF / IFS 0.25°
+- ETA 5 km
+- WRF 5 km
+- MPAS 15 km
 
-- **GFS 0.25°**
-- **ECMWF / IFS 0.25°**
-- **ETA 5 km**
-- **WRF 5 km**
-- **MPAS 15 km**
+## Variables
 
-También se incorporan observaciones de estaciones meteorológicas para realizar la comparación y calcular métricas de desempeño.
+- Temperatura del aire a 2 m
+- Precipitación acumulada cada 6 horas
 
-## Variables disponibles
+Los gráficos interactivos permiten consultar valores observados y pronosticados, fechas y ciclos de inicialización.
 
-La plataforma muestra actualmente:
+## Verificación
 
-- **Temperatura del aire a 2 m**
-- **Precipitación acumulada cada 6 horas**
+Los estadísticos se calculan para los últimos 30 días completos y para el pronóstico a un día.
 
-Los datos observados y pronosticados se presentan mediante gráficos interactivos que permiten consultar valores, fechas, ciclos de inicialización y diferencias entre modelos.
+### Temperatura
 
-## Verificación de pronósticos
+Se evalúan comparaciones cada 3 horas mediante:
 
-Además de la visualización de series temporales, la plataforma incluye estadísticos de desempeño calculados para los últimos 30 días completos y para el pronóstico a un día.
+- BIAS
+- MAE
+- RMSE
+- Correlación de Spearman
+- Nº datos
 
-Las métricas disponibles son:
+### Precipitación
 
-- **BIAS**
-- **MAE**
-- **RMSE**
-- **Correlación de Spearman**
-- **N**, número de pares válidos pronóstico-observación utilizados en el cálculo
+Se evalúan acumulados cada 6 horas mediante:
 
-Los estadísticos se calculan individualmente para cada estación y modelo.
+- BIAS
+- RMSE
+- Correlación de Spearman
+- Nº datos
+- POD
+- FAR
+- CSI
+- Nº eventos
 
-## Actualización de datos
+Las métricas categóricas se calculan para umbrales de **0.1, 1, 5 y 25 mm en 6 horas**.
 
-Los datos son procesados automáticamente en el HPC **NUNA**.
+## Actualización
 
-El flujo operativo comprende:
+El procesamiento se realiza automáticamente en el HPC **NUNA**:
 
-1. Extracción de pronósticos de los modelos disponibles.
-2. Extracción y procesamiento de observaciones de estaciones.
-3. Homologación temporal de los datos.
-4. Generación de archivos CSV para la plataforma web.
-5. Cálculo automático de estadísticos de verificación.
-6. Actualización del repositorio mediante Git.
-7. Publicación automática mediante GitHub Pages.
+1. Extracción de pronósticos y observaciones.
+2. Homologación temporal y generación de CSV.
+3. Cálculo de estadísticos.
+4. Actualización del repositorio y publicación mediante GitHub Pages.
 
-Las observaciones se actualizan de forma horaria y los pronósticos se incorporan conforme se encuentran disponibles nuevos ciclos de los modelos.
+Las observaciones se actualizan cada hora y los pronósticos conforme se encuentran disponibles nuevos ciclos.
 
 ## Sitio web
 
-La plataforma se encuentra disponible públicamente en:
-
-[https://cumulusrichi.github.io/station-nwp/](https://cumulusrichi.github.io/station-nwp/)
+https://cumulusrichi.github.io/station-nwp/
 
 Desarrollado por la **Subdirección de Cambio Climático y Modelamiento Atmosférico del SENAMHI**.
 
-## Estructura principal
+## Estructura
 
 ```text
 station-nwp/
