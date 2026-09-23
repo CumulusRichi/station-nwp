@@ -248,7 +248,7 @@ return{x,y};
 }
 
 function hoverObservado(variable){
-const valor=variable==="temp"?"%{y:.1f} °C":"%{y:.1f} mm";
+const valor=variable==="temp"?"%{y:.1f} °C":"%{y:.2f} mm";
 return `<b>Hora local: %{x|%d/%m %H:%M}</b><br><b>OBSERVADO</b> (${valor})<extra></extra>`;
 }
 
@@ -256,7 +256,7 @@ function hoverModelo(variable,modelo,ciclo){
 const dia=ciclo.slice(6,8);
 const mes=ciclo.slice(4,6);
 const hora=ciclo.slice(8,10);
-const valor=variable==="temp"?"%{y:.1f} °C":"%{y:.1f} mm";
+const valor=variable==="temp"?"%{y:.1f} °C":"%{y:.2f} mm";
 return `<b>Hora local: %{x|%d/%m %H:%M}</b><br><b>${MODELOS[modelo].nombre}</b> ${dia}/${mes} ${hora}Z (${valor})<extra></extra>`;
 }
 
@@ -265,8 +265,8 @@ const ruta=variable==="temp"?"observaciones/obs_temp.csv":"observaciones/obs_pp.
 const datos=await cargarCSV(ruta);
 const fila=obtenerFila(datos,codigo);
 const serie=filaASerie(fila);
-const linea=variable==="pp"?{color:"#111111",width:3,shape:"spline",smoothing:.45}:{color:"#111111",width:3};
-return{x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:"OBSERVADO",line:linea,marker:{color:"#111111",size:3},connectgaps:false,hovertemplate:hoverObservado(variable),showlegend:false};
+const linea=variable==="pp"?{color:"#111111",width:4,shape:"spline",smoothing:.45}:{color:"#111111",width:3};
+return{x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:"OBSERVADO",line:linea,marker:{color:"#111111",size:5},connectgaps:false,hovertemplate:hoverObservado(variable),showlegend:false};
 }
 
 async function crearTrazasUnModelo(variable,codigo,modelo,ciclos){
