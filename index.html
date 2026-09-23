@@ -328,7 +328,7 @@ return Number.isFinite(numero)?numero.toFixed(decimales):"S/D";
 }
 
 let umbralPPSeleccionado="0p1";
-const UMBRALES_PP_WEB={"0p1":"≥ 0.1 mm","1":"≥ 1 mm","5":"≥ 5 mm","25":"≥ 25 mm"};
+const UMBRALES_PP_WEB=[["0p1","≥ 0.1 mm"],["1","≥ 1 mm"],["5","≥ 5 mm"],["25","≥ 25 mm"]];
 async function crearTablaEstadisticos(variable,codigo,idContenedor){
 const contenedor=document.getElementById(idContenedor);
 const fecha=fechaActualPeru();
@@ -343,7 +343,7 @@ let html=`<div class="estadisticos-bloque"><div class="estadisticos-titulo">DESE
 if(periodo) html+=`<div class="estadisticos-periodo">${periodo}</div>`;
 if(filas.length===0){html+=`<div class="estadisticos-vacio">Sin estadísticos disponibles para esta estación.</div></div>`;contenedor.innerHTML=html;return;}
 if(variable==="pp"){
-html+=`<div class="selector-umbral"><span>UMBRAL:</span>${Object.entries(UMBRALES_PP_WEB).map(([clave,etiqueta])=>`<button type="button" data-umbral="${clave}" class="${clave===umbralPPSeleccionado?"activo":""}">${etiqueta}</button>`).join("")}</div>`;
+html+=`<div class="selector-umbral"><span>UMBRAL:</span>${UMBRALES_PP_WEB.map(([clave,etiqueta])=>`<button type="button" data-umbral="${clave}" class="${clave===umbralPPSeleccionado?"activo":""}">${etiqueta}</button>`).join("")}</div>`;
 html+=`<div class="estadisticos-tabla-wrap"><table class="estadisticos-tabla"><thead><tr><th>MODELO</th><th>BIAS</th><th>RMSE</th><th>CORRELACIÓN</th><th>CASOS</th><th>POD</th><th>FAR</th><th>CSI</th><th>EVENTOS</th></tr></thead><tbody>`;
 for(const modelo of activos){const fila=filas.find(f=>String(f.modelo)===modelo);if(!fila) continue;const n=parseInt(fila.n,10);const eventos=parseInt(fila[`eventos_${umbralPPSeleccionado}`],10);html+=`<tr><td>${MODELOS[modelo].nombre}</td><td>${valorEstadistico(fila.bias)}${fila.bias==="S/D"?"":" mm"}</td><td>${valorEstadistico(fila.rmse)}${fila.rmse==="S/D"?"":" mm"}</td><td>${valorEstadistico(fila.spearman)}</td><td>${Number.isFinite(n)?n:0}</td><td>${valorEstadistico(fila[`pod_${umbralPPSeleccionado}`],3)}</td><td>${valorEstadistico(fila[`far_${umbralPPSeleccionado}`],3)}</td><td>${valorEstadistico(fila[`csi_${umbralPPSeleccionado}`],3)}</td><td>${Number.isFinite(eventos)?eventos:0}</td></tr>`;}
 html+=`</tbody></table></div></div>`;contenedor.innerHTML=html;contenedor.querySelectorAll("[data-umbral]").forEach(boton=>boton.addEventListener("click",()=>{umbralPPSeleccionado=boton.dataset.umbral;crearTablaEstadisticos("pp",codigo,idContenedor);}));return;
