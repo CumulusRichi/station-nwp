@@ -19,7 +19,7 @@
 .contenedor{width:96%;max-width:1500px;margin:18px auto 24px}.cabecera{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 28px}.cabecera h1{margin:0 0 8px;color:var(--navy);font-size:clamp(22px,3vw,31px);line-height:1.2}.cabecera p{margin:4px 0;color:var(--muted);font-size:13px}.cabecera .institucion{margin-top:10px;color:var(--navy-700);font-weight:600}
 .panel-opciones{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.panel-opciones summary{list-style:none;cursor:pointer;padding:13px 18px;color:var(--navy);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:space-between;user-select:none}.panel-opciones summary::-webkit-details-marker{display:none}.panel-opciones summary::after{content:"▾";font-size:15px;color:var(--blue);transition:transform .18s}.panel-opciones:not([open]) summary::after{transform:rotate(-90deg)}.panel-opciones[open] summary{border-bottom:1px solid var(--line)}
 .controles{padding:16px 18px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;background:#fff}.grupo-control{display:flex;flex-direction:column;gap:6px}.grupo-control label.titulo{font-size:12px;font-weight:700;color:var(--navy)}select{min-width:210px;padding:9px 11px;border:1px solid #b9c4d2;border-radius:var(--radius-sm);background:white;color:var(--ink);font-size:13px}select:focus{outline:3px solid rgb(11 107 184 / 18%);border-color:var(--blue)}#estacionSelect{min-width:300px}
-.modelos-checks{display:flex;flex-wrap:wrap;gap:7px}.modelo-check{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;cursor:pointer;user-select:none;font-size:12px;font-weight:600;color:var(--muted);transition:.15s}.modelo-check:hover{border-color:#9fb2c9;color:var(--navy)}.modelo-check:has(input:checked){background:var(--accent);border-color:#aac4dd;color:var(--navy)}.modelo-check input{cursor:pointer;accent-color:var(--blue)}.indicador{width:9px;height:9px;border-radius:50%}
+.panel-pronostico{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:13px 16px}.grupo-pronostico+.grupo-pronostico{margin-top:10px;padding-top:10px;border-top:1px solid #e7ebf0}.titulo-pronostico{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:7px}.modelos-checks,.ciclos-checks{display:flex;flex-wrap:wrap;gap:7px}.modelo-check,.ciclo-check{display:flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;cursor:pointer;user-select:none;font-size:11px;font-weight:600;color:var(--muted);transition:.15s}.modelo-check:hover,.ciclo-check:hover{border-color:#9fb2c9;color:var(--navy)}.modelo-check:has(input:checked),.ciclo-check:has(input:checked){background:var(--accent);border-color:#aac4dd;color:var(--navy)}.modelo-check input,.ciclo-check input{cursor:pointer;accent-color:var(--blue)}.indicador{width:9px;height:9px;border-radius:50%}.sin-ciclos{font-size:11px;color:#718096}
 .panel-mapa,.panel-grafica{background:var(--surface);border:1px solid var(--line);margin-top:16px;border-radius:var(--radius);box-shadow:var(--shadow)}.panel-mapa{padding:16px}.titulo-panel{margin:0 0 12px;color:var(--navy);font-size:16px;font-weight:700}#mapa{width:100%;height:380px;border:1px solid var(--line);border-radius:var(--radius-sm);z-index:1}.panel-grafica{padding:10px 14px 14px}.grafica{width:100%;height:600px}.mensaje-grafica{height:100%;display:flex;align-items:center;justify-content:center;color:#718096;font-size:14px}.selector-variable{display:flex;justify-content:center;gap:8px;margin:16px auto 0}.selector-variable button{border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:9px 18px;border-radius:999px;font:600 13px var(--font);cursor:pointer;transition:.18s}.selector-variable button:hover{background:var(--accent);color:var(--navy);border-color:#aac4dd}.selector-variable button.activo{background:var(--navy);color:#fff;border-color:var(--navy)}.vista-variable{display:none}.vista-variable.activa{display:block;animation:entradaVariable .24s ease}@keyframes entradaVariable{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
 .leyenda-pronosticos{max-width:1040px;margin:0 auto 6px;padding:7px 10px 8px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fafbfd}.leyenda-titulo{text-align:center;color:var(--navy);font-size:10px;font-weight:700;margin-bottom:5px}.leyenda-modelos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.leyenda-modelo{text-align:center;min-width:0}.leyenda-modelo-titulo{font-size:10px;font-weight:700;margin-bottom:3px;color:#1f2937}.leyenda-ciclos{display:flex;flex-wrap:wrap;justify-content:center;gap:3px 8px}.leyenda-ciclo{display:inline-flex;justify-content:center;align-items:center;gap:4px;min-height:12px;line-height:12px;font-size:8.5px;font-weight:600;white-space:nowrap;color:#2f3b4a}.leyenda-linea{display:inline-block;width:18px;height:2px;flex:0 0 18px}.leyenda-observado{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:6px;padding-top:5px;border-top:1px solid #e1e6ec;font-size:10px;font-weight:700;color:#1f2937;font-family:var(--font)}.leyenda-observado-linea{display:block;width:30px;height:3px;background:#111}
 .estadisticos-bloque{max-width:1040px;margin:0 auto 5px;padding:9px 10px 11px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff}.estadisticos-titulo{text-align:center;color:var(--navy);font-size:11px;font-weight:700;margin-bottom:3px}.estadisticos-periodo{text-align:center;color:#6b7788;font-size:9px;margin-bottom:7px}.selector-umbral{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap;margin:1px 0 8px}.selector-umbral span{font-size:9px;font-weight:700;color:var(--navy);margin-right:2px}.selector-umbral button{border:1px solid var(--line);background:#fff;color:var(--muted);padding:4px 9px;border-radius:999px;font:600 9px var(--font);cursor:pointer}.selector-umbral button:hover{background:var(--accent);color:var(--navy);border-color:#aac4dd}.selector-umbral button.activo{background:var(--navy);color:#fff;border-color:var(--navy)}.estadisticos-tabla-wrap{width:100%;overflow-x:auto}.estadisticos-tabla{border-collapse:collapse;width:100%;table-layout:fixed;font-size:10px;text-align:center}.estadisticos-tabla th,.estadisticos-tabla td{border:1px solid #dfe4eb;padding:4px 4px;text-align:center;overflow-wrap:anywhere}.estadisticos-tabla th{background:var(--accent);color:var(--navy);font-weight:700}.estadisticos-tabla td:first-child{font-weight:700}.estadisticos-vacio{text-align:center;color:#718096;font-size:10px;padding:5px}
@@ -35,8 +35,8 @@
 <header class="masthead"><div class="masthead-scale"></div><div class="masthead-bar"><div class="marca"><strong>SENAMHI</strong><small>Subdirección de Cambio Climático y Modelamiento Atmosférico</small></div><nav class="nav"><a class="activo" data-seccion="pronosticos" href="#pronosticos">Pronósticos</a><a data-seccion="descripcion" href="#descripcion">Descripción</a></nav></div></header>
 <main class="contenedor" id="visor">
 <section class="cabecera"><h1>VERIFICACIÓN DE PRONÓSTICOS DE MODELOS ATMOSFÉRICOS</h1><p>Plataforma para la comparación y evaluación de pronósticos de temperatura y precipitación con observaciones de estaciones meteorológicas.</p><p>Modelos evaluados: GFS 0.25° (27 km), ECMWF 0.25° (27 km), ETA 5 km, WRF 5 km y MPAS 15 km.</p></section>
-<details class="panel-opciones" open><summary>Opciones de visualización</summary><div class="controles"><div class="grupo-control"><label class="titulo">Departamento</label><select id="departamentoSelect"></select></div><div class="grupo-control"><label class="titulo">Provincia</label><select id="provinciaSelect"></select></div><div class="grupo-control"><label class="titulo">Estación</label><select id="estacionSelect"></select></div><div class="grupo-control"><label class="titulo">Modelos</label><div class="modelos-checks"><label class="modelo-check"><input class="modelo-input" type="checkbox" value="gfs" checked><span class="indicador gfs"></span>GFS</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="ecmwf" checked><span class="indicador ecmwf"></span>ECMWF</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta5" checked><span class="indicador eta5"></span>ETA5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="wrf5" checked><span class="indicador wrf5"></span>WRF5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="mpas15" checked><span class="indicador mpas15"></span>MPAS15</label></div></div></div></details>
-<section class="panel-mapa"><h2 class="titulo-panel">Ubicación de estaciones</h2><div id="mapa"></div></section>
+<details class="panel-opciones" open><summary>Selección de estación</summary><div class="controles"><div class="grupo-control"><label class="titulo">Departamento</label><select id="departamentoSelect"></select></div><div class="grupo-control"><label class="titulo">Provincia</label><select id="provinciaSelect"></select></div><div class="grupo-control"><label class="titulo">Estación</label><select id="estacionSelect"></select></div></div></details>
+<section class="panel-mapa"><h2 class="titulo-panel">Ubicación de estaciones</h2><div id="mapa"></div></section><section class="panel-pronostico"><div class="grupo-pronostico"><div class="titulo-pronostico">MODELOS</div><div class="modelos-checks"><label class="modelo-check"><input class="modelo-input" type="checkbox" value="gfs" checked><span class="indicador gfs"></span>GFS</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="ecmwf" checked><span class="indicador ecmwf"></span>ECMWF</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta5" checked><span class="indicador eta5"></span>ETA5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="wrf5" checked><span class="indicador wrf5"></span>WRF5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="mpas15" checked><span class="indicador mpas15"></span>MPAS15</label></div></div><div class="grupo-pronostico"><div class="titulo-pronostico">INICIALIZACIÓN DEL PRONÓSTICO</div><div id="ciclosChecks" class="ciclos-checks"></div></div></section>
 <div class="selector-variable" id="pronosticos"><button id="btnTemperatura" class="activo" type="button" data-variable="temp">Temperatura</button><button id="btnPrecipitacion" type="button" data-variable="pp">Precipitación</button></div>
 <section class="panel-grafica vista-variable activa" id="vistaTemperatura"><div id="graficaTemperatura" class="grafica"></div><div id="leyendaTemperatura"></div><div id="estadisticosTemperatura"></div></section>
 <section class="panel-grafica vista-variable" id="vistaPrecipitacion"><div id="graficaPrecipitacion" class="grafica"></div><div id="leyendaPrecipitacion"></div><div id="estadisticosPrecipitacion"></div></section>
@@ -58,6 +58,8 @@ let cacheCSV={};
 let mapa=null;
 let capaEstaciones=null;
 let marcadores={};
+let ciclosSeleccionados=new Set();
+let selectorCiclosInicializado=false;
 
 const FORMATEADOR_PERU=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Lima",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
 const FORMATEADOR_DIA_PERU=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Lima",year:"numeric",month:"2-digit",day:"2-digit"});
@@ -230,6 +232,16 @@ document.querySelectorAll(".modelo-input").forEach(input=>{if(input.checked) sel
 return seleccionados;
 }
 
+function etiquetaCiclo(ciclo){return `${ciclo.slice(6,8)}/${ciclo.slice(4,6)} ${ciclo.slice(8,10)}Z`;}
+function ciclosDisponibles(){if(!manifiesto)return[];const activos=modelosSeleccionados();return Object.keys(manifiesto.ciclos).filter(ciclo=>activos.some(modelo=>manifiesto.ciclos[ciclo][modelo]&&manifiesto.ciclos[ciclo][modelo].length>0)).sort();}
+function actualizarSelectorCiclos(){
+const contenedor=document.getElementById("ciclosChecks"),disponibles=ciclosDisponibles();
+if(!selectorCiclosInicializado){ciclosSeleccionados=new Set(disponibles);selectorCiclosInicializado=true;}else ciclosSeleccionados=new Set([...ciclosSeleccionados].filter(ciclo=>disponibles.includes(ciclo)));
+if(disponibles.length===0){contenedor.innerHTML='<span class="sin-ciclos">Sin inicializaciones disponibles para los modelos seleccionados.</span>';return;}
+contenedor.innerHTML=disponibles.map(ciclo=>`<label class="ciclo-check"><input class="ciclo-input" type="checkbox" value="${ciclo}" ${ciclosSeleccionados.has(ciclo)?"checked":""}>${etiquetaCiclo(ciclo)}</label>`).join("");
+contenedor.querySelectorAll(".ciclo-input").forEach(input=>input.addEventListener("change",async()=>{if(input.checked)ciclosSeleccionados.add(input.value);else ciclosSeleccionados.delete(input.value);await actualizarGraficas();}));
+}
+
 function obtenerFila(datos,codigo){
 return datos.find(fila=>String(fila.codigo)===String(codigo));
 }
@@ -301,7 +313,7 @@ return trazas;
 
 async function crearTrazasModelos(variable,codigo){
 const activos=modelosSeleccionados();
-const ciclos=Object.keys(manifiesto.ciclos).sort();
+const ciclos=[...ciclosSeleccionados].sort();
 const grupos=await Promise.all(activos.map(modelo=>crearTrazasUnModelo(variable,codigo,modelo,ciclos)));
 return grupos.flat();
 }
@@ -463,7 +475,7 @@ await actualizarGraficas();
 });
 
 document.querySelectorAll(".modelo-input").forEach(input=>{
-input.addEventListener("change",actualizarGraficas);
+input.addEventListener("change",async()=>{actualizarSelectorCiclos();await actualizarGraficas();});
 });
 
 function activarNavegacion(id){document.querySelectorAll(".nav a").forEach(a=>a.classList.toggle("activo",a.dataset.seccion===id));}
@@ -476,6 +488,7 @@ try{
 iniciarMapa();
 await Promise.all([cargarManifiesto(),cargarEstaciones()]);
 actualizarMapa();
+actualizarSelectorCiclos();
 await actualizarGraficas();
 setTimeout(()=>mapa.invalidateSize(),100);
 }catch(error){
