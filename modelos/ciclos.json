@@ -1,46 +1,6 @@
 {
-  "actualizacion": "2026-09-24T04:50:09Z",
+  "actualizacion": "2026-09-24T11:23:27Z",
   "ciclos": {
-    "2026091800": {
-      "gfs": [
-        "temp",
-        "pp"
-      ],
-      "ecmwf": [
-        "temp",
-        "pp"
-      ],
-      "eta5": [
-        "temp",
-        "pp"
-      ],
-      "wrf5": [
-        "temp",
-        "pp"
-      ],
-      "mpas15": [
-        "temp",
-        "pp"
-      ]
-    },
-    "2026091812": {
-      "gfs": [
-        "temp",
-        "pp"
-      ],
-      "ecmwf": [
-        "temp",
-        "pp"
-      ],
-      "eta5": [
-        "temp",
-        "pp"
-      ],
-      "wrf5": [
-        "temp",
-        "pp"
-      ]
-    },
     "2026091900": {
       "gfs": [
         "temp",
@@ -225,6 +185,16 @@
     },
     "2026092312": {
       "gfs": [
+        "temp",
+        "pp"
+      ]
+    },
+    "2026092400": {
+      "gfs": [
+        "temp",
+        "pp"
+      ],
+      "wrf5": [
         "temp",
         "pp"
       ]
