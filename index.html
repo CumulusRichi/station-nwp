@@ -342,7 +342,7 @@ const color=colores[indiceColor],dia=ciclo.slice(6,8),mes=ciclo.slice(4,6);
 const meta={modelo:modelo,nombreModelo:MODELOS[modelo].nombre,ciclo:ciclo,etiqueta:`${dia}/${mes} ${hora}Z`,color:color};
 if(variable==="pp"){
 const segmentos=segmentosPrecipitacion(serie);
-trazas.push({x:segmentos.x,y:segmentos.y,type:"scatter",mode:"lines",line:{color:color,width:1,dash:"dot"},opacity:.45,hoverinfo:"skip",showlegend:false});
+trazas.push({x:segmentos.x,y:segmentos.y,type:"scatter",mode:"lines",line:{color:color,width:1,dash:"dot"},opacity:.70,hoverinfo:"skip",showlegend:false});
 trazas.push({x:serie.x,y:serie.y,type:"scatter",mode:"markers",name:`${dia}/${mes} ${hora}Z`,marker:{color:color,size:5,line:{color:"#ffffff",width:1}},connectgaps:false,hovertemplate:hoverModelo(variable,modelo,ciclo),showlegend:false,meta:meta});
 }else{
 trazas.push({x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:`${dia}/${mes} ${hora}Z`,line:{color:color,width:1.5},marker:{color:color,size:3},connectgaps:false,hovertemplate:hoverModelo(variable,modelo,ciclo),showlegend:false,meta:meta});
