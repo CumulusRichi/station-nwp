@@ -18,8 +18,8 @@
 .nav{display:flex;gap:5px;margin-left:auto}.nav a{padding:8px 14px;border-radius:999px;text-decoration:none;color:var(--muted);font-size:14px;font-weight:600}.nav a:hover{background:var(--accent);color:var(--navy)}.nav a.activo{background:var(--navy);color:white}
 .contenedor{width:96%;max-width:1500px;margin:18px auto 24px}.cabecera{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 28px}.cabecera h1{margin:0 0 8px;color:var(--navy);font-size:clamp(22px,3vw,31px);line-height:1.2}.cabecera p{margin:4px 0;color:var(--muted);font-size:13px}.cabecera .institucion{margin-top:10px;color:var(--navy-700);font-weight:600}
 .panel-opciones{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.panel-opciones summary{list-style:none;cursor:pointer;padding:13px 18px;color:var(--navy);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:space-between;user-select:none}.panel-opciones summary::-webkit-details-marker{display:none}.panel-opciones summary::after{content:"▾";font-size:15px;color:var(--blue);transition:transform .18s}.panel-opciones:not([open]) summary::after{transform:rotate(-90deg)}.panel-opciones[open] summary{border-bottom:1px solid var(--line)}
-.controles{padding:16px 18px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;background:#fff}.grupo-control{display:flex;flex-direction:column;gap:6px}.grupo-control label.titulo{font-size:12px;font-weight:700;color:var(--navy)}select{min-width:210px;padding:9px 11px;border:1px solid #b9c4d2;border-radius:var(--radius-sm);background:white;color:var(--ink);font-size:13px}select:focus{outline:3px solid rgb(11 107 184 / 18%);border-color:var(--blue)}#estacionSelect{min-width:300px}
-.panel-pronostico{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:13px 16px}.grupo-pronostico+.grupo-pronostico{margin-top:10px;padding-top:10px;border-top:1px solid #e7ebf0}.titulo-pronostico{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:7px}.modelos-checks,.ciclos-checks{display:flex;flex-wrap:wrap;gap:7px}.modelo-check,.ciclo-check{display:flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;cursor:pointer;user-select:none;font-size:11px;font-weight:600;color:var(--muted);transition:.15s}.modelo-check:hover,.ciclo-check:hover{border-color:#9fb2c9;color:var(--navy)}.modelo-check:has(input:checked),.ciclo-check:has(input:checked){background:var(--accent);border-color:#aac4dd;color:var(--navy)}.modelo-check input,.ciclo-check input{cursor:pointer;accent-color:var(--blue)}.indicador{width:9px;height:9px;border-radius:50%}.sin-ciclos{font-size:11px;color:#718096}
+.controles{padding:16px 18px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;background:#fff}.grupo-control{display:flex;flex-direction:column;gap:6px}.grupo-control label.titulo{font-size:12px;font-weight:700;color:var(--navy)}select{min-width:210px;padding:9px 11px;border:1px solid #b9c4d2;border-radius:var(--radius-sm);background:white;color:var(--ink);font-size:13px}select:focus{outline:3px solid rgb(11 107 184 / 18%);border-color:var(--blue)}#estacionSelect{min-width:300px}.btn-reset{margin-left:auto;padding:9px 14px;border:1px solid #b9c4d2;border-radius:var(--radius-sm);background:#fff;color:var(--navy);font:600 12px var(--font);cursor:pointer;transition:.15s}.btn-reset:hover{background:var(--accent);border-color:#9fb2c9}
+.panel-pronostico{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:13px 16px}.grupo-pronostico{text-align:center}.grupo-pronostico+.grupo-pronostico{margin-top:10px;padding-top:10px;border-top:1px solid #e7ebf0}.titulo-pronostico{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:7px}.modelos-checks,.ciclos-checks{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}.modelo-check,.ciclo-check{display:flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;cursor:pointer;user-select:none;font-size:11px;font-weight:600;color:var(--muted);transition:.15s}.modelo-check:hover,.ciclo-check:hover{border-color:#9fb2c9;color:var(--navy)}.modelo-check:has(input:checked),.ciclo-check:has(input:checked){background:var(--accent);border-color:#aac4dd;color:var(--navy)}.modelo-check input,.ciclo-check input{cursor:pointer;accent-color:var(--blue)}.indicador{width:9px;height:9px;border-radius:50%}.sin-ciclos{font-size:11px;color:#718096}
 .panel-mapa,.panel-grafica{background:var(--surface);border:1px solid var(--line);margin-top:16px;border-radius:var(--radius);box-shadow:var(--shadow)}.panel-mapa{padding:16px}.titulo-panel{margin:0 0 12px;color:var(--navy);font-size:16px;font-weight:700}#mapa{width:100%;height:380px;border:1px solid var(--line);border-radius:var(--radius-sm);z-index:1}.panel-grafica{padding:10px 14px 14px}.grafica{width:100%;height:600px}.mensaje-grafica{height:100%;display:flex;align-items:center;justify-content:center;color:#718096;font-size:14px}.selector-variable{display:flex;justify-content:center;gap:8px;margin:16px auto 0}.selector-variable button{border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:9px 18px;border-radius:999px;font:600 13px var(--font);cursor:pointer;transition:.18s}.selector-variable button:hover{background:var(--accent);color:var(--navy);border-color:#aac4dd}.selector-variable button.activo{background:var(--navy);color:#fff;border-color:var(--navy)}.vista-variable{display:none}.vista-variable.activa{display:block;animation:entradaVariable .24s ease}@keyframes entradaVariable{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
 .leyenda-pronosticos{max-width:1040px;margin:0 auto 6px;padding:7px 10px 8px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fafbfd}.leyenda-titulo{text-align:center;color:var(--navy);font-size:10px;font-weight:700;margin-bottom:5px}.leyenda-modelos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.leyenda-modelo{text-align:center;min-width:0}.leyenda-modelo-titulo{font-size:10px;font-weight:700;margin-bottom:3px;color:#1f2937}.leyenda-ciclos{display:flex;flex-wrap:wrap;justify-content:center;gap:3px 8px}.leyenda-ciclo{display:inline-flex;justify-content:center;align-items:center;gap:4px;min-height:12px;line-height:12px;font-size:8.5px;font-weight:600;white-space:nowrap;color:#2f3b4a}.leyenda-linea{display:inline-block;width:18px;height:2px;flex:0 0 18px}.leyenda-observado{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:6px;padding-top:5px;border-top:1px solid #e1e6ec;font-size:10px;font-weight:700;color:#1f2937;font-family:var(--font)}.leyenda-observado-linea{display:block;width:30px;height:3px;background:#111}
 .estadisticos-bloque{max-width:1040px;margin:0 auto 5px;padding:9px 10px 11px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff}.estadisticos-titulo{text-align:center;color:var(--navy);font-size:11px;font-weight:700;margin-bottom:3px}.estadisticos-periodo{text-align:center;color:#6b7788;font-size:9px;margin-bottom:7px}.selector-umbral{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap;margin:1px 0 8px}.selector-umbral span{font-size:9px;font-weight:700;color:var(--navy);margin-right:2px}.selector-umbral button{border:1px solid var(--line);background:#fff;color:var(--muted);padding:4px 9px;border-radius:999px;font:600 9px var(--font);cursor:pointer}.selector-umbral button:hover{background:var(--accent);color:var(--navy);border-color:#aac4dd}.selector-umbral button.activo{background:var(--navy);color:#fff;border-color:var(--navy)}.estadisticos-tabla-wrap{width:100%;overflow-x:auto}.estadisticos-tabla{border-collapse:collapse;width:100%;table-layout:fixed;font-size:10px;text-align:center}.estadisticos-tabla th,.estadisticos-tabla td{border:1px solid #dfe4eb;padding:4px 4px;text-align:center;overflow-wrap:anywhere}.estadisticos-tabla th{background:var(--accent);color:var(--navy);font-weight:700}.estadisticos-tabla td:first-child{font-weight:700}.estadisticos-vacio{text-align:center;color:#718096;font-size:10px;padding:5px}
@@ -27,7 +27,7 @@
 .notas{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.notas-titulo{padding:12px 16px;background:var(--navy);color:white;font-size:13px;font-weight:700}.notas-contenido{padding:12px 16px 14px}.descripcion-texto{margin:0 0 10px;color:var(--muted);font-size:11px;line-height:1.5}.tabla-modelos-wrap{overflow-x:auto;margin:8px 0 10px}.tabla-modelos{width:100%;border-collapse:collapse;font-size:10px;text-align:center;background:#fff}.tabla-modelos th,.tabla-modelos td{border:1px solid #dfe4eb;padding:6px 7px}.tabla-modelos th{background:var(--accent);color:var(--navy);font-weight:700}.tabla-modelos td:first-child{font-weight:700;color:var(--navy)}.notas-subtitulo{margin:10px 0 5px;color:var(--navy);font-size:11px;font-weight:700}.nota{display:flex;align-items:flex-start;gap:8px;margin:6px 0;line-height:1.45;font-size:11px;color:var(--muted)}.nota-numero{display:inline-flex;align-items:center;justify-content:center;flex:0 0 19px;width:19px;height:19px;background:var(--blue);color:white;border-radius:50%;font-size:9px;font-weight:700}
 .footer{background:var(--navy);color:#a9c0da;font-size:11px}.footer-scale{height:3px;background:linear-gradient(90deg,var(--yellow) 0%,var(--blue) 45%,#78aede 100%)}.footer-inner{width:96%;max-width:1500px;margin:auto;padding:10px 0;display:flex;align-items:center;gap:14px}.footer strong{color:white;letter-spacing:.12em}.footer span{margin-left:auto;text-align:right}
 @media(max-width:900px){.leyenda-modelos{grid-template-columns:repeat(3,minmax(0,1fr))}.masthead-bar{padding-inline:4%}.marca small{white-space:normal}}
-@media(max-width:800px){.masthead-bar{flex-wrap:wrap;gap:6px;padding-top:9px;padding-bottom:9px}.nav{width:100%;margin-left:0}.nav a{flex:1;text-align:center}.controles{flex-direction:column;align-items:stretch}select,#estacionSelect{width:100%;min-width:0}#mapa{height:330px}.grafica{height:560px}.footer-inner{align-items:flex-start;flex-direction:column}.footer span{margin-left:0;text-align:left}}
+@media(max-width:800px){.masthead-bar{flex-wrap:wrap;gap:6px;padding-top:9px;padding-bottom:9px}.nav{width:100%;margin-left:0}.nav a{flex:1;text-align:center}.controles{flex-direction:column;align-items:stretch}.btn-reset{margin-left:0}select,#estacionSelect{width:100%;min-width:0}#mapa{height:330px}.grafica{height:560px}.footer-inner{align-items:flex-start;flex-direction:column}.footer span{margin-left:0;text-align:left}}
 @media(max-width:650px){.leyenda-modelos{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.leyenda-pronosticos{padding:6px}.leyenda-ciclo{font-size:8px}.selector-variable{gap:6px}.selector-variable button{flex:1;max-width:180px;padding:9px 10px}.estadisticos-bloque{padding:8px 5px 9px}.estadisticos-tabla{font-size:8px}.estadisticos-tabla th,.estadisticos-tabla td{padding:3px 1px;line-height:1.12}.estadisticos-titulo{font-size:10px}.estadisticos-periodo{font-size:8px}.tabla-modelos{min-width:620px}}
 </style>
 </head>
@@ -35,7 +35,7 @@
 <header class="masthead"><div class="masthead-scale"></div><div class="masthead-bar"><div class="marca"><strong>SENAMHI</strong><small>Subdirección de Cambio Climático y Modelamiento Atmosférico</small></div><nav class="nav"><a class="activo" data-seccion="pronosticos" href="#pronosticos">Pronósticos</a><a data-seccion="descripcion" href="#descripcion">Descripción</a></nav></div></header>
 <main class="contenedor" id="visor">
 <section class="cabecera"><h1>VERIFICACIÓN DE PRONÓSTICOS DE MODELOS ATMOSFÉRICOS</h1><p>Plataforma para la comparación y evaluación de pronósticos de temperatura y precipitación con observaciones de estaciones meteorológicas.</p><p>Modelos evaluados: GFS 0.25° (27 km), ECMWF 0.25° (27 km), ETA 5 km, WRF 5 km y MPAS 15 km.</p></section>
-<details class="panel-opciones" open><summary>Selección de estación</summary><div class="controles"><div class="grupo-control"><label class="titulo">Departamento</label><select id="departamentoSelect"></select></div><div class="grupo-control"><label class="titulo">Provincia</label><select id="provinciaSelect"></select></div><div class="grupo-control"><label class="titulo">Estación</label><select id="estacionSelect"></select></div></div></details>
+<details class="panel-opciones" open><summary>Selección de estación</summary><div class="controles"><div class="grupo-control"><label class="titulo">Departamento</label><select id="departamentoSelect"></select></div><div class="grupo-control"><label class="titulo">Provincia</label><select id="provinciaSelect"></select></div><div class="grupo-control"><label class="titulo">Estación</label><select id="estacionSelect"></select></div><button id="btnResetEstacion" class="btn-reset" type="button">Restablecer</button></div></details>
 <section class="panel-mapa"><h2 class="titulo-panel">Ubicación de estaciones</h2><div id="mapa"></div></section><section class="panel-pronostico"><div class="grupo-pronostico"><div class="titulo-pronostico">MODELOS</div><div class="modelos-checks"><label class="modelo-check"><input class="modelo-input" type="checkbox" value="gfs" checked><span class="indicador gfs"></span>GFS</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="ecmwf" checked><span class="indicador ecmwf"></span>ECMWF</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta5" checked><span class="indicador eta5"></span>ETA5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="wrf5" checked><span class="indicador wrf5"></span>WRF5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="mpas15" checked><span class="indicador mpas15"></span>MPAS15</label></div></div><div class="grupo-pronostico"><div class="titulo-pronostico">INICIALIZACIÓN DEL PRONÓSTICO</div><div id="ciclosChecks" class="ciclos-checks"></div></div></section>
 <div class="selector-variable" id="pronosticos"><button id="btnTemperatura" class="activo" type="button" data-variable="temp">Temperatura</button><button id="btnPrecipitacion" type="button" data-variable="pp">Precipitación</button></div>
 <section class="panel-grafica vista-variable activa" id="vistaTemperatura"><div id="graficaTemperatura" class="grafica"></div><div id="leyendaTemperatura"></div><div id="estadisticosTemperatura"></div></section>
@@ -228,6 +228,13 @@ manifiesto=await respuesta.json();
 
 function modelosSeleccionados(){
 const seleccionados=[];
+document.getElementById("btnResetEstacion").addEventListener("click",async()=>{
+document.getElementById("departamentoSelect").value="";
+cargarProvincias();
+actualizarMapa();
+await actualizarGraficas();
+});
+
 document.querySelectorAll(".modelo-input").forEach(input=>{if(input.checked) seleccionados.push(input.value)});
 return seleccionados;
 }
@@ -265,11 +272,39 @@ return `<b>Hora local: %{x|%d/%m %H:%M}</b><br><b>OBSERVADO</b> (${valor})<extra
 }
 
 function hoverModelo(variable,modelo,ciclo){
-const dia=ciclo.slice(6,8);
-const mes=ciclo.slice(4,6);
-const hora=ciclo.slice(8,10);
+const dia=ciclo.slice(6,8),mes=ciclo.slice(4,6),hora=ciclo.slice(8,10);
 const valor=variable==="temp"?"%{y:.1f} °C":"%{y:.2f} mm";
 return `<b>Hora local: %{x|%d/%m %H:%M}</b><br><b>${MODELOS[modelo].nombre}</b> ${dia}/${mes} ${hora}Z (${valor})<extra></extra>`;
+}
+
+function textoModeloCoincidente(variable,traza,valor){
+const ciclo=traza.meta.ciclo,dia=ciclo.slice(6,8),mes=ciclo.slice(4,6),hora=ciclo.slice(8,10);
+const numero=variable==="temp"?Number(valor).toFixed(1)+" °C":Number(valor).toFixed(2)+" mm";
+return `<b>${MODELOS[traza.meta.modelo].nombre}</b> ${dia}/${mes} ${hora}Z (${numero})`;
+}
+
+function aplicarHoverCoincidencias(variable,trazas){
+const puntos=new Map();
+for(const traza of trazas){
+if(!traza.meta) continue;
+for(let i=0;i<traza.x.length;i++){
+const y=traza.y[i];
+if(y===null||y===undefined||Number.isNaN(y)) continue;
+const clave=`${traza.x[i]}|${Number(y)}`;
+if(!puntos.has(clave)) puntos.set(clave,[]);
+puntos.get(clave).push({traza,indice:i});
+}}
+for(const traza of trazas){
+if(!traza.meta) continue;
+traza.hovertemplate=traza.x.map((x,i)=>{
+const y=traza.y[i];
+if(y===null||y===undefined||Number.isNaN(y)) return hoverModelo(variable,traza.meta.modelo,traza.meta.ciclo);
+const clave=`${x}|${Number(y)}`,coincidentes=puntos.get(clave)||[];
+const extras=coincidentes.filter(p=>p.traza!==traza).map(p=>textoModeloCoincidente(variable,p.traza,y));
+const base=hoverModelo(variable,traza.meta.modelo,traza.meta.ciclo).replace("<extra></extra>","");
+return `${base}${extras.length?"<br>"+extras.join("<br>"):""}<extra></extra>`;
+});
+}
 }
 
 async function crearTrazaObservada(variable,codigo){
@@ -277,45 +312,50 @@ const ruta=variable==="temp"?"observaciones/obs_temp.csv":"observaciones/obs_pp.
 const datos=await cargarCSV(ruta);
 const fila=obtenerFila(datos,codigo);
 const serie=filaASerie(fila);
-const linea=variable==="pp"?{color:"#111111",width:4,shape:"spline",smoothing:.45}:{color:"#111111",width:3};
-return{x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:"OBSERVADO",line:linea,marker:{color:"#111111",size:5},connectgaps:false,hovertemplate:hoverObservado(variable),showlegend:false};
+if(variable==="pp") return{x:serie.x,y:serie.y,type:"bar",name:"OBSERVADO",marker:{color:"#111111"},width:10800000,hovertemplate:hoverObservado(variable),showlegend:false};
+return{x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:"OBSERVADO",line:{color:"#111111",width:3},marker:{color:"#111111",size:5},connectgaps:false,hovertemplate:hoverObservado(variable),showlegend:false};
+}
+
+function segmentosPrecipitacion(serie){
+const x=[],y=[];
+for(let i=0;i<serie.x.length-1;i++){
+const y1=serie.y[i],y2=serie.y[i+1];
+if(y1===null||y2===null||y1===undefined||y2===undefined||Number.isNaN(y1)||Number.isNaN(y2)||(Number(y1)===0&&Number(y2)===0)) continue;
+x.push(serie.x[i],serie.x[i+1],null);
+y.push(y1,y2,null);
+}
+return{x,y};
 }
 
 async function crearTrazasUnModelo(variable,codigo,modelo,ciclos){
-const ciclosModelo=ciclos.filter(ciclo=>{
-const info=manifiesto.ciclos[ciclo];
-return info[modelo]&&info[modelo].includes(variable);
-});
+const ciclosModelo=ciclos.filter(ciclo=>{const info=manifiesto.ciclos[ciclo];return info[modelo]&&info[modelo].includes(variable);});
 const trazas=[];
 for(let i=0;i<ciclosModelo.length;i++){
-const ciclo=ciclosModelo[i];
-const hora=ciclo.slice(8,10);
-const archivo=`modelos/${ciclo}/${modelo}_${hora}_${variable}.csv`;
+const ciclo=ciclosModelo[i],hora=ciclo.slice(8,10),archivo=`modelos/${ciclo}/${modelo}_${hora}_${variable}.csv`;
 let datos;
 try{datos=await cargarCSV(archivo)}catch(error){console.warn(error);continue}
 const fila=obtenerFila(datos,codigo);
 if(!fila) continue;
-const serie=filaASerie(fila);
-const colores=MODELOS[modelo].colores;
+const serie=filaASerie(fila),colores=MODELOS[modelo].colores;
 const indiceColor=ciclosModelo.length===1?colores.length-2:Math.round(i*(colores.length-1)/(ciclosModelo.length-1));
-const dia=ciclo.slice(6,8);
-const mes=ciclo.slice(4,6);
-const linea=variable==="pp"?{color:colores[indiceColor],width:1.5,shape:"spline",smoothing:.45}:{color:colores[indiceColor],width:1.5};
-trazas.push({
-x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:`${dia}/${mes} ${hora}Z`,
-line:linea,marker:{color:colores[indiceColor],size:3},
-connectgaps:false,hovertemplate:hoverModelo(variable,modelo,ciclo),showlegend:false,
-meta:{modelo:modelo,nombreModelo:MODELOS[modelo].nombre,ciclo:ciclo,etiqueta:`${dia}/${mes} ${hora}Z`,color:colores[indiceColor]}
-});
-}
+const color=colores[indiceColor],dia=ciclo.slice(6,8),mes=ciclo.slice(4,6);
+const meta={modelo:modelo,nombreModelo:MODELOS[modelo].nombre,ciclo:ciclo,etiqueta:`${dia}/${mes} ${hora}Z`,color:color};
+if(variable==="pp"){
+const segmentos=segmentosPrecipitacion(serie);
+trazas.push({x:segmentos.x,y:segmentos.y,type:"scatter",mode:"lines",line:{color:color,width:1,dash:"dot"},opacity:.45,hoverinfo:"skip",showlegend:false});
+trazas.push({x:serie.x,y:serie.y,type:"scatter",mode:"markers",name:`${dia}/${mes} ${hora}Z`,marker:{color:color,size:5,line:{color:"#ffffff",width:1}},connectgaps:false,hovertemplate:hoverModelo(variable,modelo,ciclo),showlegend:false,meta:meta});
+}else{
+trazas.push({x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:`${dia}/${mes} ${hora}Z`,line:{color:color,width:1.5},marker:{color:color,size:3},connectgaps:false,hovertemplate:hoverModelo(variable,modelo,ciclo),showlegend:false,meta:meta});
+}}
 return trazas;
 }
 
 async function crearTrazasModelos(variable,codigo){
-const activos=modelosSeleccionados();
-const ciclos=[...ciclosSeleccionados].sort();
+const activos=modelosSeleccionados(),ciclos=[...ciclosSeleccionados].sort();
 const grupos=await Promise.all(activos.map(modelo=>crearTrazasUnModelo(variable,codigo,modelo,ciclos)));
-return grupos.flat();
+const trazas=grupos.flat();
+aplicarHoverCoincidencias(variable,trazas);
+return trazas;
 }
 
 function crearLeyendaPersonalizada(idContenedor,trazasModelos){
@@ -381,19 +421,39 @@ todas.sort();
 return[obs.length>0?obs[0]:todas[0],todas[todas.length-1]];
 }
 
+function fechaISOdiaUTC(ms){
+const d=new Date(ms),y=d.getUTCFullYear(),m=String(d.getUTCMonth()+1).padStart(2,"0"),dia=String(d.getUTCDate()).padStart(2,"0");
+return `${y}-${m}-${dia}`;
+}
+
+function configurarDias(layout,rango){
+if(!rango) return;
+const inicio=Date.parse(`${rango[0].slice(0,10)}T00:00:00Z`),fin=Date.parse(`${rango[1].slice(0,10)}T00:00:00Z`);
+const tickvals=[],ticktext=[],shapes=[];
+for(let t=inicio;t<=fin;t+=86400000){
+const fecha=fechaISOdiaUTC(t),partes=fecha.split("-");
+tickvals.push(`${fecha}T12:00:00`);
+ticktext.push(`${partes[2]}/${partes[1]}`);
+shapes.push({type:"line",xref:"x",yref:"paper",x0:`${fecha}T00:00:00`,x1:`${fecha}T00:00:00`,y0:0,y1:1,line:{color:"#cfd6df",width:1,dash:"dot"},layer:"below"});
+}
+const limiteFinal=fechaISOdiaUTC(fin+86400000);
+shapes.push({type:"line",xref:"x",yref:"paper",x0:`${limiteFinal}T00:00:00`,x1:`${limiteFinal}T00:00:00`,y0:0,y1:1,line:{color:"#cfd6df",width:1,dash:"dot"},layer:"below"});
+layout.xaxis.tickmode="array";
+layout.xaxis.tickvals=tickvals;
+layout.xaxis.ticktext=ticktext;
+layout.xaxis.tickangle=0;
+layout.shapes=shapes;
+}
+
 function crearLayout(titulo,unidad,rango){
 const xaxis={
-title:{text:"Fecha"},type:"date",tickformat:"%d/%m",hoverformat:"%d/%m/%Y %H:%M",
-showgrid:true,gridcolor:"#edf0f4",linecolor:"#8492a6",zeroline:false,
+title:{text:"Fecha"},type:"date",hoverformat:"%d/%m/%Y %H:%M",
+showgrid:false,linecolor:"#8492a6",zeroline:false,
 showspikes:true,spikemode:"across",spikesnap:"cursor",spikedash:"dot",spikecolor:"#90a4ae",
 rangeslider:{visible:false}
 };
-if(rango){
-xaxis.range=rango;
-xaxis.minallowed=rango[0];
-xaxis.maxallowed=rango[1];
-}
-return{
+if(rango){xaxis.range=rango;xaxis.minallowed=rango[0];xaxis.maxallowed=rango[1];}
+const layout={
 title:{text:titulo,x:.5,xanchor:"center",font:{size:17,color:"#10254d"}},
 margin:{l:70,r:30,t:70,b:75},
 paper_bgcolor:"white",plot_bgcolor:"white",
@@ -404,6 +464,8 @@ xaxis:xaxis,
 yaxis:{title:{text:unidad},showgrid:true,gridcolor:"#e4e8ed",linecolor:"#8492a6",zeroline:false},
 showlegend:false
 };
+configurarDias(layout,rango);
+return layout;
 }
 
 const CONFIG_PLOTLY={responsive:true,displaylogo:false,scrollZoom:true};
@@ -442,7 +504,7 @@ document.getElementById("graficaTemperatura").innerHTML="";
 document.getElementById("graficaPrecipitacion").innerHTML="";
 await Promise.all([
 Plotly.newPlot("graficaTemperatura",[...modelosTemp,obsTemp],layoutTemp,CONFIG_PLOTLY),
-Plotly.newPlot("graficaPrecipitacion",[...modelosPP,obsPP],layoutPP,CONFIG_PLOTLY)
+Plotly.newPlot("graficaPrecipitacion",[obsPP,...modelosPP],layoutPP,CONFIG_PLOTLY)
 ]);
 crearLeyendaPersonalizada("leyendaTemperatura",modelosTemp);
 crearLeyendaPersonalizada("leyendaPrecipitacion",modelosPP);
