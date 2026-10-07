@@ -1,5 +1,5 @@
 {
-  "actualizacion": "2026-10-07T14:50:27Z",
+  "actualizacion": "2026-10-07T18:49:23Z",
   "ciclos": {
     "2026100200": {
       "gfs": [
@@ -130,6 +130,10 @@
         "temp",
         "pp"
       ],
+      "eta5": [
+        "temp",
+        "pp"
+      ],
       "wrf5": [
         "temp",
         "pp"
@@ -166,6 +170,10 @@
         "temp",
         "pp"
       ],
+      "eta5": [
+        "temp",
+        "pp"
+      ],
       "wrf5": [
         "temp",
         "pp"
@@ -195,6 +203,10 @@
         "pp"
       ],
       "ecmwf": [
+        "temp",
+        "pp"
+      ],
+      "eta5": [
         "temp",
         "pp"
       ],
