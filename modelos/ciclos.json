@@ -1,5 +1,5 @@
 {
-  "actualizacion": "2026-10-09T14:50:25Z",
+  "actualizacion": "2026-10-09T22:50:27Z",
   "ciclos": {
     "2026100400": {
       "gfs": [
@@ -202,11 +202,25 @@
         "temp",
         "pp"
       ],
+      "eta5": [
+        "temp",
+        "pp"
+      ],
       "wrf5": [
         "temp",
         "pp"
       ],
       "mpas15": [
+        "temp",
+        "pp"
+      ]
+    },
+    "2026100912": {
+      "gfs": [
+        "temp",
+        "pp"
+      ],
+      "wrf5": [
         "temp",
         "pp"
       ]
