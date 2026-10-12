@@ -37,7 +37,7 @@
 <section class="cabecera"><h1>VERIFICACIÓN DE PRONÓSTICOS DE MODELOS ATMOSFÉRICOS</h1><p>Plataforma para la comparación y evaluación de pronósticos de temperatura y precipitación con observaciones de estaciones meteorológicas.</p><p>Modelos evaluados: GFS 0.25° (27 km), ECMWF 0.25° (27 km), ETA 5 km, WRF 5 km y MPAS 15 km.</p></section>
 <details class="panel-opciones" open><summary>Selección de estación</summary><div class="controles"><div class="grupo-control"><label class="titulo">Departamento</label><select id="departamentoSelect"></select></div><div class="grupo-control"><label class="titulo">Provincia</label><select id="provinciaSelect"></select></div><div class="grupo-control"><label class="titulo">Estación</label><select id="estacionSelect"></select></div><button id="btnResetEstacion" class="btn-reset" type="button">Restablecer</button></div></details>
 <section class="panel-mapa"><h2 class="titulo-panel">Ubicación de estaciones</h2><div id="mapa"></div></section><section class="panel-pronostico"><div class="grupo-pronostico"><div class="titulo-pronostico">MODELOS</div><div class="modelos-checks"><label class="modelo-check"><input class="modelo-input" type="checkbox" value="gfs" checked><span class="indicador gfs"></span>GFS</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="ecmwf" checked><span class="indicador ecmwf"></span>ECMWF</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta5" checked><span class="indicador eta5"></span>ETA5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="wrf5" checked><span class="indicador wrf5"></span>WRF5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="mpas15" checked><span class="indicador mpas15"></span>MPAS15</label></div></div><div class="grupo-pronostico"><div class="titulo-pronostico">INICIALIZACIÓN DEL PRONÓSTICO</div><div id="ciclosChecks" class="ciclos-checks"></div></div></section>
-<div class="selector-variable" id="pronosticos"><button id="btnTemperatura" class="activo" type="button" data-variable="temp">Temperatura</button><button id="btnPrecipitacion" type="button" data-variable="pp">Precipitación</button></div>
+<div class="selector-variable" id="pronosticos"><button id="btnTemperatura" class="activo" type="button" data-variable="t2m">Temperatura</button><button id="btnPrecipitacion" type="button" data-variable="pp6h">Precipitación</button></div>
 <section class="panel-grafica vista-variable activa" id="vistaTemperatura"><div id="graficaTemperatura" class="grafica"></div><div id="leyendaTemperatura"></div><div id="estadisticosTemperatura"></div></section>
 <section class="panel-grafica vista-variable" id="vistaPrecipitacion"><div id="graficaPrecipitacion" class="grafica"></div><div id="leyendaPrecipitacion"></div><div id="estadisticosPrecipitacion"></div></section>
 <section class="notas" id="descripcion"><div class="notas-titulo">Descripción y notas del producto</div><div class="notas-contenido"><p class="descripcion-texto">La plataforma compara pronósticos de modelos atmosféricos con observaciones de estaciones meteorológicas. La temperatura se presenta con la resolución temporal disponible de cada modelo y la precipitación como acumulados cada 6 horas. Los estadísticos permiten evaluar el desempeño reciente por estación y modelo; la correlación mostrada corresponde al coeficiente de Spearman.</p><div class="tabla-modelos-wrap"><table class="tabla-modelos"><thead><tr><th>MODELO</th><th>RESOLUCIÓN ESPACIAL</th><th>SALIDA TEMPORAL</th><th>CICLOS USADOS</th></tr></thead><tbody><tr><td>GFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ECMWF / IFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ETA5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>WRF5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>MPAS15</td><td>15 km</td><td>3 h</td><td>00 UTC</td></tr></tbody></table></div><div class="notas-subtitulo">Notas del producto</div><div class="nota"><span class="nota-numero">1</span><span>Las observaciones corresponden a estaciones meteorológicas y se actualizan automáticamente cada hora. Los pronósticos se incorporan conforme se encuentran disponibles los nuevos ciclos de los modelos.</span></div><div class="nota"><span class="nota-numero">2</span><span>Los estadísticos se calculan para los últimos 30 días completos y para el pronóstico a un día. En temperatura se evalúan comparaciones cada 3 horas; en precipitación se evalúan acumulados cada 6 horas. Nº datos corresponde al total de comparaciones válidas pronóstico-observación utilizadas.</span></div><div class="nota"><span class="nota-numero">3</span><span>Para precipitación, los umbrales de 0.1, 1, 5 y 25 mm acumulados en 6 horas definen los eventos evaluados. POD mide la proporción de eventos observados detectados; FAR, la proporción de eventos pronosticados que no ocurrieron; y CSI, el desempeño considerando aciertos, falsas alarmas y eventos no detectados. Nº eventos indica cuántos intervalos observados alcanzaron o superaron el umbral seleccionado.</span></div></div></section>
@@ -99,12 +99,12 @@ return `${cadena.slice(6,8)}/${cadena.slice(4,6)}/${cadena.slice(0,4)}`;
 }
 
 async function cargarEstaciones(){
-const [metadata,obsTemp,obsPP]=await Promise.all([
+const [metadata,obsT2m,obsPP6h]=await Promise.all([
 cargarCSV("observaciones/metadata.csv"),
-cargarCSV("observaciones/obs_temp.csv"),
-cargarCSV("observaciones/obs_pp.csv")
+cargarCSV("observaciones/obs_t2m.csv"),
+cargarCSV("observaciones/obs_pp6h.csv")
 ]);
-const codigosDisponibles=new Set([...obsTemp.map(f=>String(f.codigo)),...obsPP.map(f=>String(f.codigo))]);
+const codigosDisponibles=new Set([...obsT2m.map(f=>String(f.codigo)),...obsPP6h.map(f=>String(f.codigo))]);
 estaciones=metadata.filter(f=>codigosDisponibles.has(String(f.codigo))).map(f=>({
 codigo:String(f.codigo),estacion:f.estacion,departamento:f.departamento,provincia:f.provincia,
 latitud:parseFloat(f.latitud),longitud:parseFloat(f.longitud)
@@ -267,19 +267,19 @@ return{x,y};
 }
 
 function hoverObservado(variable){
-const valor=variable==="temp"?"%{y:.1f} °C":"%{y:.2f} mm";
+const valor=variable==="t2m"?"%{y:.1f} °C":"%{y:.2f} mm";
 return `<b>Hora local: %{x|%d/%m %H:%M}</b><br><b>OBSERVADO</b> (${valor})<extra></extra>`;
 }
 
 function hoverModelo(variable,modelo,ciclo){
 const dia=ciclo.slice(6,8),mes=ciclo.slice(4,6),hora=ciclo.slice(8,10);
-const valor=variable==="temp"?"%{y:.1f} °C":"%{y:.2f} mm";
+const valor=variable==="t2m"?"%{y:.1f} °C":"%{y:.2f} mm";
 return `<b>Hora local: %{x|%d/%m %H:%M}</b><br><b>${MODELOS[modelo].nombre}</b> ${dia}/${mes} ${hora}Z (${valor})<extra></extra>`;
 }
 
 function textoModeloCoincidente(variable,traza,valor){
 const ciclo=traza.meta.ciclo,dia=ciclo.slice(6,8),mes=ciclo.slice(4,6),hora=ciclo.slice(8,10);
-const numero=variable==="temp"?Number(valor).toFixed(1)+" °C":Number(valor).toFixed(2)+" mm";
+const numero=variable==="t2m"?Number(valor).toFixed(1)+" °C":Number(valor).toFixed(2)+" mm";
 return `<b>${MODELOS[traza.meta.modelo].nombre}</b> ${dia}/${mes} ${hora}Z (${numero})`;
 }
 
@@ -308,11 +308,11 @@ return `${base}${extras.length?"<br>"+extras.join("<br>"):""}<extra></extra>`;
 }
 
 async function crearTrazaObservada(variable,codigo){
-const ruta=variable==="temp"?"observaciones/obs_temp.csv":"observaciones/obs_pp.csv";
+const ruta=variable==="t2m"?"observaciones/obs_t2m.csv":"observaciones/obs_pp6h.csv";
 const datos=await cargarCSV(ruta);
 const fila=obtenerFila(datos,codigo);
 const serie=filaASerie(fila);
-if(variable==="pp") return{x:serie.x,y:serie.y,type:"bar",name:"OBSERVADO",marker:{color:"#111111"},width:10800000,hovertemplate:hoverObservado(variable),showlegend:false};
+if(variable==="pp6h") return{x:serie.x,y:serie.y,type:"bar",name:"OBSERVADO",marker:{color:"#111111"},width:10800000,hovertemplate:hoverObservado(variable),showlegend:false};
 return{x:serie.x,y:serie.y,type:"scatter",mode:"lines+markers",name:"OBSERVADO",line:{color:"#111111",width:3},marker:{color:"#111111",size:5},connectgaps:false,hovertemplate:hoverObservado(variable),showlegend:false};
 }
 
@@ -340,7 +340,7 @@ const serie=filaASerie(fila),colores=MODELOS[modelo].colores;
 const indiceColor=ciclosModelo.length===1?colores.length-2:Math.round(i*(colores.length-1)/(ciclosModelo.length-1));
 const color=colores[indiceColor],dia=ciclo.slice(6,8),mes=ciclo.slice(4,6);
 const meta={modelo:modelo,nombreModelo:MODELOS[modelo].nombre,ciclo:ciclo,etiqueta:`${dia}/${mes} ${hora}Z`,color:color};
-if(variable==="pp"){
+if(variable==="pp6h"){
 const segmentos=segmentosPrecipitacion(serie);
 trazas.push({x:segmentos.x,y:segmentos.y,type:"scatter",mode:"lines",line:{color:color,width:1,dash:"dot"},opacity:.70,hoverinfo:"skip",showlegend:false});
 trazas.push({x:serie.x,y:serie.y,type:"scatter",mode:"markers",name:`${dia}/${mes} ${hora}Z`,marker:{color:color,size:5,line:{color:"#ffffff",width:1}},connectgaps:false,hovertemplate:hoverModelo(variable,modelo,ciclo),showlegend:false,meta:meta});
@@ -394,11 +394,11 @@ if(filas.length>0) periodo=`Periodo evaluado: ${fechaCorta(filas[0].periodo_inic
 let html=`<div class="estadisticos-bloque"><div class="estadisticos-titulo">DESEMPEÑO ÚLTIMOS 30 DÍAS · PRONÓSTICO A 1 DÍA</div>`;
 if(periodo) html+=`<div class="estadisticos-periodo">${periodo}</div>`;
 if(filas.length===0){html+=`<div class="estadisticos-vacio">Sin estadísticos disponibles para esta estación.</div></div>`;contenedor.innerHTML=html;return;}
-if(variable==="pp"){
+if(variable==="pp6h"){
 html+=`<div class="selector-umbral"><span>UMBRAL:</span>${UMBRALES_PP_WEB.map(([clave,etiqueta])=>`<button type="button" data-umbral="${clave}" class="${clave===umbralPPSeleccionado?"activo":""}">${etiqueta}</button>`).join("")}</div>`;
 html+=`<div class="estadisticos-tabla-wrap"><table class="estadisticos-tabla"><thead><tr><th>MODELO</th><th>BIAS</th><th>RMSE</th><th>CORRELACIÓN</th><th>NºDATOS</th><th>POD</th><th>FAR</th><th>CSI</th><th>NºEVENTOS</th></tr></thead><tbody>`;
 for(const modelo of activos){const fila=filas.find(f=>String(f.modelo)===modelo);if(!fila) continue;const n=parseInt(fila.n,10);const eventos=parseInt(fila[`eventos_${umbralPPSeleccionado}`],10);html+=`<tr><td>${MODELOS[modelo].nombre}</td><td>${valorEstadistico(fila.bias)}${fila.bias==="S/D"?"":" mm"}</td><td>${valorEstadistico(fila.rmse)}${fila.rmse==="S/D"?"":" mm"}</td><td>${valorEstadistico(fila.spearman)}</td><td>${Number.isFinite(n)?n:0}</td><td>${valorEstadistico(fila[`pod_${umbralPPSeleccionado}`],3)}</td><td>${valorEstadistico(fila[`far_${umbralPPSeleccionado}`],3)}</td><td>${valorEstadistico(fila[`csi_${umbralPPSeleccionado}`],3)}</td><td>${Number.isFinite(eventos)?eventos:0}</td></tr>`;}
-html+=`</tbody></table></div></div>`;contenedor.innerHTML=html;contenedor.querySelectorAll("[data-umbral]").forEach(boton=>boton.addEventListener("click",()=>{umbralPPSeleccionado=boton.dataset.umbral;crearTablaEstadisticos("pp",codigo,idContenedor);}));return;
+html+=`</tbody></table></div></div>`;contenedor.innerHTML=html;contenedor.querySelectorAll("[data-umbral]").forEach(boton=>boton.addEventListener("click",()=>{umbralPPSeleccionado=boton.dataset.umbral;crearTablaEstadisticos("pp6h",codigo,idContenedor);}));return;
 }
 html+=`<div class="estadisticos-tabla-wrap"><table class="estadisticos-tabla"><thead><tr><th>MODELO</th><th>BIAS</th><th>MAE</th><th>RMSE</th><th>CORRELACIÓN</th><th>NºDATOS</th></tr></thead><tbody>`;
 for(const modelo of activos){const fila=filas.find(f=>String(f.modelo)===modelo);if(!fila) continue;const n=parseInt(fila.n,10);html+=`<tr><td>${MODELOS[modelo].nombre}</td><td>${valorEstadistico(fila.bias)}${fila.bias==="S/D"?"":" °C"}</td><td>${valorEstadistico(fila.mae)}${fila.mae==="S/D"?"":" °C"}</td><td>${valorEstadistico(fila.rmse)}${fila.rmse==="S/D"?"":" °C"}</td><td>${valorEstadistico(fila.spearman)}</td><td>${Number.isFinite(n)?n:0}</td></tr>`;}
@@ -487,30 +487,30 @@ if(!codigo){mostrarSinEstacion();return}
 const estacion=estaciones.find(e=>String(e.codigo)===String(codigo));
 if(!estacion) return;
 try{
-const [obsTemp,modelosTemp,obsPP,modelosPP]=await Promise.all([
-crearTrazaObservada("temp",codigo),
-crearTrazasModelos("temp",codigo),
-crearTrazaObservada("pp",codigo),
-crearTrazasModelos("pp",codigo)
+const [obsT2m,modelosT2m,obsPP6h,modelosPP6h]=await Promise.all([
+crearTrazaObservada("t2m",codigo),
+crearTrazasModelos("t2m",codigo),
+crearTrazaObservada("pp6h",codigo),
+crearTrazasModelos("pp6h",codigo)
 ]);
-const rangoTemp=rangoTemporal(obsTemp,modelosTemp);
-const rangoPP=rangoTemporal(obsPP,modelosPP);
-const layoutTemp=crearLayout("Temperatura del aire a 2 m","Temperatura (°C)",rangoTemp);
-const layoutPP=crearLayout("Precipitación acumulada cada 6 horas","Precipitación (mm / 6 h)",rangoPP);
-layoutPP.yaxis.rangemode="tozero";
+const rangoT2m=rangoTemporal(obsT2m,modelosT2m);
+const rangoPP6h=rangoTemporal(obsPP6h,modelosPP6h);
+const layoutT2m=crearLayout("Temperatura del aire a 2 m","Temperatura (°C)",rangoT2m);
+const layoutPP6h=crearLayout("Precipitación acumulada cada 6 horas","Precipitación (mm / 6 h)",rangoPP6h);
+layoutPP6h.yaxis.rangemode="tozero";
 Plotly.purge("graficaTemperatura");
 Plotly.purge("graficaPrecipitacion");
 document.getElementById("graficaTemperatura").innerHTML="";
 document.getElementById("graficaPrecipitacion").innerHTML="";
 await Promise.all([
-Plotly.newPlot("graficaTemperatura",[...modelosTemp,obsTemp],layoutTemp,CONFIG_PLOTLY),
-Plotly.newPlot("graficaPrecipitacion",[obsPP,...modelosPP],layoutPP,CONFIG_PLOTLY)
+Plotly.newPlot("graficaTemperatura",[...modelosT2m,obsT2m],layoutT2m,CONFIG_PLOTLY),
+Plotly.newPlot("graficaPrecipitacion",[obsPP6h,...modelosPP6h],layoutPP6h,CONFIG_PLOTLY)
 ]);
-crearLeyendaPersonalizada("leyendaTemperatura",modelosTemp);
-crearLeyendaPersonalizada("leyendaPrecipitacion",modelosPP);
+crearLeyendaPersonalizada("leyendaTemperatura",modelosT2m);
+crearLeyendaPersonalizada("leyendaPrecipitacion",modelosPP6h);
 await Promise.all([
-crearTablaEstadisticos("temp",codigo,"estadisticosTemperatura"),
-crearTablaEstadisticos("pp",codigo,"estadisticosPrecipitacion")
+crearTablaEstadisticos("t2m",codigo,"estadisticosTemperatura"),
+crearTablaEstadisticos("pp6h",codigo,"estadisticosPrecipitacion")
 ]);
 }catch(error){
 console.error(error);
@@ -541,10 +541,10 @@ input.addEventListener("change",async()=>{actualizarSelectorCiclos();await actua
 });
 
 function activarNavegacion(id){document.querySelectorAll(".nav a").forEach(a=>a.classList.toggle("activo",a.dataset.seccion===id));}
-function mostrarVariable(variable){const temp=variable==="temp";document.getElementById("btnTemperatura").classList.toggle("activo",temp);document.getElementById("btnPrecipitacion").classList.toggle("activo",!temp);document.getElementById("vistaTemperatura").classList.toggle("activa",temp);document.getElementById("vistaPrecipitacion").classList.toggle("activa",!temp);activarNavegacion("pronosticos");const grafica=temp?"graficaTemperatura":"graficaPrecipitacion";setTimeout(()=>Plotly.Plots.resize(document.getElementById(grafica)),60);}
+function mostrarVariable(variable){const esT2m=variable==="t2m";document.getElementById("btnTemperatura").classList.toggle("activo",esT2m);document.getElementById("btnPrecipitacion").classList.toggle("activo",!esT2m);document.getElementById("vistaTemperatura").classList.toggle("activa",esT2m);document.getElementById("vistaPrecipitacion").classList.toggle("activa",!esT2m);activarNavegacion("pronosticos");const grafica=esT2m?"graficaTemperatura":"graficaPrecipitacion";setTimeout(()=>Plotly.Plots.resize(document.getElementById(grafica)),60);}
 document.querySelectorAll(".nav a").forEach(a=>a.addEventListener("click",()=>activarNavegacion(a.dataset.seccion)));
-document.getElementById("btnTemperatura").addEventListener("click",()=>mostrarVariable("temp"));
-document.getElementById("btnPrecipitacion").addEventListener("click",()=>mostrarVariable("pp"));
+document.getElementById("btnTemperatura").addEventListener("click",()=>mostrarVariable("t2m"));
+document.getElementById("btnPrecipitacion").addEventListener("click",()=>mostrarVariable("pp6h"));
 async function iniciar(){
 try{
 iniciarMapa();
