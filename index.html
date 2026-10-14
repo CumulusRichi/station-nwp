@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verificación de Pronósticos de Modelos Atmosféricos</title>
+<title>NWP-STATION · SENAMHI</title>
+<meta name="description" content="Pronósticos de modelos atmosféricos, observaciones de estaciones y evaluación de su desempeño. NWP-STATION · SENAMHI.">
 <script src="https://cdn.plot.ly/plotly-3.1.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -33,24 +34,37 @@
 .selector-variable{flex-wrap:wrap}.mapa-leyenda{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;color:var(--muted);font-size:11px}.mapa-leyenda span{display:inline-flex;align-items:center;gap:6px}.punto-red{display:inline-block;width:11px;height:11px;border-radius:50%}.nota-diaria{text-align:center;color:var(--muted);font-size:11px;margin:0 10px 12px;line-height:1.5}.popup-estacion{display:block;width:100%;margin:6px 0;padding:7px 9px;border:1px solid var(--line);border-radius:6px;background:white;text-align:left;cursor:pointer;font:12px var(--font);color:var(--ink)}.popup-estacion:hover{background:var(--accent)}.icono-grupo{background:none;border:none}.grupo-marcadores{display:flex;align-items:center;justify-content:center;gap:3px;min-height:22px}.grupo-marcadores span{width:13px;height:13px;flex:0 0 13px;border:2px solid white;border-radius:50%;box-shadow:0 0 0 1px #42526b}.grupo-marcadores span.seleccionado{box-shadow:0 0 0 3px #f4c430}.mensaje-diario{font-size:13px;text-align:center;color:#718096}
 .grupo-marcadores{gap:3px;min-height:14px}.grupo-marcadores span{width:7px;height:7px;flex-basis:7px;border-width:1.5px;box-shadow:none}
 .info-estacion{margin-top:14px;padding:11px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--muted);font-size:12px;line-height:1.6;overflow-wrap:anywhere}.info-estacion strong{color:var(--navy);font-size:13px}.info-estacion-datos{display:flex;flex-wrap:wrap;gap:3px 16px}.info-estacion-vacia{color:#718096}
+
+/* Identidad NWP-STATION y navegación principal. */
+[hidden]{display:none!important}body{background:#f2f5f7;color:#172b45}.contenedor{width:min(94%,1400px);margin:0 auto;min-height:calc(100vh - 158px);padding:0 0 48px}.pagina{padding-top:34px}.masthead{background:#fff;border:0;box-shadow:0 1px 0 #dce3e9}.masthead-bar{max-width:1460px;min-height:84px;padding:14px 3%;gap:24px}.masthead-scale{height:2px;background:linear-gradient(90deg,#0b2546,#378eac 72%,#c4af73)}.marca-plataforma{display:flex;align-items:center;gap:20px;color:var(--navy);text-decoration:none;min-width:0}.sello-senamhi{font-size:18px;font-weight:800;letter-spacing:.13em}.marca-separador{height:31px;width:1px;background:#d7dfe7}.marca-texto{display:flex;flex-direction:column;gap:4px}.marca-texto strong{font-size:17px;letter-spacing:.07em}.marca-texto small{font-size:10px;color:#61758a}.nav{gap:5px;flex-wrap:nowrap}.nav a{font-size:12px;padding:9px 15px}.nav a.activo{background:#102f50}.nav a:focus-visible,.tarjeta-inicio:focus-visible,.boton-portada:focus-visible{outline:3px solid #b29a57;outline-offset:4px}.saltar-contenido{position:absolute;top:-100px;left:10px;z-index:2000;background:#fff;color:#0b2546;padding:10px}.saltar-contenido:focus{top:10px}.sobretitulo{font-size:10px;font-weight:700;letter-spacing:.17em;color:#63798b;margin:0 0 14px}.portada{position:relative;overflow:hidden;border-radius:18px;background:#0c2947;display:grid;grid-template-columns:1.16fr 1fr;min-height:450px;color:#fff;isolation:isolate}.portada:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,#0a223c 5%,#103450 100%);z-index:-1}.portada-texto{padding:65px 0 52px 54px;position:relative;z-index:1}.portada .sobretitulo{color:#9bbacc;font-size:9px;letter-spacing:.17em}.portada h1{font-size:clamp(37px,5.5vw,78px);font-weight:650;line-height:1.05;margin:26px 0 20px;letter-spacing:-.055em;white-space:nowrap}.portada h1 span{color:#70b3bb}.portada-lema{font-size:clamp(19px,2.2vw,29px);line-height:1.3;font-weight:400;margin:0 0 17px;letter-spacing:-.025em;color:#f0f5f7}.portada-descripcion{max-width:450px;font-size:14px;line-height:1.75;color:#b8cbd8;margin:0 0 26px}.boton-portada{display:inline-flex;gap:30px;align-items:center;text-decoration:none;background:#fff;color:#0f304f;border:1px solid #fff;border-radius:7px;padding:12px 16px;font-weight:650;font-size:12px}.boton-portada:hover{background:#dcecf0}.boton-portada span{font-size:19px;line-height:1}.portada-modelos{display:flex;flex-wrap:wrap;gap:18px;margin-top:32px;color:#a4bfce;font-size:10px;letter-spacing:.06em;font-weight:600}.portada-arte{position:relative;display:flex;align-items:center;justify-content:center;padding:8px}.portada-arte svg{width:112%;max-width:650px;overflow:visible}.arte-pie{position:absolute;bottom:28px;color:#83a9bc;font-size:8px;letter-spacing:.23em}.introduccion-secciones{margin:42px 0 22px}.introduccion-secciones .sobretitulo{margin-bottom:9px}.introduccion-secciones h2{font-size:27px;font-weight:550;letter-spacing:-.025em;color:#17324e;margin:0}.tarjetas-inicio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.tarjeta-inicio{position:relative;padding:28px 26px 22px;background:#fff;border:1px solid #dce4ea;border-radius:12px;text-decoration:none;color:#1d3650;display:flex;flex-direction:column;min-height:248px;transition:border-color .18s,transform .18s}.tarjeta-inicio:hover{border-color:#8cafbf;transform:translateY(-3px)}.numero-tarjeta{font-size:9px;font-weight:650;letter-spacing:.12em;color:#7c8f9f}.tarjeta-inicio h3{font-size:25px;font-weight:550;margin:35px 0 10px;letter-spacing:-.025em}.tarjeta-inicio p{font-size:12px;line-height:1.7;color:#6a7b8c;margin:0 0 22px;max-width:290px}.pie-tarjeta{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11px;font-weight:650;margin-top:auto;padding-top:13px;border-top:1px solid #e4ebef}.pie-tarjeta span{font-size:20px;font-weight:400}.tarjeta-principal{border-top:3px solid #357c97}.icono-tarjeta{position:absolute;right:24px;top:19px;border:1px solid #d5e2e9;border-radius:50%;width:30px;height:30px;display:grid;place-items:center;font-size:20px}.estado-desarrollo{display:inline-flex;align-items:center;font-size:8px;font-weight:650;letter-spacing:.04em;padding:4px 8px;border:1px solid #e4ddd0;background:#f6f3ec;color:#8b794d;border-radius:20px;white-space:nowrap}.tarjeta-inicio>.estado-desarrollo{position:absolute;right:21px;top:23px}.notas{margin-top:32px;box-shadow:none}.notas-titulo{background:#fff;color:#17324e;font-size:16px;padding:22px 26px 4px}.notas-contenido{padding:12px 26px 25px}.descripcion-texto{font-size:12px;line-height:1.8;max-width:1000px}.tabla-modelos{font-size:11px;margin:17px 0}.tabla-modelos th,.tabla-modelos td{padding:9px}.notas-subtitulo{font-size:12px;margin-top:20px}.nota{font-size:11px;line-height:1.65}.nota-numero{background:#e8f0f4;color:#2e617a}.cabecera-seccion{padding:7px 0 13px}.cabecera-seccion h1{font-size:clamp(24px,3vw,37px);letter-spacing:-.04em;font-weight:550;margin:0 0 10px;color:#17324e}.cabecera-seccion>p:last-child{font-size:13px;color:#6a7e90;line-height:1.6;margin:0}.panel-opciones,.panel-mapa,.panel-pronostico,.panel-grafica{box-shadow:none}.panel-opciones{margin-top:13px}.panel-mapa{padding:18px}.titulo-panel{font-size:14px}.selector-variable{justify-content:flex-start;margin-top:20px;margin-bottom:3px}.selector-variable button{padding:10px 16px;font-size:11px}.panel-grafica{margin-top:12px}.info-estacion{margin-top:18px;border-left:3px solid #5b8ea2;padding:13px 17px}.mensaje-variables{margin:20px 0 0;padding:24px;color:#6e8090;text-align:center;font-size:13px;background:#fff;border:1px dashed #d2dfe6;border-radius:10px}.estado-visor{padding:12px;background:#e8f1f5;border-radius:8px;color:#3e647b;font-size:12px}.panel-futuro{margin:25px 0 30px;min-height:440px;padding:70px 24px;text-align:center;display:flex;align-items:center;flex-direction:column;background:#fff;border:1px solid #dce4ea;border-radius:16px}.panel-futuro h2{font-size:27px;font-weight:550;letter-spacing:-.025em;margin:22px 0 12px;color:#17324e}.panel-futuro p{max-width:480px;font-size:13px;line-height:1.8;color:#6a7e90;margin:0 0 25px}.enlace-texto{font-size:12px;color:#2f6f87;text-decoration:none;font-weight:650}.enlace-texto span{padding-left:12px}.simbolo-futuro{height:60px;margin-bottom:23px;display:flex;gap:5px;align-items:center;justify-content:center}.simbolo-mapa span{display:block;width:24px;height:48px;background:#edf3f5;border:1px solid #9bb7c3;transform:skewY(-13deg)}.simbolo-mapa span:nth-child(2){transform:skewY(13deg);background:#dce9ee}.simbolo-validacion{align-items:flex-end;gap:8px}.simbolo-validacion span{width:16px;height:25px;background:#dce9ee;border-top:2px solid #81a4b3}.simbolo-validacion span:nth-child(2){height:39px}.simbolo-validacion span:nth-child(3){height:48px}.simbolo-validacion span:nth-child(4){height:58px;background:#c4dbe5}.footer{background:#0c2947}.footer-inner{min-height:65px;padding:18px 0;font-size:10px;gap:18px}.footer strong{font-weight:650;letter-spacing:.08em}.estadisticos-bloque{margin-top:7px}.estadisticos-titulo{font-size:11px}.estadisticos-periodo{line-height:1.5}.grafica{height:560px}
+@media(min-width:1500px){.portada-texto{padding-left:65px}}
+@media(max-width:1050px){.marca-plataforma{gap:12px}.sello-senamhi{font-size:15px}.marca-texto strong{font-size:14px}.nav a{padding:9px 11px}.portada-texto{padding:48px 0 44px 35px}.portada{min-height:420px}.portada-descripcion{font-size:13px}.tarjeta-inicio{padding:25px 20px}.tarjeta-inicio>.estado-desarrollo{font-size:7px;right:14px}.tarjeta-inicio h3{margin-top:32px}}
+@media(max-width:800px){.masthead-bar{min-height:95px;padding:12px 3%;gap:12px}.marca-plataforma{width:100%}.marca-texto small{font-size:9px}.nav{width:100%;gap:3px}.nav a{padding:9px 6px;font-size:11px}.pagina{padding-top:23px}.contenedor{width:94%;padding-bottom:30px}.portada{grid-template-columns:1fr;min-height:0}.portada-texto{padding:34px 28px 28px}.portada h1{font-size:clamp(35px,8.7vw,65px);margin:23px 0 15px}.portada-lema{font-size:23px;max-width:400px}.portada-descripcion{max-width:440px}.portada-arte{position:absolute;width:48%;height:250px;right:-80px;bottom:-60px;opacity:.17;pointer-events:none;z-index:-1}.arte-pie{display:none}.portada-modelos{gap:14px;margin-top:28px;font-size:9px}.introduccion-secciones{margin:30px 0 17px}.introduccion-secciones h2{font-size:24px}.tarjetas-inicio{grid-template-columns:1fr;gap:12px}.tarjeta-inicio{min-height:0;padding:23px}.tarjeta-inicio h3{font-size:24px;margin:25px 0 9px}.tarjeta-inicio p{max-width:100%;margin-bottom:20px}.tarjeta-inicio>.estado-desarrollo{font-size:8px;right:22px}.notas-titulo{padding:20px 18px 3px}.notas-contenido{padding:12px 18px 22px}.tabla-modelos{font-size:10px;min-width:560px}.tabla-modelos th,.tabla-modelos td{padding:7px}.cabecera-seccion h1{font-size:28px}.selector-variable{justify-content:flex-start;gap:6px}.selector-variable button{font-size:10px;padding:9px 11px;flex:0 1 auto;max-width:none}.grafica{height:500px}.panel-grafica{padding:8px 5px 12px}.panel-futuro{min-height:400px;padding:60px 23px}.panel-futuro h2{font-size:24px}.footer-inner{gap:8px}.info-estacion-datos{gap:2px 12px}.info-estacion{font-size:11px}.estadisticos-titulo{font-size:9px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
-<header class="masthead"><div class="masthead-scale"></div><div class="masthead-bar"><div class="marca"><strong>SENAMHI</strong></div><nav class="nav"><a class="activo" data-seccion="pronosticos" href="#pronosticos">Pronósticos</a><a data-seccion="descripcion" href="#descripcion">Descripción</a></nav></div></header>
-<main class="contenedor" id="visor">
-<section class="cabecera"><h1>VERIFICACIÓN DE PRONÓSTICOS DE MODELOS ATMOSFÉRICOS</h1><p>Plataforma para la comparación y evaluación de pronósticos de temperatura y precipitación con observaciones de estaciones meteorológicas.</p><p>Modelos evaluados: GFS 0.25° (27 km), ECMWF 0.25° (27 km), ETA 5 km, WRF 5 km y MPAS 15 km.</p></section>
+<a class="saltar-contenido" href="#contenidoPrincipal">Ir al contenido</a>
+<header class="masthead"><div class="masthead-bar"><a class="marca-plataforma" href="#inicio" aria-label="NWP-STATION, inicio"><span class="sello-senamhi">SENAMHI</span><span class="marca-separador"></span><span class="marca-texto"><strong>NWP-STATION</strong><small>Modelos y observaciones</small></span></a><nav class="nav" aria-label="Navegación principal"><a class="activo" data-seccion="inicio" href="#inicio" aria-current="page">Inicio</a><a data-seccion="pronosticos" href="#pronosticos">Pronósticos</a><a data-seccion="mapas" href="#mapas">Mapas</a><a data-seccion="validacion" href="#validacion">Validación</a></nav></div><div class="masthead-scale"></div></header>
+<main class="contenedor" id="contenidoPrincipal" tabindex="-1">
+<section class="pagina pagina-activa" id="paginaInicio" data-pagina="inicio" aria-labelledby="tituloInicio"><div class="portada"><div class="portada-texto"><p class="sobretitulo">SENAMHI · MODELAMIENTO ATMOSFÉRICO</p><h1 id="tituloInicio">NWP<span>-</span>STATION</h1><p class="portada-lema">El pronóstico, frente a la observación.</p><p class="portada-descripcion">Explora los modelos atmosféricos, compáralos con estaciones meteorológicas y consulta su desempeño en el Perú.</p><a class="boton-portada" href="#pronosticos">Explorar pronósticos <span aria-hidden="true">↗</span></a><div class="portada-modelos"><span>GFS</span><span>ECMWF / IFS</span><span>ETA</span><span>WRF</span><span>MPAS</span></div></div><div class="portada-arte" aria-hidden="true"><svg viewBox="0 0 560 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><radialGradient id="orbitaColor"><stop stop-color="#1976aa" stop-opacity=".38"/><stop offset="1" stop-color="#1976aa" stop-opacity="0"/></radialGradient><linearGradient id="trazoColor"><stop stop-color="#56c6c3"/><stop offset="1" stop-color="#b9ddff"/></linearGradient></defs><circle cx="300" cy="210" r="198" fill="url(#orbitaColor)"/><g stroke="#6596b7" stroke-opacity=".25"><circle cx="300" cy="210" r="145"/><ellipse cx="300" cy="210" rx="78" ry="145"/><ellipse cx="300" cy="210" rx="145" ry="54"/><ellipse cx="300" cy="210" rx="145" ry="103"/><path d="M155 210h290M300 65v290"/><circle cx="300" cy="210" r="177" stroke-dasharray="2 9"/></g><g stroke="url(#trazoColor)" stroke-width="1.7"><path d="M71 265c58-95 92 42 141-49s84-127 133-55 77 77 148-59"/><path d="M65 296c72-92 108 36 151-43s72-103 122-53 103 39 165-53" opacity=".35"/><path d="m173 171 62-33 58 48 62-62 66 75-41 75-88 23-63-55Z" stroke-opacity=".4" stroke-width="1"/></g><g fill="#d5edef" stroke="#0f3355" stroke-width="4"><circle cx="173" cy="171" r="5"/><circle cx="235" cy="138" r="6"/><circle cx="293" cy="186" r="6"/><circle cx="355" cy="124" r="5"/><circle cx="421" cy="199" r="6"/><circle cx="380" cy="274" r="5"/><circle cx="292" cy="297" r="6"/><circle cx="229" cy="242" r="5"/></g><circle cx="293" cy="186" r="13" stroke="#57c3c4" stroke-opacity=".45"/><circle cx="380" cy="274" r="12" stroke="#d5b96f" stroke-opacity=".5"/></svg><span class="arte-pie">MODELOS · ESTACIONES · EVALUACIÓN</span></div></div><div class="introduccion-secciones"><p class="sobretitulo">EXPLORA LA PLATAFORMA</p><h2>Tres formas de mirar el pronóstico.</h2></div><div class="tarjetas-inicio"><a class="tarjeta-inicio tarjeta-principal" href="#pronosticos"><span class="numero-tarjeta">01 / ESTACIONES</span><span class="icono-tarjeta" aria-hidden="true">↗</span><h3>Pronósticos</h3><p>Series observadas y pronosticadas, por estación, variable e inicialización.</p><span class="pie-tarjeta">Abrir el comparador <span aria-hidden="true">→</span></span></a><a class="tarjeta-inicio" href="#mapas"><span class="numero-tarjeta">02 / TERRITORIO</span><span class="estado-desarrollo">En desarrollo</span><h3>Mapas</h3><p>La distribución espacial de los campos pronosticados por los modelos.</p><span class="pie-tarjeta">Conocer la sección <span aria-hidden="true">→</span></span></a><a class="tarjeta-inicio" href="#validacion"><span class="numero-tarjeta">03 / DESEMPEÑO</span><span class="estado-desarrollo">En desarrollo</span><h3>Validación</h3><p>Evaluación de los modelos según el día de pronóstico.</p><span class="pie-tarjeta">Conocer la sección <span aria-hidden="true">→</span></span></a></div><section class="notas" id="descripcion"><div class="notas-titulo">Acerca de NWP-STATION</div><div class="notas-contenido"><p class="descripcion-texto"><strong>NWP</strong> significa <em>Numerical Weather Prediction</em> (predicción numérica del tiempo) y <strong>STATION</strong> hace referencia a las estaciones meteorológicas que aportan las observaciones. La plataforma compara pronósticos de modelos atmosféricos con observaciones de estaciones meteorológicas. T2m se presenta con la resolución temporal disponible de cada modelo y PP6h como acumulados cada 6 horas, hasta 5 días. Tmax, Tmin y PP24h se muestran por fecha diaria, con hasta 7 días de pronóstico por ciclo y sus observaciones correspondientes. Los estadísticos permiten evaluar el desempeño reciente por estación y modelo; la correlación mostrada corresponde al coeficiente de Spearman.</p><div class="tabla-modelos-wrap"><table class="tabla-modelos"><thead><tr><th>MODELO</th><th>RESOLUCIÓN ESPACIAL</th><th>SALIDA TEMPORAL</th><th>CICLOS USADOS</th></tr></thead><tbody><tr><td>GFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ECMWF / IFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ETA5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>WRF5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>MPAS15</td><td>15 km</td><td>3 h</td><td>00 UTC</td></tr></tbody></table></div><div class="notas-subtitulo">Notas del producto</div><div class="nota"><span class="nota-numero">1</span><span>Las observaciones corresponden a estaciones meteorológicas y se actualizan automáticamente cada hora. Los pronósticos se incorporan conforme se encuentran disponibles los nuevos ciclos de los modelos.</span></div><div class="nota"><span class="nota-numero">2</span><span>Los estadísticos se calculan para los últimos 30 días completos y para el pronóstico a un día. Para T2m y PP6h se evalúan las primeras 24 horas de cada ciclo, con comparaciones cada 3 horas y acumulados de 6 horas, respectivamente. Para Tmax, Tmin y PP24h se evalúa la primera ventana diaria completa de cada variable y ciclo; Tmin de 12Z corresponde al día siguiente. Nº datos corresponde al total de comparaciones válidas pronóstico-observación utilizadas.</span></div><div class="nota"><span class="nota-numero">3</span><span>Los umbrales de precipitación evaluados son 0.1, 1, 5 y 25 mm para PP6h, y 0.1, 1, 10 y 50 mm para PP24h. POD mide la proporción de eventos observados detectados; FAR, la proporción de eventos pronosticados que no ocurrieron; y CSI, el desempeño considerando aciertos, falsas alarmas y eventos no detectados. Nº eventos indica cuántos pares válidos tuvieron una observación que alcanzó o superó el umbral seleccionado; cada ciclo se cuenta por separado.</span></div></div></section></section>
+<section class="pagina" id="paginaPronosticos" data-pagina="pronosticos" aria-labelledby="tituloPronosticos" hidden><div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / PRONÓSTICOS</p><h1 id="tituloPronosticos">Elige una estación. Compara los modelos.</h1><p>Consulta las variables con observaciones disponibles y sus indicadores de desempeño.</p></div><p id="estadoVisor" class="estado-visor" role="status" hidden></p>
+
 <details class="panel-opciones" open><summary>Selección de estación</summary><div class="controles"><div class="grupo-control"><label class="titulo">Departamento</label><select id="departamentoSelect"></select></div><div class="grupo-control"><label class="titulo">Provincia</label><select id="provinciaSelect"></select></div><div class="grupo-control"><label class="titulo">Estación</label><select id="estacionSelect"></select></div><button id="btnResetEstacion" class="btn-reset" type="button">Restablecer</button></div></details>
 <section class="panel-mapa"><h2 class="titulo-panel">Ubicación de estaciones</h2><div id="mapa"></div><div class="mapa-leyenda"><span><i class="punto-red" style="background:white;border:1.5px solid #6b98c7"></i>Automáticas</span><span><i class="punto-red" style="background:white;border:1.5px solid #ce8589"></i>Convencionales</span><span><i class="punto-red" style="background:white;border:1.5px solid #9aa3ad"></i>Sin tipo identificado</span></div></section><section class="panel-pronostico"><div class="grupo-pronostico"><div class="titulo-pronostico">MODELOS</div><div class="modelos-checks"><label class="modelo-check"><input class="modelo-input" type="checkbox" value="gfs" checked><span class="indicador gfs"></span>GFS</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="ecmwf" checked><span class="indicador ecmwf"></span>ECMWF</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta5" checked><span class="indicador eta5"></span>ETA5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="wrf5" checked><span class="indicador wrf5"></span>WRF5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="mpas15" checked><span class="indicador mpas15"></span>MPAS15</label></div></div><div class="grupo-pronostico"><div class="titulo-pronostico">INICIALIZACIÓN DEL PRONÓSTICO</div><div id="ciclosChecks" class="ciclos-checks"></div></div></section>
 <section class="info-estacion" id="infoEstacion" aria-label="Información de la estación" aria-live="polite"><span class="info-estacion-vacia">Seleccione una estación para consultar su información.</span></section>
-<div class="selector-variable" id="pronosticos"><button id="btnTemperatura" class="activo" type="button" data-variable="t2m">Temperatura Horaria</button><button id="btnPrecipitacion" type="button" data-variable="pp6h">Precipitación Acumulada 6h</button><button id="btnTmax" type="button" data-variable="tmax">Temperatura Máxima</button><button id="btnTmin" type="button" data-variable="tmin">Temperatura Mínima</button><button id="btnPP24h" type="button" data-variable="pp24h">Precipitación Acumulada 24h</button></div>
-<section class="panel-grafica vista-variable activa" id="vistaTemperatura"><div id="graficaTemperatura" class="grafica"></div><div id="leyendaTemperatura"></div><div id="estadisticosTemperatura"></div></section>
-<section class="panel-grafica vista-variable" id="vistaPrecipitacion"><div id="graficaPrecipitacion" class="grafica"></div><div id="leyendaPrecipitacion"></div><div id="estadisticosPrecipitacion"></div></section>
-<section class="panel-grafica vista-variable" id="vistaTmax"><div id="graficaTmax" class="grafica"></div><div id="leyendaTmax"></div><div id="estadisticosTmax"></div><p class="nota-diaria">Pronósticos de hasta 7 días. Máximo de las muestras de T2m del modelo entre 12:00 y 23:00, hora local de Perú.</p></section>
-<section class="panel-grafica vista-variable" id="vistaTmin"><div id="graficaTmin" class="grafica"></div><div id="leyendaTmin"></div><div id="estadisticosTmin"></div><p class="nota-diaria">Pronósticos de hasta 7 días. Mínimo de las muestras de T2m del modelo entre 01:00 y 11:00, hora local de Perú. Cada ciclo muestra sus ventanas completas disponibles.</p></section>
-<section class="panel-grafica vista-variable" id="vistaPP24h"><div id="graficaPP24h" class="grafica"></div><div id="leyendaPP24h"></div><div id="estadisticosPP24h"></div><p class="nota-diaria">Pronósticos de hasta 7 días. La fecha identifica el inicio del acumulado: 07:00 de ese día a 07:00 del día siguiente, hora local de Perú.</p></section>
-<section class="notas" id="descripcion"><div class="notas-titulo">Descripción y notas del producto</div><div class="notas-contenido"><p class="descripcion-texto">La plataforma compara pronósticos de modelos atmosféricos con observaciones de estaciones meteorológicas. T2m se presenta con la resolución temporal disponible de cada modelo y PP6h como acumulados cada 6 horas, hasta 5 días. Tmax, Tmin y PP24h se muestran por fecha diaria, con hasta 7 días de pronóstico por ciclo y sus observaciones correspondientes. Los estadísticos permiten evaluar el desempeño reciente por estación y modelo; la correlación mostrada corresponde al coeficiente de Spearman.</p><div class="tabla-modelos-wrap"><table class="tabla-modelos"><thead><tr><th>MODELO</th><th>RESOLUCIÓN ESPACIAL</th><th>SALIDA TEMPORAL</th><th>CICLOS USADOS</th></tr></thead><tbody><tr><td>GFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ECMWF / IFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ETA5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>WRF5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>MPAS15</td><td>15 km</td><td>3 h</td><td>00 UTC</td></tr></tbody></table></div><div class="notas-subtitulo">Notas del producto</div><div class="nota"><span class="nota-numero">1</span><span>Las observaciones corresponden a estaciones meteorológicas y se actualizan automáticamente cada hora. Los pronósticos se incorporan conforme se encuentran disponibles los nuevos ciclos de los modelos.</span></div><div class="nota"><span class="nota-numero">2</span><span>Los estadísticos se calculan para los últimos 30 días completos y para el pronóstico a un día. Para T2m y PP6h se evalúan las primeras 24 horas de cada ciclo, con comparaciones cada 3 horas y acumulados de 6 horas, respectivamente. Para Tmax, Tmin y PP24h se evalúa la primera ventana diaria completa de cada variable y ciclo; Tmin de 12Z corresponde al día siguiente. Nº datos corresponde al total de comparaciones válidas pronóstico-observación utilizadas.</span></div><div class="nota"><span class="nota-numero">3</span><span>Los umbrales de precipitación evaluados son 0.1, 1, 5 y 25 mm para PP6h, y 0.1, 1, 10 y 50 mm para PP24h. POD mide la proporción de eventos observados detectados; FAR, la proporción de eventos pronosticados que no ocurrieron; y CSI, el desempeño considerando aciertos, falsas alarmas y eventos no detectados. Nº eventos indica cuántos pares válidos tuvieron una observación que alcanzó o superó el umbral seleccionado; cada ciclo se cuenta por separado.</span></div></div></section>
+<p class="mensaje-variables" id="mensajeVariables" role="status">Seleccione una estación para consultar sus variables disponibles.</p>
+<div class="selector-variable" id="selectorVariables"><button id="btnTemperatura" hidden class="activo" type="button" data-variable="t2m">Temperatura Horaria</button><button id="btnPrecipitacion" hidden type="button" data-variable="pp6h">Precipitación Acumulada 6h</button><button id="btnTmax" hidden type="button" data-variable="tmax">Temperatura Máxima</button><button id="btnTmin" hidden type="button" data-variable="tmin">Temperatura Mínima</button><button id="btnPP24h" hidden type="button" data-variable="pp24h">Precipitación Acumulada 24h</button></div>
+<section class="panel-grafica vista-variable activa" id="vistaTemperatura" hidden><div id="graficaTemperatura" class="grafica"></div><div id="leyendaTemperatura"></div><div id="estadisticosTemperatura"></div></section>
+<section class="panel-grafica vista-variable" id="vistaPrecipitacion" hidden><div id="graficaPrecipitacion" class="grafica"></div><div id="leyendaPrecipitacion"></div><div id="estadisticosPrecipitacion"></div></section>
+<section class="panel-grafica vista-variable" id="vistaTmax" hidden><div id="graficaTmax" class="grafica"></div><div id="leyendaTmax"></div><div id="estadisticosTmax"></div></section>
+<section class="panel-grafica vista-variable" id="vistaTmin" hidden><div id="graficaTmin" class="grafica"></div><div id="leyendaTmin"></div><div id="estadisticosTmin"></div></section>
+<section class="panel-grafica vista-variable" id="vistaPP24h" hidden><div id="graficaPP24h" class="grafica"></div><div id="leyendaPP24h"></div><div id="estadisticosPP24h"></div></section>
+
+</section><section class="pagina" id="paginaMapas" data-pagina="mapas" aria-labelledby="tituloMapas" hidden><div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / MAPAS</p><h1 id="tituloMapas">El pronóstico sobre el territorio.</h1><p>Campos meteorológicos de los modelos, en un visor geográfico.</p></div><div class="panel-futuro"><div class="simbolo-futuro simbolo-mapa" aria-hidden="true"><span></span><span></span><span></span></div><span class="estado-desarrollo">En desarrollo</span><h2>Próximamente, mapas de pronóstico.</h2><p>Esta sección reunirá los productos espaciales de los modelos y sus periodos de validez.</p><a href="#pronosticos" class="enlace-texto">Mientras tanto, explorar estaciones <span aria-hidden="true">→</span></a></div></section><section class="pagina" id="paginaValidacion" data-pagina="validacion" aria-labelledby="tituloValidacion" hidden><div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / VALIDACIÓN</p><h1 id="tituloValidacion">Cómo cambia el desempeño con el plazo.</h1><p>Evaluación de los modelos por día de pronóstico.</p></div><div class="panel-futuro"><div class="simbolo-futuro simbolo-validacion" aria-hidden="true"><span></span><span></span><span></span><span></span></div><span class="estado-desarrollo">En desarrollo</span><h2>La evaluación, día a día.</h2><p>Aquí podrás consultar el desempeño de los modelos para distintos días de pronóstico. Las tablas del primer día ya están disponibles en el comparador por estación.</p><a href="#pronosticos" class="enlace-texto">Consultar el primer día <span aria-hidden="true">→</span></a></div></section>
 </main>
-<footer class="footer"><div class="footer-scale"></div><div class="footer-inner"><strong>SENAMHI</strong><span>Subdirección de Cambio Climático y Modelamiento Atmosférico</span></div></footer>
+<footer class="footer"><div class="footer-scale"></div><div class="footer-inner"><strong>NWP-STATION</strong><span>SENAMHI · Subdirección de Cambio Climático y Modelamiento Atmosférico</span></div></footer>
 <script>
 const MODELOS={
 gfs:{nombre:"GFS",colores:["#bbdefb","#90caf9","#64b5f6","#42a5f5","#2196f3","#1976d2","#1565c0","#0d47a1"]},
@@ -124,6 +138,28 @@ if(!cadena||cadena.length!==8) return cadena||"";
 return `${cadena.slice(6,8)}/${cadena.slice(4,6)}/${cadena.slice(0,4)}`;
 }
 
+function filaTieneObservados(fila,variable){
+const patron=VARIABLES_DIARIAS.includes(variable)?/^\d{8}$/:/^\d{10}$/;
+return Object.entries(fila).some(([columna,valor])=>{
+if(!patron.test(columna)||valor===null||valor===undefined||String(valor).trim()==="")return false;
+const numero=Number(valor);return Number.isFinite(numero)&&![-999,-9999,-888,-8888].includes(numero);
+});
+}
+function actualizarVariablesDisponibles(){
+const codigo=document.getElementById("estacionSelect").value;
+const estacion=estaciones.find(e=>e.codigo===codigo),disponibles=estacion?.variablesDisponibles||[];
+const orden=Object.keys(VISTAS).filter(v=>disponibles.includes(v));
+if(!orden.includes(variableActiva))variableActiva=orden[0]||null;
+for(const [variable,vista] of Object.entries(VISTAS)){
+const visible=orden.includes(variable),boton=document.getElementById(vista.boton),panel=document.getElementById(vista.vista);
+boton.hidden=!visible;boton.classList.toggle("activo",visible&&variable===variableActiva);
+boton.setAttribute("aria-pressed",String(visible&&variable===variableActiva));
+panel.hidden=!visible;panel.classList.toggle("activa",visible&&variable===variableActiva);
+}
+const mensaje=document.getElementById("mensajeVariables");mensaje.hidden=orden.length>0;
+mensaje.textContent=codigo?"Esta estación no tiene observaciones válidas en el periodo disponible.":"Seleccione una estación para consultar sus variables disponibles.";
+return orden.length>0;
+}
 async function cargarEstaciones(){
 const variables=["t2m","pp6h",...VARIABLES_DIARIAS];
 const [metadata,...tablas]=await Promise.all([
@@ -135,7 +171,7 @@ const disponibles=new Map();
 tablas.forEach((filas,i)=>filas.forEach(f=>{
 const codigo=String(f.codigo||"").trim();if(!codigo)return;
 if(!disponibles.has(codigo))disponibles.set(codigo,{filas:[],variables:new Set()});
-const entrada=disponibles.get(codigo);entrada.filas.push(f);entrada.variables.add(variables[i]);
+const entrada=disponibles.get(codigo);entrada.filas.push(f);if(filaTieneObservados(f,variables[i]))entrada.variables.add(variables[i]);
 }));
 estaciones=[];
 for(const [codigo,entrada] of disponibles){
@@ -497,7 +533,7 @@ const vista=VISTAS[variable],contenedor=document.getElementById(vista.estadistic
 const solicitud=(solicitudesEstadisticosDiarios.get(variable)||0)+1;
 solicitudesEstadisticosDiarios.set(variable,solicitud);
 const vigente=()=>solicitudesEstadisticosDiarios.get(variable)===solicitud&&document.getElementById("estacionSelect").value===codigo&&variableActiva===variable;
-const titulo="DESEMPEÑO ÚLTIMOS 30 DÍAS · PRIMERA VENTANA DIARIA COMPLETA";
+const titulo="DESEMPEÑO ÚLTIMOS 30 DÍAS · PRONÓSTICO A 1 DÍA";
 const bloque=mensaje=>`<div class="estadisticos-bloque"><div class="estadisticos-titulo">${titulo}</div><div class="estadisticos-vacio">${mensaje}</div></div>`;
 contenedor.innerHTML=bloque("Cargando estadísticos…");
 const fecha=fechaActualPeru();let datos;
@@ -508,10 +544,9 @@ const activos=modelosSeleccionados();
 const filas=datos.filter(f=>String(f.codigo).trim()===codigo&&activos.includes(String(f.modelo)));
 if(!filas.length){contenedor.innerHTML=bloque("Sin estadísticos disponibles para esta estación y los modelos seleccionados.");return;}
 const periodo=`Periodo evaluado: ${fechaCorta(filas[0].periodo_inicio)} al ${fechaCorta(filas[0].periodo_fin)}`;
-const detalle=variable==="tmin"?"Tmin: 01:00–11:00 local; 00Z evalúa D y 12Z evalúa D+1.":variable==="tmax"?"Tmax: 12:00–23:00 local de D para ambos ciclos.":"PP24h: 07:00 de D a 07:00 de D+1 local; +12–36 h en 00Z y +0–24 h en 12Z.";
-let html=`<div class="estadisticos-bloque"><div class="estadisticos-titulo">${titulo}</div><div class="estadisticos-periodo">${escaparHTML(periodo)}<br>${detalle}</div>`;
+let html=`<div class="estadisticos-bloque"><div class="estadisticos-titulo">${titulo}</div><div class="estadisticos-periodo">${escaparHTML(periodo)}</div>`;
 const precipitacion=variable==="pp24h",umbral=umbralPP24hSeleccionado;
-if(precipitacion)html+=`<div class="selector-umbral"><span>UMBRAL PP24h:</span>${UMBRALES_PP24H_WEB.map(([clave,etiqueta])=>`<button type="button" data-umbral-diario="${clave}" class="${clave===umbral?"activo":""}">${etiqueta}</button>`).join("")}</div>`;
+if(precipitacion)html+=`<div class="selector-umbral"><span>UMBRAL:</span>${UMBRALES_PP24H_WEB.map(([clave,etiqueta])=>`<button type="button" data-umbral-diario="${clave}" class="${clave===umbral?"activo":""}">${etiqueta}</button>`).join("")}</div>`;
 const encabezados=precipitacion?["MODELO","BIAS","RMSE","CORRELACIÓN","NºDATOS","POD","FAR","CSI","NºEVENTOS"]:["MODELO","BIAS","MAE","RMSE","CORRELACIÓN","NºDATOS"];
 html+=`<div class="estadisticos-tabla-wrap"><table class="estadisticos-tabla"><thead><tr>${encabezados.map(e=>`<th>${e}</th>`).join("")}</tr></thead><tbody>`;
 const errorConUnidad=valor=>{const texto=valorEstadistico(valor);return texto==="S/D"?texto:`${texto} ${precipitacion?"mm":"°C"}`;};
@@ -591,7 +626,7 @@ return layout;
 const CONFIG_PLOTLY={responsive:true,displaylogo:false,scrollZoom:true};
 
 function mostrarSinEstacion(){
-actualizarInfoEstacion();
+actualizarInfoEstacion();actualizarVariablesDisponibles();
 for(const variable of VARIABLES_DIARIAS){
 const vista=VISTAS[variable];Plotly.purge(vista.grafica);
 document.getElementById(vista.grafica).innerHTML='<div class="mensaje-grafica">Seleccione una estación para visualizar los datos diarios.</div>';
@@ -744,6 +779,8 @@ crearLeyendaPersonalizada(vista.leyenda,modelos);
 }
 async function actualizarGraficas(){
 actualizarInfoEstacion();
+if(!actualizarVariablesDisponibles()){solicitudDiaria++;mostrarSinEstacion();return;}
+if(seccionActiva!=="pronosticos")return;
 if(VARIABLES_DIARIAS.includes(variableActiva))return actualizarGraficaDiaria(variableActiva);
 const solicitud=++solicitudDiaria;
 return actualizarGraficasHorarias(variableActiva,solicitud);
@@ -753,7 +790,7 @@ let ajusteDiario=null;
 window.addEventListener("resize",()=>{
 clearTimeout(ajusteDiario);
 ajusteDiario=setTimeout(()=>{
-if(!VARIABLES_DIARIAS.includes(variableActiva))return;
+if(seccionActiva!=="pronosticos"||!VARIABLES_DIARIAS.includes(variableActiva))return;
 const grafica=document.getElementById(VISTAS[variableActiva].grafica);
 if(!grafica.data||!grafica.layout)return;
 const ticks=ticksDiarios(variableActiva,grafica.layout.xaxis.categoryarray||[]);
@@ -761,20 +798,46 @@ Plotly.relayout(grafica,{"xaxis.tickvals":ticks.tickvals,"xaxis.ticktext":ticks.
 },100);
 });
 
-function activarNavegacion(id){document.querySelectorAll(".nav a").forEach(a=>a.classList.toggle("activo",a.dataset.seccion===id));}
+let seccionActiva="inicio";
+let inicioPronosticos=null;
+function activarNavegacion(id){
+for(const enlace of document.querySelectorAll(".nav a")){
+const activo=enlace.dataset.seccion===id;enlace.classList.toggle("activo",activo);
+if(activo)enlace.setAttribute("aria-current","page");else enlace.removeAttribute("aria-current");
+}
+}
 async function mostrarVariable(variable){
-if(!VISTAS[variable])return;
-variableActiva=variable;
-for(const [clave,vista] of Object.entries(VISTAS)){
-document.getElementById(vista.boton).classList.toggle("activo",clave===variable);
-document.getElementById(vista.vista).classList.toggle("activa",clave===variable);
-}
-activarNavegacion("pronosticos");
-await actualizarGraficas();
+const codigo=document.getElementById("estacionSelect").value;
+if(!VISTAS[variable]||!estaciones.find(e=>e.codigo===codigo)?.variablesDisponibles.includes(variable))return;
+variableActiva=variable;await actualizarGraficas();
 const grafica=document.getElementById(VISTAS[variable].grafica);
-if(grafica.data)setTimeout(()=>Plotly.Plots.resize(grafica),60);
+if(grafica.data&&!grafica.closest("[hidden]"))requestAnimationFrame(()=>Plotly.Plots.resize(grafica));
 }
-document.querySelectorAll(".nav a").forEach(a=>a.addEventListener("click",()=>activarNavegacion(a.dataset.seccion)));
+async function prepararPronosticos(){
+if(inicioPronosticos)return inicioPronosticos;
+inicioPronosticos=(async()=>{
+const estado=document.getElementById("estadoVisor");estado.hidden=false;estado.textContent="Cargando estaciones e inicializaciones…";
+try{
+if(!mapa)iniciarMapa();
+await Promise.all([cargarManifiesto(),cargarEstaciones()]);
+actualizarMapa();actualizarSelectorCiclos();actualizarVariablesDisponibles();estado.hidden=true;
+}catch(error){inicioPronosticos=null;estado.hidden=false;estado.textContent="No se pudieron cargar los datos. Vuelve a abrir Pronósticos para reintentar.";console.error(error);throw error;}
+})();return inicioPronosticos;
+}
+async function navegarSeccion(){
+let destino=location.hash.slice(1).split("?")[0]||"inicio";
+if(destino==="descripcion")destino="inicio";
+if(!["inicio","pronosticos","mapas","validacion"].includes(destino))destino="inicio";
+if(destino!==seccionActiva)solicitudDiaria++;
+seccionActiva=destino;activarNavegacion(destino);
+for(const pagina of document.querySelectorAll("[data-pagina]")){
+const activa=pagina.dataset.pagina===destino;pagina.hidden=!activa;pagina.classList.toggle("pagina-activa",activa);
+}
+window.scrollTo({top:0,behavior:"instant"});
+if(destino!=="pronosticos")return;
+try{await prepararPronosticos();if(seccionActiva!==destino)return;mapa.invalidateSize();await actualizarGraficas();}catch(error){}
+}
+window.addEventListener("hashchange",navegarSeccion);
 document.getElementById("btnResetEstacion").addEventListener("click",async()=>{
 solicitudDiaria++;
 document.getElementById("departamentoSelect").value="";
@@ -782,18 +845,7 @@ cargarProvincias();actualizarMapa();mostrarSinEstacion();
 });
 document.querySelectorAll(".selector-variable [data-variable]").forEach(b=>b.addEventListener("click",()=>mostrarVariable(b.dataset.variable)));
 
-async function iniciar(){
-try{
-iniciarMapa();
-await Promise.all([cargarManifiesto(),cargarEstaciones()]);
-actualizarMapa();
-actualizarSelectorCiclos();
-await actualizarGraficas();
-setTimeout(()=>mapa.invalidateSize(),100);
-}catch(error){
-console.error(error);
-}
-}
+async function iniciar(){await navegarSeccion();}
 
 iniciar();
 </script>
