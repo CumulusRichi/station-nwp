@@ -32,6 +32,7 @@
 /* Pestañas diarias y clasificación de estaciones. */
 .selector-variable{flex-wrap:wrap}.mapa-leyenda{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;color:var(--muted);font-size:11px}.mapa-leyenda span{display:inline-flex;align-items:center;gap:6px}.punto-red{display:inline-block;width:11px;height:11px;border-radius:50%}.nota-diaria{text-align:center;color:var(--muted);font-size:11px;margin:0 10px 12px;line-height:1.5}.popup-estacion{display:block;width:100%;margin:6px 0;padding:7px 9px;border:1px solid var(--line);border-radius:6px;background:white;text-align:left;cursor:pointer;font:12px var(--font);color:var(--ink)}.popup-estacion:hover{background:var(--accent)}.icono-grupo{background:none;border:none}.grupo-marcadores{display:flex;align-items:center;justify-content:center;gap:3px;min-height:22px}.grupo-marcadores span{width:13px;height:13px;flex:0 0 13px;border:2px solid white;border-radius:50%;box-shadow:0 0 0 1px #42526b}.grupo-marcadores span.seleccionado{box-shadow:0 0 0 3px #f4c430}.mensaje-diario{font-size:13px;text-align:center;color:#718096}
 .grupo-marcadores{gap:3px;min-height:14px}.grupo-marcadores span{width:7px;height:7px;flex-basis:7px;border-width:1.5px;box-shadow:none}
+.info-estacion{margin-top:14px;padding:11px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--muted);font-size:12px;line-height:1.6;overflow-wrap:anywhere}.info-estacion strong{color:var(--navy);font-size:13px}.info-estacion-datos{display:flex;flex-wrap:wrap;gap:3px 16px}.info-estacion-vacia{color:#718096}
 </style>
 </head>
 <body>
@@ -40,13 +41,14 @@
 <section class="cabecera"><h1>VERIFICACIÓN DE PRONÓSTICOS DE MODELOS ATMOSFÉRICOS</h1><p>Plataforma para la comparación y evaluación de pronósticos de temperatura y precipitación con observaciones de estaciones meteorológicas.</p><p>Modelos evaluados: GFS 0.25° (27 km), ECMWF 0.25° (27 km), ETA 5 km, WRF 5 km y MPAS 15 km.</p></section>
 <details class="panel-opciones" open><summary>Selección de estación</summary><div class="controles"><div class="grupo-control"><label class="titulo">Departamento</label><select id="departamentoSelect"></select></div><div class="grupo-control"><label class="titulo">Provincia</label><select id="provinciaSelect"></select></div><div class="grupo-control"><label class="titulo">Estación</label><select id="estacionSelect"></select></div><button id="btnResetEstacion" class="btn-reset" type="button">Restablecer</button></div></details>
 <section class="panel-mapa"><h2 class="titulo-panel">Ubicación de estaciones</h2><div id="mapa"></div><div class="mapa-leyenda"><span><i class="punto-red" style="background:white;border:1.5px solid #6b98c7"></i>Automáticas</span><span><i class="punto-red" style="background:white;border:1.5px solid #ce8589"></i>Convencionales</span><span><i class="punto-red" style="background:white;border:1.5px solid #9aa3ad"></i>Sin tipo identificado</span></div></section><section class="panel-pronostico"><div class="grupo-pronostico"><div class="titulo-pronostico">MODELOS</div><div class="modelos-checks"><label class="modelo-check"><input class="modelo-input" type="checkbox" value="gfs" checked><span class="indicador gfs"></span>GFS</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="ecmwf" checked><span class="indicador ecmwf"></span>ECMWF</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta5" checked><span class="indicador eta5"></span>ETA5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="wrf5" checked><span class="indicador wrf5"></span>WRF5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="mpas15" checked><span class="indicador mpas15"></span>MPAS15</label></div></div><div class="grupo-pronostico"><div class="titulo-pronostico">INICIALIZACIÓN DEL PRONÓSTICO</div><div id="ciclosChecks" class="ciclos-checks"></div></div></section>
+<section class="info-estacion" id="infoEstacion" aria-label="Información de la estación" aria-live="polite"><span class="info-estacion-vacia">Seleccione una estación para consultar su información.</span></section>
 <div class="selector-variable" id="pronosticos"><button id="btnTemperatura" class="activo" type="button" data-variable="t2m">Temperatura Horaria</button><button id="btnPrecipitacion" type="button" data-variable="pp6h">Precipitación Acumulada 6h</button><button id="btnTmax" type="button" data-variable="tmax">Temperatura Máxima</button><button id="btnTmin" type="button" data-variable="tmin">Temperatura Mínima</button><button id="btnPP24h" type="button" data-variable="pp24h">Precipitación Acumulada 24h</button></div>
 <section class="panel-grafica vista-variable activa" id="vistaTemperatura"><div id="graficaTemperatura" class="grafica"></div><div id="leyendaTemperatura"></div><div id="estadisticosTemperatura"></div></section>
 <section class="panel-grafica vista-variable" id="vistaPrecipitacion"><div id="graficaPrecipitacion" class="grafica"></div><div id="leyendaPrecipitacion"></div><div id="estadisticosPrecipitacion"></div></section>
-<section class="panel-grafica vista-variable" id="vistaTmax"><div id="graficaTmax" class="grafica"></div><div id="leyendaTmax"></div><p class="nota-diaria">Pronósticos de hasta 7 días. Máximo de las muestras de T2m del modelo entre 12:00 y 23:00, hora local de Perú.</p></section>
-<section class="panel-grafica vista-variable" id="vistaTmin"><div id="graficaTmin" class="grafica"></div><div id="leyendaTmin"></div><p class="nota-diaria">Pronósticos de hasta 7 días. Mínimo de las muestras de T2m del modelo entre 01:00 y 11:00, hora local de Perú. Cada ciclo muestra sus ventanas completas disponibles.</p></section>
-<section class="panel-grafica vista-variable" id="vistaPP24h"><div id="graficaPP24h" class="grafica"></div><div id="leyendaPP24h"></div><p class="nota-diaria">Pronósticos de hasta 7 días. La fecha identifica el inicio del acumulado: 07:00 de ese día a 07:00 del día siguiente, hora local de Perú.</p></section>
-<section class="notas" id="descripcion"><div class="notas-titulo">Descripción y notas del producto</div><div class="notas-contenido"><p class="descripcion-texto">La plataforma compara pronósticos de modelos atmosféricos con observaciones de estaciones meteorológicas. T2m se presenta con la resolución temporal disponible de cada modelo y PP6h como acumulados cada 6 horas, hasta 5 días. Tmax, Tmin y PP24h se muestran por fecha diaria, con hasta 7 días de pronóstico por ciclo y sus observaciones correspondientes. Los estadísticos permiten evaluar el desempeño reciente por estación y modelo; la correlación mostrada corresponde al coeficiente de Spearman.</p><div class="tabla-modelos-wrap"><table class="tabla-modelos"><thead><tr><th>MODELO</th><th>RESOLUCIÓN ESPACIAL</th><th>SALIDA TEMPORAL</th><th>CICLOS USADOS</th></tr></thead><tbody><tr><td>GFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ECMWF / IFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ETA5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>WRF5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>MPAS15</td><td>15 km</td><td>3 h</td><td>00 UTC</td></tr></tbody></table></div><div class="notas-subtitulo">Notas del producto</div><div class="nota"><span class="nota-numero">1</span><span>Las observaciones corresponden a estaciones meteorológicas y se actualizan automáticamente cada hora. Los pronósticos se incorporan conforme se encuentran disponibles los nuevos ciclos de los modelos.</span></div><div class="nota"><span class="nota-numero">2</span><span>Los estadísticos se calculan para los últimos 30 días completos y para el pronóstico a un día. En temperatura se evalúan comparaciones cada 3 horas; en precipitación se evalúan acumulados cada 6 horas. Nº datos corresponde al total de comparaciones válidas pronóstico-observación utilizadas.</span></div><div class="nota"><span class="nota-numero">3</span><span>Para precipitación, los umbrales de 0.1, 1, 5 y 25 mm acumulados en 6 horas definen los eventos evaluados. POD mide la proporción de eventos observados detectados; FAR, la proporción de eventos pronosticados que no ocurrieron; y CSI, el desempeño considerando aciertos, falsas alarmas y eventos no detectados. Nº eventos indica cuántos intervalos observados alcanzaron o superaron el umbral seleccionado.</span></div></div></section>
+<section class="panel-grafica vista-variable" id="vistaTmax"><div id="graficaTmax" class="grafica"></div><div id="leyendaTmax"></div><div id="estadisticosTmax"></div><p class="nota-diaria">Pronósticos de hasta 7 días. Máximo de las muestras de T2m del modelo entre 12:00 y 23:00, hora local de Perú.</p></section>
+<section class="panel-grafica vista-variable" id="vistaTmin"><div id="graficaTmin" class="grafica"></div><div id="leyendaTmin"></div><div id="estadisticosTmin"></div><p class="nota-diaria">Pronósticos de hasta 7 días. Mínimo de las muestras de T2m del modelo entre 01:00 y 11:00, hora local de Perú. Cada ciclo muestra sus ventanas completas disponibles.</p></section>
+<section class="panel-grafica vista-variable" id="vistaPP24h"><div id="graficaPP24h" class="grafica"></div><div id="leyendaPP24h"></div><div id="estadisticosPP24h"></div><p class="nota-diaria">Pronósticos de hasta 7 días. La fecha identifica el inicio del acumulado: 07:00 de ese día a 07:00 del día siguiente, hora local de Perú.</p></section>
+<section class="notas" id="descripcion"><div class="notas-titulo">Descripción y notas del producto</div><div class="notas-contenido"><p class="descripcion-texto">La plataforma compara pronósticos de modelos atmosféricos con observaciones de estaciones meteorológicas. T2m se presenta con la resolución temporal disponible de cada modelo y PP6h como acumulados cada 6 horas, hasta 5 días. Tmax, Tmin y PP24h se muestran por fecha diaria, con hasta 7 días de pronóstico por ciclo y sus observaciones correspondientes. Los estadísticos permiten evaluar el desempeño reciente por estación y modelo; la correlación mostrada corresponde al coeficiente de Spearman.</p><div class="tabla-modelos-wrap"><table class="tabla-modelos"><thead><tr><th>MODELO</th><th>RESOLUCIÓN ESPACIAL</th><th>SALIDA TEMPORAL</th><th>CICLOS USADOS</th></tr></thead><tbody><tr><td>GFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ECMWF / IFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ETA5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>WRF5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>MPAS15</td><td>15 km</td><td>3 h</td><td>00 UTC</td></tr></tbody></table></div><div class="notas-subtitulo">Notas del producto</div><div class="nota"><span class="nota-numero">1</span><span>Las observaciones corresponden a estaciones meteorológicas y se actualizan automáticamente cada hora. Los pronósticos se incorporan conforme se encuentran disponibles los nuevos ciclos de los modelos.</span></div><div class="nota"><span class="nota-numero">2</span><span>Los estadísticos se calculan para los últimos 30 días completos y para el pronóstico a un día. Para T2m y PP6h se evalúan las primeras 24 horas de cada ciclo, con comparaciones cada 3 horas y acumulados de 6 horas, respectivamente. Para Tmax, Tmin y PP24h se evalúa la primera ventana diaria completa de cada variable y ciclo; Tmin de 12Z corresponde al día siguiente. Nº datos corresponde al total de comparaciones válidas pronóstico-observación utilizadas.</span></div><div class="nota"><span class="nota-numero">3</span><span>Los umbrales de precipitación evaluados son 0.1, 1, 5 y 25 mm para PP6h, y 0.1, 1, 10 y 50 mm para PP24h. POD mide la proporción de eventos observados detectados; FAR, la proporción de eventos pronosticados que no ocurrieron; y CSI, el desempeño considerando aciertos, falsas alarmas y eventos no detectados. Nº eventos indica cuántos pares válidos tuvieron una observación que alcanzó o superó el umbral seleccionado; cada ciclo se cuenta por separado.</span></div></div></section>
 </main>
 <footer class="footer"><div class="footer-scale"></div><div class="footer-inner"><strong>SENAMHI</strong><span>Subdirección de Cambio Climático y Modelamiento Atmosférico</span></div></footer>
 <script>
@@ -61,9 +63,9 @@ mpas15:{nombre:"MPAS15",colores:["#e1bee7","#ce93d8","#ba68c8","#ab47bc","#9c27b
 const VISTAS={
 t2m:{boton:"btnTemperatura",vista:"vistaTemperatura",grafica:"graficaTemperatura"},
 pp6h:{boton:"btnPrecipitacion",vista:"vistaPrecipitacion",grafica:"graficaPrecipitacion"},
-tmax:{boton:"btnTmax",vista:"vistaTmax",grafica:"graficaTmax",leyenda:"leyendaTmax",titulo:"Temperatura máxima diaria",unidad:"Temperatura (°C)",precipitacion:false},
-tmin:{boton:"btnTmin",vista:"vistaTmin",grafica:"graficaTmin",leyenda:"leyendaTmin",titulo:"Temperatura mínima diaria",unidad:"Temperatura (°C)",precipitacion:false},
-pp24h:{boton:"btnPP24h",vista:"vistaPP24h",grafica:"graficaPP24h",leyenda:"leyendaPP24h",titulo:"Precipitación acumulada en 24 horas",unidad:"Precipitación (mm en 24 h)",precipitacion:true}
+tmax:{boton:"btnTmax",vista:"vistaTmax",grafica:"graficaTmax",leyenda:"leyendaTmax",estadisticos:"estadisticosTmax",titulo:"Temperatura máxima diaria",unidad:"Temperatura (°C)",precipitacion:false},
+tmin:{boton:"btnTmin",vista:"vistaTmin",grafica:"graficaTmin",leyenda:"leyendaTmin",estadisticos:"estadisticosTmin",titulo:"Temperatura mínima diaria",unidad:"Temperatura (°C)",precipitacion:false},
+pp24h:{boton:"btnPP24h",vista:"vistaPP24h",grafica:"graficaPP24h",leyenda:"leyendaPP24h",estadisticos:"estadisticosPP24h",titulo:"Precipitación acumulada en 24 horas",unidad:"Precipitación (mm en 24 h)",precipitacion:true}
 };
 const VARIABLES_DIARIAS=["tmax","tmin","pp24h"];
 const DIAS_PRONOSTICO_DIARIO=7;
@@ -217,6 +219,17 @@ const estado=String(estacion.estado||"").trim().toUpperCase();
 if(categoria==="CO"||estado.includes("CONVENCIONAL"))return "Convencional";
 if(estado.includes("AUTOMAT")||["EMA","EAMA","EHA","EHMA","EAA"].includes(categoria))return "Automática";
 return "Sin tipo identificado";
+}
+function actualizarInfoEstacion(){
+const contenedor=document.getElementById("infoEstacion"),codigo=document.getElementById("estacionSelect").value;
+const estacion=estaciones.find(e=>e.codigo===codigo);
+contenedor.replaceChildren();
+if(!estacion){const mensaje=document.createElement("span");mensaje.className="info-estacion-vacia";mensaje.textContent="Seleccione una estación para consultar su información.";contenedor.appendChild(mensaje);return;}
+const nombre=document.createElement("strong");nombre.textContent=estacion.estacion;contenedor.appendChild(nombre);
+const datos=document.createElement("div");datos.className="info-estacion-datos";
+const detalles=[`Código: ${estacion.codigo}`,`${tipoRed(estacion)}${estacion.categoria?` · ${estacion.categoria}`:""}`,`${estacion.departamento} / ${estacion.provincia}`,`Latitud: ${estacion.latitud.toFixed(5)} · Longitud: ${estacion.longitud.toFixed(5)}`];
+for(const detalle of detalles){const texto=document.createElement("span");texto.textContent=detalle;datos.appendChild(texto);}
+contenedor.appendChild(datos);
 }
 function colorEstacion(estacion){const tipo=tipoRed(estacion);return tipo==="Convencional"?"#ce8589":tipo==="Automática"?"#6b98c7":"#9aa3ad";}
 function escaparHTML(valor){return String(valor).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
@@ -476,6 +489,42 @@ for(const modelo of activos){const fila=filas.find(f=>String(f.modelo)===modelo)
 html+=`</tbody></table></div></div>`;contenedor.innerHTML=html;
 }
 
+let umbralPP24hSeleccionado="0p1";
+const UMBRALES_PP24H_WEB=[["0p1","≥ 0.1 mm"],["1","≥ 1 mm"],["10","≥ 10 mm"],["50","≥ 50 mm"]];
+const solicitudesEstadisticosDiarios=new Map();
+async function crearTablaEstadisticosDiarios(variable,codigo){
+const vista=VISTAS[variable],contenedor=document.getElementById(vista.estadisticos);
+const solicitud=(solicitudesEstadisticosDiarios.get(variable)||0)+1;
+solicitudesEstadisticosDiarios.set(variable,solicitud);
+const vigente=()=>solicitudesEstadisticosDiarios.get(variable)===solicitud&&document.getElementById("estacionSelect").value===codigo&&variableActiva===variable;
+const titulo="DESEMPEÑO ÚLTIMOS 30 DÍAS · PRIMERA VENTANA DIARIA COMPLETA";
+const bloque=mensaje=>`<div class="estadisticos-bloque"><div class="estadisticos-titulo">${titulo}</div><div class="estadisticos-vacio">${mensaje}</div></div>`;
+contenedor.innerHTML=bloque("Cargando estadísticos…");
+const fecha=fechaActualPeru();let datos;
+try{datos=await cargarCSV(`estadisticos/estadisticos_${variable}_${fecha}.csv`);}
+catch(error){if(vigente())contenedor.innerHTML=bloque(`Estadísticos no disponibles para ${fechaCorta(fecha)}.`);return;}
+if(!vigente())return;
+const activos=modelosSeleccionados();
+const filas=datos.filter(f=>String(f.codigo).trim()===codigo&&activos.includes(String(f.modelo)));
+if(!filas.length){contenedor.innerHTML=bloque("Sin estadísticos disponibles para esta estación y los modelos seleccionados.");return;}
+const periodo=`Periodo evaluado: ${fechaCorta(filas[0].periodo_inicio)} al ${fechaCorta(filas[0].periodo_fin)}`;
+const detalle=variable==="tmin"?"Tmin: 01:00–11:00 local; 00Z evalúa D y 12Z evalúa D+1.":variable==="tmax"?"Tmax: 12:00–23:00 local de D para ambos ciclos.":"PP24h: 07:00 de D a 07:00 de D+1 local; +12–36 h en 00Z y +0–24 h en 12Z.";
+let html=`<div class="estadisticos-bloque"><div class="estadisticos-titulo">${titulo}</div><div class="estadisticos-periodo">${escaparHTML(periodo)}<br>${detalle}</div>`;
+const precipitacion=variable==="pp24h",umbral=umbralPP24hSeleccionado;
+if(precipitacion)html+=`<div class="selector-umbral"><span>UMBRAL PP24h:</span>${UMBRALES_PP24H_WEB.map(([clave,etiqueta])=>`<button type="button" data-umbral-diario="${clave}" class="${clave===umbral?"activo":""}">${etiqueta}</button>`).join("")}</div>`;
+const encabezados=precipitacion?["MODELO","BIAS","RMSE","CORRELACIÓN","NºDATOS","POD","FAR","CSI","NºEVENTOS"]:["MODELO","BIAS","MAE","RMSE","CORRELACIÓN","NºDATOS"];
+html+=`<div class="estadisticos-tabla-wrap"><table class="estadisticos-tabla"><thead><tr>${encabezados.map(e=>`<th>${e}</th>`).join("")}</tr></thead><tbody>`;
+const errorConUnidad=valor=>{const texto=valorEstadistico(valor);return texto==="S/D"?texto:`${texto} ${precipitacion?"mm":"°C"}`;};
+for(const modelo of activos){
+const fila=filas.find(f=>String(f.modelo)===modelo);if(!fila)continue;
+const n=parseInt(fila.n,10),eventos=parseInt(fila[`eventos_${umbral}`],10);
+const celdas=precipitacion?[MODELOS[modelo].nombre,errorConUnidad(fila.bias),errorConUnidad(fila.rmse),valorEstadistico(fila.spearman),Number.isFinite(n)?n:0,valorEstadistico(fila[`pod_${umbral}`],3),valorEstadistico(fila[`far_${umbral}`],3),valorEstadistico(fila[`csi_${umbral}`],3),Number.isFinite(eventos)?eventos:0]:[MODELOS[modelo].nombre,errorConUnidad(fila.bias),errorConUnidad(fila.mae),errorConUnidad(fila.rmse),valorEstadistico(fila.spearman),Number.isFinite(n)?n:0];
+html+=`<tr>${celdas.map(c=>`<td>${escaparHTML(c)}</td>`).join("")}</tr>`;
+}
+html+="</tbody></table></div></div>";contenedor.innerHTML=html;
+contenedor.querySelectorAll("[data-umbral-diario]").forEach(boton=>boton.addEventListener("click",()=>{umbralPP24hSeleccionado=boton.dataset.umbralDiario;crearTablaEstadisticosDiarios(variable,codigo);}));
+}
+
 function fechasValidas(traza){
 const fechas=[];
 for(let i=0;i<traza.x.length;i++){
@@ -542,10 +591,12 @@ return layout;
 const CONFIG_PLOTLY={responsive:true,displaylogo:false,scrollZoom:true};
 
 function mostrarSinEstacion(){
+actualizarInfoEstacion();
 for(const variable of VARIABLES_DIARIAS){
 const vista=VISTAS[variable];Plotly.purge(vista.grafica);
 document.getElementById(vista.grafica).innerHTML='<div class="mensaje-grafica">Seleccione una estación para visualizar los datos diarios.</div>';
 document.getElementById(vista.leyenda).innerHTML="";
+document.getElementById(vista.estadisticos).innerHTML="";
 }
 Plotly.purge("graficaTemperatura");
 Plotly.purge("graficaPrecipitacion");
@@ -607,11 +658,11 @@ let columnas=Object.keys(fila).filter(c=>/^\d{8}$/.test(c)).sort();
 if(esModelo)columnas=columnas.slice(0,DIAS_PRONOSTICO_DIARIO);
 return{x:columnas.map(c=>`${c.slice(0,4)}-${c.slice(4,6)}-${c.slice(6,8)}`),
 y:columnas.map(c=>{const valor=parseFloat(fila[c]);return Number.isFinite(valor)?valor:null;}),
-customdata:columnas.map(fechaCorta)};
+customdata:columnas.map(c=>`${c.slice(4,6)}/${c.slice(6,8)}`)};
 }
 function hoverDiario(variable,modelo=null,ciclo=null){
 const valor=VISTAS[variable].precipitacion?"%{y:.2f} mm":"%{y:.1f} °C";
-const nombre=modelo?`${MODELOS[modelo].nombre} · inicialización ${etiquetaCiclo(ciclo)}`:"OBSERVADO";
+const nombre=modelo?`${MODELOS[modelo].nombre} (${ciclo.slice(6,8)}/${ciclo.slice(4,6)} ${ciclo.slice(8,10)}Z)`:"OBSERVADO";
 return `<b>Día: %{customdata}</b><br><b>${nombre}</b> (${valor})<extra></extra>`;
 }
 async function crearTrazaObservadaDiaria(variable,codigo){
@@ -640,7 +691,15 @@ marker:{color,size:5},connectgaps:false,hovertemplate:hoverDiario(variable,model
 
 async function crearTrazasModelosDiarios(variable,codigo){
 const ciclos=[...ciclosSeleccionados].sort();
-return(await Promise.all(modelosSeleccionados().map(m=>crearTrazasDiariasUnModelo(variable,codigo,m,ciclos)))).flat();
+const trazas=(await Promise.all(modelosSeleccionados().map(m=>crearTrazasDiariasUnModelo(variable,codigo,m,ciclos)))).flat();
+const puntos=new Map();
+for(const traza of trazas)traza.x.forEach((x,i)=>{if(!Number.isFinite(traza.y[i]))return;const clave=`${x}|${traza.y[i]}`;if(!puntos.has(clave))puntos.set(clave,[]);puntos.get(clave).push(traza);});
+for(const traza of trazas)traza.hovertemplate=traza.x.map((x,i)=>{
+const coincidentes=puntos.get(`${x}|${traza.y[i]}`)||[];
+const base=hoverDiario(variable,traza.meta.modelo,traza.meta.ciclo).replace("<extra></extra>","");
+const extras=coincidentes.filter(t=>t!==traza).map(t=>hoverDiario(variable,t.meta.modelo,t.meta.ciclo).split("<br>")[1].replace("<extra></extra>",""));
+return `${base}${extras.length?"<br>"+extras.join("<br>"):""}<extra></extra>`;
+});return trazas;
 }
 function ticksDiarios(variable,fechas){
 const ancho=Math.max(160,document.getElementById(VISTAS[variable].grafica).clientWidth-100);
@@ -668,7 +727,7 @@ const vista=VISTAS[variable],codigo=document.getElementById("estacionSelect").va
 const solicitud=++solicitudDiaria;
 if(!codigo){mostrarSinEstacion();return;}
 try{
-const [observado,modelos]=await Promise.all([crearTrazaObservadaDiaria(variable,codigo),crearTrazasModelosDiarios(variable,codigo)]);
+const [observado,modelos]=await Promise.all([crearTrazaObservadaDiaria(variable,codigo),crearTrazasModelosDiarios(variable,codigo),crearTablaEstadisticosDiarios(variable,codigo)]);
 if(solicitud!==solicitudDiaria||codigo!==document.getElementById("estacionSelect").value||variable!==variableActiva)return;
 const grafica=document.getElementById(vista.grafica);
 if(!grafica.data)grafica.innerHTML="";
@@ -684,6 +743,7 @@ crearLeyendaPersonalizada(vista.leyenda,modelos);
 }catch(error){console.error(error);document.getElementById(vista.grafica).innerHTML='<div class="mensaje-grafica">No se pudieron cargar los datos diarios.</div>';}
 }
 async function actualizarGraficas(){
+actualizarInfoEstacion();
 if(VARIABLES_DIARIAS.includes(variableActiva))return actualizarGraficaDiaria(variableActiva);
 const solicitud=++solicitudDiaria;
 return actualizarGraficasHorarias(variableActiva,solicitud);
