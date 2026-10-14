@@ -1,5 +1,5 @@
 {
-  "actualizacion": "2026-10-13T22:50:36Z",
+  "actualizacion": "2026-10-14T04:51:17Z",
   "ciclos": {
     "2026100600": {
       "gfs": [
@@ -488,6 +488,20 @@
     },
     "2026101312": {
       "gfs": [
+        "t2m",
+        "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "ecmwf": [
+        "t2m",
+        "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta5": [
         "t2m",
         "pp6h",
         "tmax",
