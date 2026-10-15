@@ -89,116 +89,112 @@
 
 </section><section class="pagina" id="paginaMapas" data-pagina="mapas" aria-labelledby="tituloMapas" hidden>
 <style>
-#paginaMapas .tiff-panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;margin:15px 0 30px}
-#paginaMapas .tiff-fila{padding:13px 0;border-bottom:1px solid #e5ebf0}
-#paginaMapas .tiff-etiqueta{display:block;font-size:11px;font-weight:700;color:var(--navy);margin:0 0 10px;letter-spacing:.03em}
-#paginaMapas .tiff-barra{width:100%;accent-color:#2c7895;cursor:pointer;margin:4px 0 10px}
-#paginaMapas .tiff-fechas{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
-#paginaMapas .tiff-fechas button{background:#f5f8fa;border:1px solid #dce5eb;border-radius:8px;padding:9px 3px;color:#536b7e;cursor:pointer;font:11px var(--font);min-height:66px}
-#paginaMapas .tiff-fechas strong{display:block;font-size:20px;line-height:1.35;font-weight:600;color:#17324e}
-#paginaMapas .tiff-fechas small{display:block;font-size:9px;min-height:13px}
-#paginaMapas .tiff-fechas button.activo{background:#e8f2f6;border-color:#3c8099;box-shadow:inset 0 -3px #3c8099}
-#paginaMapas .tiff-fechas button.sin-archivo{color:#8a98a4}
-#paginaMapas .tiff-fechas button.sin-archivo strong{color:#8a98a4}
-#paginaMapas .tiff-botones{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
-#paginaMapas .tiff-botones button{border:1px solid #d1dce5;border-radius:999px;padding:9px 16px;background:#fff;font:600 12px var(--font);color:#566c7f;cursor:pointer;min-height:38px}
-#paginaMapas .tiff-botones button.activo{background:#102f50;border-color:#102f50;color:#fff}
-#paginaMapas .tiff-botones button:disabled{opacity:.4;cursor:default}
-#paginaMapas button:focus-visible,#paginaMapas input:focus-visible{outline:3px solid #b29a57;outline-offset:3px}
-#paginaMapas .tiff-origen{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px 25px}
-#paginaMapas .tiff-ciclos{padding:10px 0 0}
-#paginaMapas .tiff-ciclos button{padding:7px 18px;min-height:34px;font-size:11px}
-#paginaMapas .tiff-producto{font-size:14px;font-weight:650;color:#17324e;margin:18px 0 6px}
-#paginaMapas .tiff-periodo,#paginaMapas .tiff-estado{font-size:12px;line-height:1.7;color:var(--muted);margin:5px 0}
-#paginaMapas .tiff-estado[data-error="true"]{color:#a53c36}
-#paginaMapas #mapaRaster{height:570px;width:100%;border:1px solid var(--line);border-radius:8px;z-index:1;margin-top:12px}
-#paginaMapas .tiff-leyenda{display:flex;flex-wrap:wrap;justify-content:center;gap:7px 13px;margin-top:15px;font-size:11px;color:var(--muted)}
-#paginaMapas .tiff-leyenda span{display:inline-flex;gap:5px;align-items:center}
-#paginaMapas .tiff-leyenda i{display:inline-block;width:19px;height:12px;border:1px solid #b8c3cb;border-radius:2px}
-#paginaMapas .tiff-ayuda{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:13px;font-size:11px;line-height:1.6;color:var(--muted)}
-#paginaMapas .tiff-ayuda a{color:#2f6f87}
-#paginaMapas .tiff-refrescar{border:0;background:none;color:#2f6f87;text-decoration:underline;font:11px var(--font);padding:0;cursor:pointer}
-@media(max-width:800px){#paginaMapas .tiff-panel{padding:12px}#paginaMapas #mapaRaster{height:470px}#paginaMapas .tiff-fechas{gap:4px}#paginaMapas .tiff-fechas button{font-size:9px;padding:8px 1px}#paginaMapas .tiff-fechas strong{font-size:18px}#paginaMapas .tiff-fechas small{font-size:8px}#paginaMapas .tiff-botones{gap:6px}#paginaMapas .tiff-botones button{font-size:11px;padding:9px 13px}}
+#paginaMapas .cmp-panel{background:white;border:1px solid var(--line);border-radius:12px;padding:20px;margin:15px 0 30px}
+#paginaMapas .cmp-etiqueta{display:block;font-size:10px;font-weight:750;letter-spacing:.06em;color:var(--navy);margin-bottom:9px}
+#paginaMapas .cmp-fechas{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding-bottom:17px;border-bottom:1px solid #dce5ec}
+#paginaMapas .cmp-fechas button{border:1px solid #cbdce9;border-radius:8px;background:#f4f8fb;padding:9px 3px;color:#7290a6;cursor:pointer;font:11px var(--font)}
+#paginaMapas .cmp-fechas strong{display:block;font-size:21px;font-weight:650;color:#173b59;line-height:1.5}
+#paginaMapas .cmp-fechas small{font-size:9px;margin-left:3px;color:#267693}
+#paginaMapas .cmp-fechas button.activo{background:#e6f3f9;border-color:#498aa8;box-shadow:inset 0 -3px #498aa8}
+#paginaMapas .cmp-controles{display:flex;flex-wrap:wrap;gap:18px 24px;align-items:start;padding:16px 0}
+#paginaMapas .cmp-opciones{display:flex;flex-wrap:wrap;gap:6px}
+#paginaMapas .cmp-opciones button{border:1px solid #cbdce9;background:white;color:#4e7896;border-radius:999px;padding:9px 13px;font:11px var(--font);cursor:pointer;min-height:36px}
+#paginaMapas .cmp-opciones button.activo{background:#102f50;border-color:#102f50;color:white}
+#paginaMapas .cmp-nota{display:block;font-size:10px;color:#7b92a5;line-height:1.5;margin-top:5px}
+#paginaMapas .cmp-contexto{font-size:11px;line-height:1.7;color:#50718b;padding:10px 13px;background:#f0f6fa;border:1px solid #deebf3;border-radius:7px}
+#paginaMapas .cmp-cabecera{display:flex;gap:10px;justify-content:space-between;align-items:center;margin:20px 0 8px}
+#paginaMapas .cmp-cabecera h2{font-size:17px;color:#173b59;line-height:1.4;margin:0}
+#paginaMapas .cmp-resumen{font-size:10px;background:#eaf3f8;color:#327391;padding:7px 10px;border-radius:20px;white-space:nowrap}
+#paginaMapas .cmp-ayuda{font-size:11px;line-height:1.7;color:#65849b;margin:8px 0 12px}
+#paginaMapas .cmp-disposicion{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,2.8fr);gap:12px;align-items:stretch}
+#paginaMapas .cmp-grandes{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-content:stretch;min-width:0}
+#paginaMapas .cmp-miniaturas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-content:start;min-width:0}
+#paginaMapas .cmp-disposicion.con-ampliados{display:block}
+#paginaMapas .con-ampliados .cmp-grandes{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:12px;align-items:start}
+#paginaMapas .cmp-tarjeta{border:1px solid #cfdee9;border-radius:10px;overflow:hidden;background:#fff;min-width:0;box-shadow:0 1px 4px #163c5610}
+#paginaMapas .cmp-observado{border:2px solid #5592ac;display:flex;flex-direction:column}
+#paginaMapas .cmp-tarjeta header{display:flex;justify-content:space-between;align-items:center;gap:7px;padding:11px 12px;min-height:57px}
+#paginaMapas .cmp-tarjeta h3{margin:0;font-size:13px;color:#153653}
+#paginaMapas .cmp-tarjeta header small{display:block;font-size:10px;color:#7b93a8;margin-top:4px}
+#paginaMapas .cmp-ampliar{border:1px solid #b7cedf;background:#f4f9fc;color:#346989;border-radius:6px;font:600 10px var(--font);padding:7px 9px;cursor:pointer;white-space:nowrap}
+#paginaMapas .ampliado .cmp-ampliar{background:#173e60;color:white;border-color:#173e60}
+#paginaMapas .cmp-referencia{font-size:9px;font-weight:700;color:#2d718f;background:#e1f0f6;border-radius:4px;padding:6px}
+#paginaMapas .cmp-mapa{height:215px;width:100%;position:relative;z-index:1;background:#edf3f6}
+#paginaMapas .cmp-mapa .leaflet-control-attribution{font-size:7px}
+#paginaMapas .cmp-grandes .cmp-mapa{height:440px}
+#paginaMapas .cmp-observado .cmp-mapa{height:auto;min-height:440px;flex:1}
+#paginaMapas .cmp-vacio{height:100%;min-height:215px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:22px;text-align:center;background:repeating-linear-gradient(135deg,#f4f8fb,#f4f8fb 18px,#eaf2f7 18px,#eaf2f7 36px);color:#62839b;font-size:11px;line-height:1.7}
+#paginaMapas .cmp-observado .cmp-vacio{min-height:440px}
+#paginaMapas .cmp-vacio strong{font-size:14px;color:#51768e;margin-bottom:7px}
+#paginaMapas .cmp-vacio span{max-width:250px}
+#paginaMapas .cmp-pie{font-size:10px;color:#7791a5;display:flex;flex-wrap:wrap;gap:5px;justify-content:space-between;padding:8px 11px;border-top:1px solid #e1eaf1}
+#paginaMapas .cmp-leyenda{display:flex;justify-content:center;flex-wrap:wrap;gap:7px 12px;font-size:10px;color:#627c91;padding:17px 0 9px}
+#paginaMapas .cmp-leyenda span{display:inline-flex;align-items:center;gap:4px}
+#paginaMapas .cmp-leyenda i{width:18px;height:11px;border:1px solid #becdd7;border-radius:2px;display:inline-block}
+#paginaMapas .cmp-estado{font-size:11px;color:#69859b;line-height:1.7;margin:10px 0}
+#paginaMapas .cmp-estado[data-error="true"]{color:#a53c36}
+#paginaMapas .cmp-refrescar{border:0;background:none;padding:0;text-decoration:underline;color:#39728d;font:11px var(--font);cursor:pointer}
+#paginaMapas button:focus-visible{outline:3px solid #b29a57;outline-offset:3px}
+@media(max-width:1100px){#paginaMapas .cmp-disposicion{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}#paginaMapas .cmp-miniaturas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){#paginaMapas .cmp-panel{padding:12px}#paginaMapas .cmp-fechas{gap:5px}#paginaMapas .cmp-fechas button{font-size:9px}#paginaMapas .cmp-fechas strong{font-size:18px}#paginaMapas .cmp-disposicion{display:block}#paginaMapas .cmp-grandes,#paginaMapas .con-ampliados .cmp-grandes,#paginaMapas .cmp-miniaturas{grid-template-columns:minmax(0,1fr)}#paginaMapas .cmp-grandes{margin-bottom:12px}#paginaMapas .cmp-grandes .cmp-mapa,#paginaMapas .cmp-mapa{height:340px}#paginaMapas .cmp-observado .cmp-mapa,#paginaMapas .cmp-observado .cmp-vacio{min-height:250px}#paginaMapas .cmp-cabecera{align-items:start;flex-direction:column}#paginaMapas .cmp-controles{gap:15px}#paginaMapas .cmp-opciones button{padding:8px 11px;font-size:10px}}
 </style>
-<div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / MAPAS</p><h1 id="tituloMapas">El pronóstico sobre el territorio.</h1><p>Explora los campos meteorológicos por fecha, modelo e inicialización.</p></div>
-<div class="tiff-panel">
-<div class="tiff-fila"><label class="tiff-etiqueta" for="barraRaster">FECHA VÁLIDA · HORA DE PERÚ</label><input id="barraRaster" class="tiff-barra" type="range" min="0" max="5" step="1" value="3" aria-label="Fecha válida del mapa"><div id="fechasRaster" class="tiff-fechas"></div></div>
-<div class="tiff-fila"><span class="tiff-etiqueta">MODELO / OBSERVADO</span><div id="modelosRaster" class="tiff-botones" role="group" aria-label="Modelo u observado"></div><div id="ciclosRaster" class="tiff-botones tiff-ciclos" role="group" aria-label="Ciclo UTC"></div></div>
-<div class="tiff-fila"><span class="tiff-etiqueta">VARIABLE</span><div id="variablesRaster" class="tiff-botones" role="group" aria-label="Variable meteorológica"></div></div>
-<div id="productoRaster" class="tiff-producto"></div><p id="periodoRaster" class="tiff-periodo"></p><p id="estadoRaster" class="tiff-estado" role="status" aria-live="polite"></p>
-<div id="mapaRaster" aria-label="Mapa meteorológico interactivo"></div>
-<div id="leyendaRaster" class="tiff-leyenda" aria-label="Escala de valores"></div>
-<div class="tiff-ayuda"><span>Haz clic o toca el mapa para consultar el valor de una celda.</span><a id="descargarRaster" hidden download>Descargar GeoTIFF</a><button type="button" id="refrescarRaster" class="tiff-refrescar">Actualizar disponibilidad</button></div>
+<div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / MAPAS</p><h1 id="tituloMapas">El pronóstico sobre el territorio.</h1><p>Compara los campos meteorológicos de los modelos para una misma fecha e inicialización.</p></div>
+<div class="cmp-panel">
+<label id="cmpMes" class="cmp-etiqueta">FECHA VÁLIDA</label><div id="cmpFechas" class="cmp-fechas"></div>
+<div class="cmp-controles"><div><span class="cmp-etiqueta">VARIABLE</span><div id="cmpVariables" class="cmp-opciones" role="group" aria-label="Variable"></div></div><div><span class="cmp-etiqueta">ANTELACIÓN</span><div id="cmpAntelacion" class="cmp-opciones" role="group" aria-label="Antelación de la inicialización"></div><small class="cmp-nota">Días entre la fecha de inicialización y la fecha válida.</small></div><div><span class="cmp-etiqueta">CICLO DE INICIALIZACIÓN</span><div id="cmpCiclos" class="cmp-opciones" role="group" aria-label="Ciclo de inicialización común a todos los modelos"></div></div></div>
+<div id="cmpContexto" class="cmp-contexto"></div><div class="cmp-cabecera"><h2 id="cmpTitulo"></h2><span id="cmpResumen" class="cmp-resumen"></span></div>
+<p class="cmp-ayuda">Pulsa <strong>Ampliar</strong> para comparar un modelo junto al observado. Puedes ampliar varios; vuelve a pulsar para reducirlos. Toca una celda del mapa para consultar su valor.</p>
+<div id="cmpDisposicion" class="cmp-disposicion"><div id="cmpGrandes" class="cmp-grandes"></div><div id="cmpMiniaturas" class="cmp-miniaturas"></div></div>
+<div id="cmpLeyenda" class="cmp-leyenda"></div><p id="cmpEstado" class="cmp-estado" role="status" aria-live="polite"></p><button type="button" id="cmpRefrescar" class="cmp-refrescar">Actualizar disponibilidad</button>
 </div>
 <script>
 (()=>{
-const pagina=document.getElementById("paginaMapas"),estado=document.getElementById("estadoRaster"),barra=document.getElementById("barraRaster");
-const nombres={gfs:"GFS",ecmwf:"ECMWF / IFS",eta5:"ETA5",wrf5:"WRF5",mpas15:"MPAS15",observado:"Observado"};
-const variables={pp24h:{nombre:"Precipitación acumulada 24h",unidad:"mm"},tmax:{nombre:"Temperatura máxima",unidad:"°C"},tmin:{nombre:"Temperatura mínima",unidad:"°C"}};
-const lluvia=[[0.1,1,"#b6e1fa"],[1,2,"#69b6e5"],[2,5,"#3182bd"],[5,10,"#31a354"],[10,20,"#a1d76a"],[20,50,"#ffdf4d"],[50,100,"#f58b34"],[100,Infinity,"#c73b64"]];
+const pagina=document.getElementById("paginaMapas"),nombres={gfs:"GFS",ecmwf:"ECMWF / IFS",eta5:"ETA5",wrf5:"WRF5",mpas15:"MPAS15"};
+const variables={pp24h:{nombre:"Precipitación 24 h",unidad:"mm"},tmax:{nombre:"Temperatura máxima",unidad:"°C"},tmin:{nombre:"Temperatura mínima",unidad:"°C"}};
+const lluvia=[[.1,1,"#b6e1fa"],[1,2,"#69b6e5"],[2,5,"#3182bd"],[5,10,"#31a354"],[10,20,"#a1d76a"],[20,50,"#ffdf4d"],[50,100,"#f58b34"],[100,Infinity,"#c73b64"]];
 const temperatura=[[-Infinity,-10,"#5e3c99"],[-10,0,"#4378b4"],[0,5,"#83b9da"],[5,10,"#c5dfec"],[10,15,"#eaf3da"],[15,20,"#ffffb2"],[20,25,"#fed976"],[25,30,"#fdae61"],[30,35,"#f46d43"],[35,40,"#d73027"],[40,Infinity,"#8f1538"]];
-let visor=null,capa=null,raster=null,librerias=null,catalogo=[],cargaCatalogo=null;
-let dias=[],fecha="",modelo="gfs",ciclo="00",variable="pp24h",solicitud=0,controlador=null,abierto=false,producto=null;
-const cache=new Map();
-function sumarDia(f,n){const d=new Date(f+"T00:00:00Z");d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);}
-function fechaPeruActual(){const p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Lima",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date()),v={};for(const x of p)v[x.type]=x.value;return `${v.year}-${v.month}-${v.day}`;}
+let fecha="",variable="pp24h",antelacion=0,ciclo="00",catalogo=[],iniciado=false,librerias=null,version=0;
+const ampliados=new Set(),tarjetas=new Map(),visores=new Map(),cache=new Map(),pendientes=new Set();
+const limites=[[-19,-82],[1,-68]];
+function hoy(){const p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Lima",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date()),v={};for(const x of p)v[x.type]=x.value;return `${v.year}-${v.month}-${v.day}`;}
+function sumar(f,n){const d=new Date(f+"T00:00:00Z");d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);}
 function corta(f){return f.slice(8,10)+"/"+f.slice(5,7)+"/"+f.slice(0,4);}
-function mensaje(texto,error=false){estado.textContent=texto;estado.dataset.error=String(error);}
-function boton(texto,valor,seleccionado,disponible,accion){const b=document.createElement("button");b.type="button";b.textContent=texto;b.dataset.valor=valor;b.className=seleccionado?"activo":"";b.disabled=!disponible;b.setAttribute("aria-pressed",String(seleccionado));if(!disponible)b.title=valor==="observado"?"Aún no hay mapas observados disponibles":"Sin TIFF disponible para esta selección";b.addEventListener("click",accion);return b;}
-function crearDias(){const hoy=fechaPeruActual();dias=Array.from({length:6},(_,i)=>sumarDia(hoy,i-3));if(!dias.includes(fecha))fecha=hoy;barra.value=String(dias.indexOf(fecha));barra.setAttribute("aria-valuetext",corta(fecha));const contenedor=document.getElementById("fechasRaster");contenedor.replaceChildren();for(const dia of dias){const b=document.createElement("button");b.type="button";b.className=(dia===fecha?"activo ":"")+(!catalogo.some(e=>e.fecha===dia)?"sin-archivo":"");b.dataset.fecha=dia;b.setAttribute("aria-pressed",String(dia===fecha));b.setAttribute("aria-label",corta(dia)+(dia===hoy?", hoy":""));const mes=new Intl.DateTimeFormat("es-PE",{month:"short",timeZone:"UTC"}).format(new Date(dia+"T00:00:00Z"));const semana=new Intl.DateTimeFormat("es-PE",{weekday:"short",timeZone:"UTC"}).format(new Date(dia+"T00:00:00Z"));b.innerHTML=`${semana}<strong>${dia.slice(8,10)}</strong>${mes}<small>${dia===hoy?"HOY":""}</small>`;b.addEventListener("click",()=>{fecha=dia;actualizar();});contenedor.appendChild(b);}}
-function entradas(f=fecha,m=modelo,c=ciclo){return catalogo.filter(e=>e.fecha===f&&e.modelo===m&&e.ciclo===c);}
+function fechaLarga(f){return new Intl.DateTimeFormat("es-PE",{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(f+"T00:00:00Z"));}
+function inicializacion(){return sumar(fecha,-antelacion).replaceAll("-","")+ciclo;}
+function estado(texto,error=false){const e=document.getElementById("cmpEstado");e.textContent=texto;e.dataset.error=String(error);}
+function boton(texto,valor,activo,accion){const b=document.createElement("button");b.type="button";b.textContent=texto;b.dataset.valor=valor;b.classList.toggle("activo",activo);b.setAttribute("aria-pressed",String(activo));b.addEventListener("click",accion);return b;}
 function controles(){
-crearDias();
-const modelosDisponibles=Object.keys(nombres).filter(m=>catalogo.some(e=>e.fecha===fecha&&e.modelo===m));
-if(modelosDisponibles.length&&!modelosDisponibles.includes(modelo))modelo=modelosDisponibles[0];
-const ciclosDisponibles=["00","12"].filter(c=>entradas(fecha,modelo,c).length);
-if(ciclosDisponibles.length&&!ciclosDisponibles.includes(ciclo))ciclo=ciclosDisponibles[0];
-const opciones=entradas();if(opciones.length&&!opciones.some(e=>e.variable===variable))variable=Object.keys(variables).find(v=>opciones.some(e=>e.variable===v));
-const ms=document.getElementById("modelosRaster");ms.replaceChildren();for(const [m,n] of Object.entries(nombres))ms.appendChild(boton(n,m,modelo===m,modelosDisponibles.includes(m),()=>{modelo=m;actualizar();}));
-const cs=document.getElementById("ciclosRaster");cs.replaceChildren();for(const c of ["00","12"])cs.appendChild(boton(c+" UTC",c,ciclo===c,ciclosDisponibles.includes(c),()=>{ciclo=c;actualizar();}));
-const vs=document.getElementById("variablesRaster");vs.replaceChildren();for(const [v,info] of Object.entries(variables))vs.appendChild(boton(info.nombre,v,variable===v,opciones.some(e=>e.variable===v),()=>{variable=v;actualizar();}));
-}
-async function cargarCatalogo(){
-const respuesta=await fetch("https://api.github.com/repos/CumulusRichi/station-nwp/git/trees/main?recursive=1",{cache:"no-cache"});
-if(!respuesta.ok)throw new Error("No se pudo consultar la disponibilidad de mapas en GitHub. Usa Actualizar disponibilidad para reintentar.");
-const listado=await respuesta.json();if(listado.truncated||!Array.isArray(listado.tree))throw new Error("No se pudo obtener el catálogo completo de mapas.");
-const nuevos=[];
-for(const entrada of listado.tree){if(entrada.type!=="blob")continue;
-const m=entrada.path.match(/^mapas\/(\d{8})(00|12)\/(gfs|ecmwf|eta5|wrf5|mpas15)_(00|12)_(pp24h|tmax|tmin)_d([1-9]\d*)\.tif$/i);
-if(!m||m[2]!==m[4])continue;
-const inicio=m[1].slice(0,4)+"-"+m[1].slice(4,6)+"-"+m[1].slice(6,8),desplazamiento=Number(m[6])-1+(m[5]==="tmin"&&m[2]==="12"?1:0);
-const fechaValida=sumarDia(inicio,desplazamiento);
-nuevos.push({ruta:entrada.path,modelo:m[3].toLowerCase(),ciclo:m[2],variable:m[5].toLowerCase(),fecha:fechaValida,inicio,dia:Number(m[6]),inicializacion:m[1]+m[2]});
-}
-catalogo=nuevos;
+const actual=hoy();if(!fecha)fecha=actual;
+const fechas=document.getElementById("cmpFechas");fechas.replaceChildren();for(let i=-2;i<=2;i++){const f=sumar(actual,i),d=new Date(f+"T00:00:00Z"),b=boton("",f,f===fecha,()=>{fecha=f;actualizar();});b.dataset.fecha=f;b.setAttribute("aria-label",corta(f)+(f===actual?", hoy":""));const dia=new Intl.DateTimeFormat("es-PE",{weekday:"short",timeZone:"UTC"}).format(d),mes=new Intl.DateTimeFormat("es-PE",{month:"short",timeZone:"UTC"}).format(d);b.innerHTML=`${dia}<strong>${f.slice(8,10)}${f===actual?"<small>HOY</small>":""}</strong>${mes}`;fechas.appendChild(b);}
+document.getElementById("cmpMes").textContent="FECHA VÁLIDA · "+new Intl.DateTimeFormat("es-PE",{month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(fecha+"T00:00:00Z")).toUpperCase();
+const vs=document.getElementById("cmpVariables");vs.replaceChildren();for(const [v,info] of Object.entries(variables))vs.appendChild(boton(info.nombre,v,variable===v,()=>{variable=v;actualizar();}));
+const as=document.getElementById("cmpAntelacion");as.replaceChildren();["Mismo día","1 día antes","2 días antes"].forEach((texto,i)=>as.appendChild(boton(texto,String(i),antelacion===i,()=>{antelacion=i;actualizar();})));
+const cs=document.getElementById("cmpCiclos");cs.replaceChildren();for(const c of ["00","12"])cs.appendChild(boton(c+" UTC",c,ciclo===c,()=>{ciclo=c;actualizar();}));
+const inicio=sumar(fecha,-antelacion);document.getElementById("cmpContexto").textContent=`Fecha válida: ${corta(fecha)} · Inicialización de todos los modelos: ${corta(inicio)}, ${ciclo} UTC · Antelación: ${antelacion} ${antelacion===1?"día":"días"}.`;
+document.getElementById("cmpTitulo").textContent=variables[variable].nombre+" · "+fechaLarga(fecha);
+const colores=variable==="pp24h"?lluvia:temperatura;
+document.getElementById("cmpLeyenda").innerHTML=`<strong>${variable==="pp24h"?"PRECIPITACIÓN":"TEMPERATURA"} (${variables[variable].unidad})</strong>`+colores.map(([a,b,c])=>`<span><i style="background:${c}"></i>${a===-Infinity?"< "+b:b===Infinity?"≥ "+a:a+"–"+b}</span>`).join("");
 }
 function script(url){return new Promise((resolve,reject)=>{const e=document.createElement("script");e.src=url;e.onload=resolve;e.onerror=()=>{e.remove();reject(new Error("No se pudo cargar el lector GeoTIFF"));};document.head.appendChild(e);});}
-function prepararLibrerias(){if(!librerias)librerias=(async()=>{if(!window.parseGeoraster)await script("https://cdn.jsdelivr.net/npm/georaster@1.6.0/dist/georaster.browser.bundle.min.js");if(!window.GeoRasterLayer)await script("https://cdn.jsdelivr.net/npm/georaster-layer-for-leaflet@3.10.0/dist/georaster-layer-for-leaflet.min.js");})().catch(e=>{librerias=null;throw e;});return librerias;}
-function esValido(v){return !!raster&&v!==null&&v!==undefined&&Number.isFinite(v)&&v!==raster.noDataValue;}
-function escala(){return variable==="pp24h"?lluvia:temperatura;}
-function color(v){if(!esValido(v)||(variable==="pp24h"&&v<0.1))return null;return escala().find(([a,b])=>v>=a&&v<b)?.[2]||null;}
-function leyenda(){const unidad=variables[variable].unidad;document.getElementById("leyendaRaster").innerHTML=`<strong>${variable==="pp24h"?"PRECIPITACIÓN":"TEMPERATURA"} (${unidad})</strong>`+escala().map(([a,b,c])=>`<span><i style="background:${c}"></i>${a===-Infinity?"< "+b:b===Infinity?"≥ "+a:a+"–"+b}</span>`).join("");}
-function limpiar(){if(controlador){controlador.abort();controlador=null;}if(visor){visor.closePopup();if(capa)visor.removeLayer(capa);}capa=null;raster=null;producto=null;document.getElementById("descargarRaster").hidden=true;document.getElementById("periodoRaster").textContent="";document.getElementById("leyendaRaster").replaceChildren();}
-function iniciarVisor(){if(visor){visor.invalidateSize();return;}visor=L.map("mapaRaster",{zoomControl:true}).setView([-9.2,-75],5);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"&copy; OpenStreetMap"}).addTo(visor);visor.on("click",e=>{if(!raster||!producto)return;const punto=Number(raster.projection)===3857?L.CRS.EPSG3857.project(e.latlng):{x:e.latlng.lng,y:e.latlng.lat};const fila=Math.floor((raster.ymax-punto.y)/raster.pixelHeight),columna=Math.floor((punto.x-raster.xmin)/raster.pixelWidth);let texto="Sin datos en esta ubicación";if(fila>=0&&fila<raster.height&&columna>=0&&columna<raster.width){const v=raster.values[0][fila][columna];if(esValido(v))texto=`${variables[variable].nombre}: <strong>${v.toFixed(variable==="pp24h"?2:1)} ${variables[variable].unidad}</strong>`;}L.popup().setLatLng(e.latlng).setContent(`<strong>${nombres[producto.modelo]} · ${corta(producto.fecha)}</strong><br>${texto}<br>Latitud: ${e.latlng.lat.toFixed(4)} · Longitud: ${e.latlng.lng.toFixed(4)}`).openOn(visor);});}
-async function actualizar(){
-const token=++solicitud;limpiar();controles();
-document.getElementById("productoRaster").textContent=`${nombres[modelo]} · ${variables[variable].nombre}`;
-const opciones=entradas().filter(e=>e.variable===variable).sort((a,b)=>b.inicializacion.localeCompare(a.inicializacion));
-if(!opciones.length){mensaje(`No hay mapas disponibles para el ${corta(fecha)}. Las opciones sin archivos permanecen deshabilitadas.`);return;}
-const elegido=opciones[0];mensaje("Cargando mapa…");
-try{await prepararLibrerias();if(token!==solicitud)return;
-let nuevo=cache.get(elegido.ruta);
-if(!nuevo){controlador=new AbortController();const respuesta=await fetch(elegido.ruta,{cache:"no-cache",signal:controlador.signal});if(!respuesta.ok)throw new Error(respuesta.status===404?"El TIFF seleccionado aún no está publicado.":"No se pudo descargar el GeoTIFF.");nuevo=await parseGeoraster(await respuesta.arrayBuffer());if(token!==solicitud)return;if(![4326,3857].includes(Number(nuevo.projection)))throw new Error("La proyección del TIFF no está admitida por este visor.");if(!nuevo.values?.[0])throw new Error("El GeoTIFF no contiene una banda numérica disponible.");cache.set(elegido.ruta,nuevo);while(cache.size>3)cache.delete(cache.keys().next().value);}
-if(token!==solicitud)return;raster=nuevo;producto=elegido;
-capa=new GeoRasterLayer({georaster:raster,opacity:.78,resolution:128,resampleMethod:"nearest",pixelValuesToColorFn:valores=>color(valores[0])});capa.addTo(visor);visor.fitBounds(capa.getBounds(),{padding:[15,15]});
-const periodo=variable==="pp24h"?`${corta(fecha)} 07:00 a ${corta(sumarDia(fecha,1))} 07:00`:`${corta(fecha)} ${variable==="tmin"?"01:00 a 11:00":"12:00 a 23:00"}`;
-document.getElementById("periodoRaster").textContent=`Inicialización: ${corta(elegido.inicio)} ${elegido.ciclo} UTC · Período: ${periodo}, hora de Perú.`;
-const enlace=document.getElementById("descargarRaster");enlace.href=elegido.ruta;enlace.hidden=false;leyenda();mensaje(variable==="pp24h"?"Mapa disponible. Menos de 0.1 mm se muestra transparente.":"Mapa disponible. La escala representa temperatura en °C.");
-}catch(error){if(token===solicitud&&error.name!=="AbortError"){limpiar();mensaje(error.message||"No se pudo cargar el mapa.",true);}}
+function preparar(){if(!librerias)librerias=(async()=>{if(!window.parseGeoraster)await script("https://cdn.jsdelivr.net/npm/georaster@1.6.0/dist/georaster.browser.bundle.min.js");if(!window.GeoRasterLayer)await script("https://cdn.jsdelivr.net/npm/georaster-layer-for-leaflet@3.10.0/dist/georaster-layer-for-leaflet.min.js");})().catch(e=>{librerias=null;throw e;});return librerias;}
+async function listado(){const r=await fetch("https://api.github.com/repos/CumulusRichi/station-nwp/git/trees/main?recursive=1",{cache:"no-cache"});if(!r.ok)throw new Error("No se pudo consultar la disponibilidad de mapas.");const j=await r.json();if(j.truncated||!Array.isArray(j.tree))throw new Error("Catálogo de mapas incompleto.");const resultado=[];for(const e of j.tree){if(e.type!=="blob")continue;const m=e.path.match(/^mapas\/(\d{8})(00|12)\/(gfs|ecmwf|eta5|wrf5|mpas15)_(00|12)_(pp24h|tmax|tmin)_d([1-9]\d*)\.tif$/);if(!m||m[2]!==m[4])continue;const inicio=m[1].slice(0,4)+"-"+m[1].slice(4,6)+"-"+m[1].slice(6,8),dia=Number(m[6]);resultado.push({ruta:e.path,modelo:m[3],ciclo:m[2],variable:m[5],inicio,fecha:sumar(inicio,dia-1+(m[5]==="tmin"&&m[2]==="12"?1:0)),inicializacion:m[1]+m[2],dia});}catalogo=resultado;}
+function vacio(contenedor,titulo,texto){contenedor.replaceChildren();const d=document.createElement("div");d.className="cmp-vacio";const h=document.createElement("strong");h.textContent=titulo;const p=document.createElement("span");p.textContent=texto;d.append(h,p);contenedor.appendChild(d);}
+function destruir(){++version;for(const c of pendientes)c.abort();pendientes.clear();for(const v of visores.values())v.mapa.remove();visores.clear();tarjetas.clear();document.getElementById("cmpGrandes").replaceChildren();document.getElementById("cmpMiniaturas").replaceChildren();}
+function disponer(){const grandes=document.getElementById("cmpGrandes"),pequenos=document.getElementById("cmpMiniaturas");document.getElementById("cmpDisposicion").classList.toggle("con-ampliados",ampliados.size>0);grandes.appendChild(tarjetas.get("observado"));for(const [m] of Object.entries(nombres)){const tarjeta=tarjetas.get(m),ampliado=ampliados.has(m);tarjeta.classList.toggle("ampliado",ampliado);tarjeta.querySelector("button").textContent=ampliado?"↙ Reducir":"↗ Ampliar";tarjeta.querySelector("button").setAttribute("aria-expanded",String(ampliado));(ampliado?grandes:pequenos).appendChild(tarjeta);}requestAnimationFrame(()=>{for(const v of visores.values()){v.mapa.invalidateSize();v.mapa.fitBounds(limites,{padding:[5,5],animate:false});}});}
+function tarjeta(modelo,entrada){const obs=modelo==="observado",a=document.createElement("article");a.className="cmp-tarjeta"+(obs?" cmp-observado":"");a.dataset.modelo=modelo;const h=document.createElement("header"),titulo=document.createElement("div"),nombre=document.createElement("h3"),detalle=document.createElement("small");nombre.textContent=obs?"◉ Observado":nombres[modelo];detalle.textContent=obs?"Referencia observacional":`Inicialización ${corta(sumar(fecha,-antelacion)).slice(0,5)} · ${ciclo} UTC`;titulo.append(nombre,detalle);h.appendChild(titulo);if(obs){const r=document.createElement("span");r.className="cmp-referencia";r.textContent="REFERENCIA";h.appendChild(r);}else{const b=document.createElement("button");b.type="button";b.className="cmp-ampliar";b.textContent="↗ Ampliar";b.addEventListener("click",()=>{if(ampliados.has(modelo))ampliados.delete(modelo);else ampliados.add(modelo);disponer();});h.appendChild(b);}const cuerpo=document.createElement("div");cuerpo.id="cmpMapa_"+modelo;cuerpo.className="cmp-mapa";const pie=document.createElement("footer");pie.className="cmp-pie";const v=document.createElement("span");v.textContent=variables[variable].nombre;const f=document.createElement("span");f.textContent="Válido: "+corta(fecha).slice(0,5);pie.append(v,f);a.append(h,cuerpo,pie);if(obs)vacio(cuerpo,"Observación no disponible","El mapa observado está pendiente de incorporación.");else if(!entrada)vacio(cuerpo,"Pronóstico no disponible","No hay datos disponibles para esta fecha, variable e inicialización.");tarjetas.set(modelo,a);return a;}
+async function cargarModelo(modelo,entrada,token){
+const div=document.getElementById("cmpMapa_"+modelo),variableActual=variable,unidad=variables[variableActual].unidad,escala=variableActual==="pp24h"?lluvia:temperatura;
+try{await preparar();if(token!==version)return;const mapa=L.map(div,{zoomControl:true,scrollWheelZoom:false}).fitBounds(limites,{padding:[5,5]});visores.set(modelo,{mapa});L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"&copy; OpenStreetMap"}).addTo(mapa);
+let raster=cache.get(entrada.ruta);if(!raster){const c=new AbortController();pendientes.add(c);try{const r=await fetch(entrada.ruta,{cache:"no-cache",signal:c.signal});if(!r.ok)throw new Error("No se pudo descargar el TIFF");raster=await parseGeoraster(await r.arrayBuffer());}finally{pendientes.delete(c);}if(token!==version)return;if(![4326,3857].includes(Number(raster.projection))||!raster.values?.[0])throw new Error("GeoTIFF o proyección no admitidos");cache.set(entrada.ruta,raster);while(cache.size>10)cache.delete(cache.keys().next().value);}
+if(token!==version)return;const valido=v=>v!==null&&v!==undefined&&Number.isFinite(v)&&v!==raster.noDataValue;
+const capa=new GeoRasterLayer({georaster:raster,opacity:.78,resolution:128,resampleMethod:"nearest",pixelValuesToColorFn:valores=>{const v=valores[0];if(!valido(v)||(variableActual==="pp24h"&&v<.1))return null;return escala.find(([a,b])=>v>=a&&v<b)?.[2]||null;}});capa.addTo(mapa);mapa.on("click",e=>{const p=Number(raster.projection)===3857?L.CRS.EPSG3857.project(e.latlng):{x:e.latlng.lng,y:e.latlng.lat},fila=Math.floor((raster.ymax-p.y)/raster.pixelHeight),col=Math.floor((p.x-raster.xmin)/raster.pixelWidth);let valor="Sin datos en esta ubicación";if(fila>=0&&fila<raster.height&&col>=0&&col<raster.width){const v=raster.values[0][fila][col];if(valido(v))valor=`<strong>${v.toFixed(variableActual==="pp24h"?2:1)} ${unidad}</strong>`;}L.popup().setLatLng(e.latlng).setContent(`<strong>${nombres[modelo]} · ${variables[variableActual].nombre}</strong><br>${valor}<br>Inicialización: ${corta(entrada.inicio)} ${entrada.ciclo} UTC<br>Fecha válida: ${corta(entrada.fecha)}`).openOn(mapa);});
+}catch(error){if(token!==version||error.name==="AbortError")return;const v=visores.get(modelo);if(v){v.mapa.remove();visores.delete(modelo);}vacio(div,"No se pudo cargar el mapa",error.message);}
 }
-async function refrescar(){const b=document.getElementById("refrescarRaster");b.disabled=true;++solicitud;limpiar();mensaje("Consultando mapas disponibles…");cache.clear();cargaCatalogo=cargarCatalogo();try{await cargaCatalogo;await actualizar();}catch(e){catalogo=[];controles();mensaje(e.message,true);}finally{b.disabled=false;cargaCatalogo=null;}}
-function abrir(){if(pagina.hidden)return;iniciarVisor();if(!abierto){abierto=true;crearDias();controles();refrescar();}else if(!dias.includes(fechaPeruActual())||dias[3]!==fechaPeruActual()){crearDias();actualizar();}}
-barra.addEventListener("input",()=>{fecha=dias[Number(barra.value)];actualizar();});document.getElementById("refrescarRaster").addEventListener("click",refrescar);window.addEventListener("hashchange",()=>requestAnimationFrame(abrir));requestAnimationFrame(abrir);
+function actualizar(){destruir();controles();const token=version,coinciden=catalogo.filter(e=>e.fecha===fecha&&e.inicializacion===inicializacion()&&e.variable===variable);tarjeta("observado",null);for(const m of Object.keys(nombres))tarjeta(m,coinciden.find(e=>e.modelo===m));disponer();document.getElementById("cmpResumen").textContent=`${coinciden.length} de 5 modelos disponibles`;
+const horas=variable==="pp24h"?`${corta(fecha)} 07:00 a ${corta(sumar(fecha,1))} 07:00`:`${corta(fecha)} ${variable==="tmin"?"01:00 a 11:00":"12:00 a 23:00"}`;estado(`Período: ${horas}, hora de Perú.${variable==="pp24h"?" Menos de 0.1 mm se muestra transparente.":""}`);for(const e of coinciden)cargarModelo(e.modelo,e,token);}
+async function refrescar(){const b=document.getElementById("cmpRefrescar");b.disabled=true;destruir();estado("Consultando mapas disponibles…");try{await listado();cache.clear();actualizar();}catch(error){catalogo=[];actualizar();estado(error.message,true);}finally{b.disabled=false;}}
+function abrir(){if(pagina.hidden)return;if(!iniciado){iniciado=true;fecha=hoy();controles();refrescar();}else{for(const v of visores.values())v.mapa.invalidateSize();}}
+document.getElementById("cmpRefrescar").addEventListener("click",refrescar);window.addEventListener("hashchange",()=>requestAnimationFrame(abrir));requestAnimationFrame(abrir);
 })();
 </script>
 </section>
@@ -235,6 +231,7 @@ let mapa=null;
 let capaEstaciones=null;
 let marcadores={};
 let ciclosSeleccionados=new Set();
+let soloObservado=false;
 let selectorCiclosInicializado=false;
 
 const FORMATEADOR_PERU=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Lima",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
@@ -502,9 +499,10 @@ function ciclosDisponibles(){if(!manifiesto)return[];const activos=modelosSelecc
 function actualizarSelectorCiclos(){
 const contenedor=document.getElementById("ciclosChecks"),disponibles=ciclosDisponibles();
 if(!selectorCiclosInicializado){ciclosSeleccionados=new Set(disponibles);selectorCiclosInicializado=true;}else ciclosSeleccionados=new Set([...ciclosSeleccionados].filter(ciclo=>disponibles.includes(ciclo)));
-if(disponibles.length===0){contenedor.innerHTML='<span class="sin-ciclos">Sin inicializaciones disponibles para los modelos seleccionados.</span>';return;}
-contenedor.innerHTML=disponibles.map(ciclo=>`<label class="ciclo-check"><input class="ciclo-input" type="checkbox" value="${ciclo}" ${ciclosSeleccionados.has(ciclo)?"checked":""}>${etiquetaCiclo(ciclo)}</label>`).join("");
-contenedor.querySelectorAll(".ciclo-input").forEach(input=>input.addEventListener("change",async()=>{if(input.checked)ciclosSeleccionados.add(input.value);else ciclosSeleccionados.delete(input.value);await actualizarGraficas();}));
+if(soloObservado)ciclosSeleccionados.clear();
+contenedor.innerHTML=`<button type="button" id="btnSoloObservado" class="ciclo-check" aria-pressed="${soloObservado}" style="background:${soloObservado?'#102f50':'#fff'};color:${soloObservado?'#fff':'#5a6675'}">Solo observado</button>`+(disponibles.length?disponibles.map(ciclo=>`<label class="ciclo-check"><input class="ciclo-input" type="checkbox" value="${ciclo}" ${ciclosSeleccionados.has(ciclo)?"checked":""}>${etiquetaCiclo(ciclo)}</label>`).join(""):'<span class="sin-ciclos">Sin inicializaciones disponibles para los modelos seleccionados.</span>');
+document.getElementById("btnSoloObservado").addEventListener("click",async()=>{soloObservado=true;ciclosSeleccionados.clear();actualizarSelectorCiclos();await actualizarGraficas();});
+contenedor.querySelectorAll(".ciclo-input").forEach(input=>input.addEventListener("change",async()=>{if(input.checked){soloObservado=false;ciclosSeleccionados.add(input.value);}else ciclosSeleccionados.delete(input.value);const boton=document.getElementById("btnSoloObservado");boton.setAttribute("aria-pressed",String(soloObservado));boton.style.background=soloObservado?"#102f50":"#fff";boton.style.color=soloObservado?"#fff":"#5a6675";await actualizarGraficas();}));
 }
 
 function obtenerFila(datos,codigo){
@@ -621,6 +619,7 @@ return trazas;
 
 function crearLeyendaPersonalizada(idContenedor,trazasModelos){
 const contenedor=document.getElementById(idContenedor);
+if(soloObservado){contenedor.innerHTML='<div class="leyenda-pronosticos"><div class="leyenda-observado" style="margin-top:0;padding-top:0;border-top:0">OBSERVADO<span class="leyenda-observado-linea"></span></div></div>';return;}
 const activos=modelosSeleccionados();
 let html=`<div class="leyenda-pronosticos"><div class="leyenda-titulo">INICIALIZACIÓN DEL PRONÓSTICO</div><div class="leyenda-modelos">`;
 for(const modelo of activos){
