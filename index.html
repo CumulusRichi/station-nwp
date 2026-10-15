@@ -87,7 +87,94 @@
 <section class="panel-grafica vista-variable" id="vistaTmin" hidden><div id="graficaTmin" class="grafica"></div><div id="leyendaTmin"></div><div id="estadisticosTmin"></div></section>
 <section class="panel-grafica vista-variable" id="vistaPP24h" hidden><div id="graficaPP24h" class="grafica"></div><div id="leyendaPP24h"></div><div id="estadisticosPP24h"></div></section>
 
-</section><section class="pagina" id="paginaMapas" data-pagina="mapas" aria-labelledby="tituloMapas" hidden><div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / MAPAS</p><h1 id="tituloMapas">El pronóstico sobre el territorio.</h1><p>Campos meteorológicos de los modelos, en un visor geográfico.</p></div><div class="panel-futuro"><div class="simbolo-futuro simbolo-mapa" aria-hidden="true"><span></span><span></span><span></span></div><span class="estado-desarrollo">En desarrollo</span><h2>Próximamente, mapas de pronóstico.</h2><p>Esta sección reunirá los productos espaciales de los modelos y sus periodos de validez.</p><a href="#pronosticos" class="enlace-texto">Mientras tanto, explorar estaciones <span aria-hidden="true">→</span></a></div></section><section class="pagina" id="paginaValidacion" data-pagina="validacion" aria-labelledby="tituloValidacion" hidden><div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / VALIDACIÓN</p><h1 id="tituloValidacion">Cómo cambia el desempeño con el plazo.</h1><p>Evaluación de los modelos por día de pronóstico.</p></div><div class="panel-futuro"><div class="simbolo-futuro simbolo-validacion" aria-hidden="true"><span></span><span></span><span></span><span></span></div><span class="estado-desarrollo">En desarrollo</span><h2>La evaluación, día a día.</h2><p>Aquí podrás consultar el desempeño de los modelos para distintos días de pronóstico. Las tablas del primer día ya están disponibles en el comparador por estación.</p><a href="#pronosticos" class="enlace-texto">Consultar el primer día <span aria-hidden="true">→</span></a></div></section>
+</section><section class="pagina" id="paginaMapas" data-pagina="mapas" aria-labelledby="tituloMapas" hidden>
+<style>
+#paginaMapas .tiff-panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;margin:15px 0 30px}
+#paginaMapas .tiff-controles{display:flex;align-items:end;flex-wrap:wrap;gap:14px;margin-bottom:13px}
+#paginaMapas .tiff-controles label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:var(--navy)}
+#paginaMapas .tiff-controles input,#paginaMapas .tiff-controles select{font:13px var(--font);padding:9px;border:1px solid #b9c4d2;border-radius:8px;min-width:140px;background:#fff;color:var(--ink)}
+#paginaMapas .tiff-controles button{padding:10px 18px;border:0;border-radius:8px;background:var(--navy);color:#fff;cursor:pointer;font:600 12px var(--font)}
+#paginaMapas .tiff-controles button:disabled{opacity:.55;cursor:wait}
+#paginaMapas .tiff-producto{font-size:13px;font-weight:650;color:var(--navy);margin:7px 0}
+#paginaMapas .tiff-periodo,#paginaMapas .tiff-estado{font-size:12px;line-height:1.6;color:var(--muted);margin:5px 0}
+#paginaMapas .tiff-estado[data-error="true"]{color:#a53c36}
+#paginaMapas #mapaRaster{height:570px;width:100%;border:1px solid var(--line);border-radius:8px;z-index:1;margin-top:12px}
+#paginaMapas .tiff-leyenda{display:flex;flex-wrap:wrap;justify-content:center;gap:7px 14px;margin-top:15px;font-size:11px;color:var(--muted)}
+#paginaMapas .tiff-leyenda span{display:inline-flex;gap:5px;align-items:center}
+#paginaMapas .tiff-leyenda i{display:inline-block;width:19px;height:12px;border:1px solid #b8c3cb;border-radius:2px}
+#paginaMapas .tiff-ayuda{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:13px;font-size:11px;line-height:1.6;color:var(--muted)}
+#paginaMapas .tiff-ayuda a{color:#2f6f87}
+@media(max-width:800px){#paginaMapas .tiff-panel{padding:12px}#paginaMapas #mapaRaster{height:470px}#paginaMapas .tiff-controles{gap:10px}#paginaMapas .tiff-controles label{flex:1 1 120px}#paginaMapas .tiff-controles button{flex:1 0 100%}#paginaMapas .tiff-controles input,#paginaMapas .tiff-controles select{width:100%;min-width:0}}
+</style>
+<div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / MAPAS</p><h1 id="tituloMapas">El pronóstico sobre el territorio.</h1><p>Precipitación acumulada en 24 horas del GFS para el primer día de pronóstico.</p></div>
+<div class="tiff-panel">
+<div class="tiff-controles"><label>Fecha de inicialización<input type="date" id="fechaRaster" value="2026-10-15"></label><label>Ciclo<select id="cicloRaster"><option value="00">00 UTC</option><option value="12">12 UTC</option></select></label><button type="button" id="cargarRaster">Mostrar mapa</button></div>
+<div class="tiff-producto">GFS · Precipitación acumulada en 24 horas · Día 1</div>
+<p id="periodoRaster" class="tiff-periodo"></p><p id="estadoRaster" class="tiff-estado" role="status" aria-live="polite"></p>
+<div id="mapaRaster" aria-label="Mapa interactivo de precipitación pronosticada por GFS"></div>
+<div id="leyendaRaster" class="tiff-leyenda" aria-label="Escala de precipitación en milímetros"></div>
+<div class="tiff-ayuda"><span>Haz clic o toca el mapa para consultar el valor de una celda. Menos de 0.1 mm se muestra transparente.</span><a id="descargarRaster" hidden download>Descargar GeoTIFF</a></div>
+</div>
+<script>
+(()=>{
+const pagina=document.getElementById("paginaMapas"),estado=document.getElementById("estadoRaster"),boton=document.getElementById("cargarRaster");
+const escala=[[0.1,1,"#b6e1fa"],[1,2,"#69b6e5"],[2,5,"#3182bd"],[5,10,"#31a354"],[10,20,"#a1d76a"],[20,50,"#ffdf4d"],[50,100,"#f58b34"],[100,Infinity,"#c73b64"]];
+document.getElementById("leyendaRaster").innerHTML='<strong>PRECIPITACIÓN (mm)</strong>'+escala.map(([a,b,c])=>`<span><i style="background:${c}"></i>${b===Infinity?"≥ "+a:a+"–"+b}</span>`).join("");
+let visor=null,capa=null,raster=null,librerias=null,solicitud=0,primeraCarga=false;
+function mensaje(texto,error=false){estado.textContent=texto;estado.dataset.error=String(error);}
+function script(url){return new Promise((resolve,reject)=>{const e=document.createElement("script");e.src=url;e.onload=resolve;e.onerror=()=>{e.remove();reject(new Error("No se pudo cargar el lector GeoTIFF"));};document.head.appendChild(e);});}
+function prepararLibrerias(){
+if(!librerias)librerias=(async()=>{
+if(!window.parseGeoraster)await script("https://cdn.jsdelivr.net/npm/georaster@1.6.0/dist/georaster.browser.bundle.min.js");
+if(!window.GeoRasterLayer)await script("https://cdn.jsdelivr.net/npm/georaster-layer-for-leaflet@3.10.0/dist/georaster-layer-for-leaflet.min.js");
+})().catch(e=>{librerias=null;throw e;});return librerias;
+}
+function esValido(v){return v!==null&&v!==undefined&&Number.isFinite(v)&&v!==raster.noDataValue;}
+function color(v){if(!esValido(v)||v<0.1)return null;return escala.find(([a,b])=>v>=a&&v<b)?.[2]||null;}
+function iniciarVisor(){
+if(visor){visor.invalidateSize();return;}
+visor=L.map("mapaRaster",{zoomControl:true}).setView([-9.2,-75],5);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"&copy; OpenStreetMap"}).addTo(visor);
+visor.on("click",e=>{
+if(!raster)return;
+const fila=Math.floor((raster.ymax-e.latlng.lat)/raster.pixelHeight),columna=Math.floor((e.latlng.lng-raster.xmin)/raster.pixelWidth);
+let texto="Sin datos en esta ubicación";
+if(fila>=0&&fila<raster.height&&columna>=0&&columna<raster.width){const v=raster.values[0][fila][columna];if(esValido(v))texto=`Precipitación acumulada: <strong>${v.toFixed(2)} mm</strong>`;}
+L.popup().setLatLng(e.latlng).setContent(`<strong>GFS · PP24h · Día 1</strong><br>${texto}<br>Latitud: ${e.latlng.lat.toFixed(4)} · Longitud: ${e.latlng.lng.toFixed(4)}`).openOn(visor);
+});
+}
+async function cargar(){
+const fecha=document.getElementById("fechaRaster").value,ciclo=document.getElementById("cicloRaster").value;
+if(!/^\d{4}-\d{2}-\d{2}$/.test(fecha)){mensaje("Selecciona una fecha de inicialización.",true);return;}
+const token=++solicitud;
+iniciarVisor();visor.closePopup();if(capa){visor.removeLayer(capa);capa=null;}raster=null;
+document.getElementById("descargarRaster").hidden=true;document.getElementById("periodoRaster").textContent="";
+boton.disabled=true;mensaje("Cargando mapa de precipitación…");
+const compacta=fecha.replaceAll("-",""),ruta=`mapas/${compacta}${ciclo}/gfs_${ciclo}_pp24h_d1.tif`;
+try{
+await prepararLibrerias();
+const respuesta=await fetch(ruta,{cache:"no-cache"});
+if(!respuesta.ok)throw new Error(respuesta.status===404?"No hay un GeoTIFF disponible para esta fecha y ciclo.":"No se pudo descargar el GeoTIFF.");
+const nuevo=await parseGeoraster(await respuesta.arrayBuffer());
+if(token!==solicitud)return;
+if(Number(nuevo.projection)!==4326)throw new Error("Este primer visor requiere un GeoTIFF en EPSG:4326.");
+if(!nuevo.values?.[0])throw new Error("El GeoTIFF no contiene una banda numérica disponible.");
+raster=nuevo;
+capa=new GeoRasterLayer({georaster:raster,opacity:.78,resolution:128,resampleMethod:"nearest",pixelValuesToColorFn:valores=>color(valores[0])});
+capa.addTo(visor);visor.fitBounds(capa.getBounds(),{padding:[15,15]});
+const siguiente=new Date(fecha+"T00:00:00Z");siguiente.setUTCDate(siguiente.getUTCDate()+1);
+const formato=f=>f.slice(8,10)+"/"+f.slice(5,7)+"/"+f.slice(0,4);
+document.getElementById("periodoRaster").textContent=`Inicialización: ${formato(fecha)} ${ciclo} UTC · Período: ${formato(fecha)} 07:00 a ${formato(siguiente.toISOString().slice(0,10))} 07:00, hora de Perú.`;
+const enlace=document.getElementById("descargarRaster");enlace.href=ruta;enlace.hidden=false;
+mensaje("Mapa disponible. Acércate para explorar la grilla y toca una ubicación para consultar su valor.");
+}catch(error){if(token===solicitud){if(capa){visor.removeLayer(capa);capa=null;}raster=null;mensaje(error.message||"No se pudo cargar el mapa.",true);}}
+finally{if(token===solicitud)boton.disabled=false;}
+}
+function abrir(){if(pagina.hidden)return;iniciarVisor();if(!primeraCarga){primeraCarga=true;cargar();}}
+boton.addEventListener("click",cargar);window.addEventListener("hashchange",()=>requestAnimationFrame(abrir));requestAnimationFrame(abrir);
+})();
+</script>
+</section><section class="pagina" id="paginaValidacion" data-pagina="validacion" aria-labelledby="tituloValidacion" hidden><div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / VALIDACIÓN</p><h1 id="tituloValidacion">Cómo cambia el desempeño con el plazo.</h1><p>Evaluación de los modelos por día de pronóstico.</p></div><div class="panel-futuro"><div class="simbolo-futuro simbolo-validacion" aria-hidden="true"><span></span><span></span><span></span><span></span></div><span class="estado-desarrollo">En desarrollo</span><h2>La evaluación, día a día.</h2><p>Aquí podrás consultar el desempeño de los modelos para distintos días de pronóstico. Las tablas del primer día ya están disponibles en el comparador por estación.</p><a href="#pronosticos" class="enlace-texto">Consultar el primer día <span aria-hidden="true">→</span></a></div></section>
 </main>
 <footer class="footer"><div class="footer-scale"></div><div class="footer-inner"><strong>NWP-STATION</strong><span>SENAMHI · Subdirección de Cambio Climático y Modelamiento Atmosférico</span></div></footer>
 <script>
