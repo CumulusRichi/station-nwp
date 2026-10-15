@@ -151,8 +151,42 @@
 (()=>{
 const pagina=document.getElementById("paginaMapas"),nombres={gfs:"GFS",ecmwf:"ECMWF / IFS",eta5:"ETA5",wrf5:"WRF5",mpas15:"MPAS15"};
 const variables={pp24h:{nombre:"Precipitación 24 h",unidad:"mm"},tmax:{nombre:"Temperatura máxima",unidad:"°C"},tmin:{nombre:"Temperatura mínima",unidad:"°C"}};
-const lluvia=[[.1,1,"#b6e1fa"],[1,2,"#69b6e5"],[2,5,"#3182bd"],[5,10,"#31a354"],[10,20,"#a1d76a"],[20,50,"#ffdf4d"],[50,100,"#f58b34"],[100,Infinity,"#c73b64"]];
-const temperatura=[[-Infinity,-10,"#5e3c99"],[-10,0,"#4378b4"],[0,5,"#83b9da"],[5,10,"#c5dfec"],[10,15,"#eaf3da"],[15,20,"#ffffb2"],[20,25,"#fed976"],[25,30,"#fdae61"],[30,35,"#f46d43"],[35,40,"#d73027"],[40,Infinity,"#8f1538"]];
+const lluvia=[
+[.1,2,"#d4f2d5"],
+[2,4,"#87e394"],
+[4,6,"#05c746"],
+[6,8,"#0c9034"],
+[8,10,"#00721d"],
+[10,18,"#95e7fd"],
+[18,26,"#5ed9fc"],
+[26,34,"#00c7fb"],
+[34,42,"#0086f9"],
+[42,50,"#0054f8"],
+[50,60,"#ffe987"],
+[60,70,"#ffc75b"],
+[70,80,"#ff9e3b"],
+[80,90,"#ff692d"],
+[90,100,"#ff2f26"],
+[100,110,"#f90022"],
+[110,120,"#ac0017"],
+[120,Infinity,"#82007b"]
+];
+const temperatura=[
+[-Infinity,-20,"#000032"],
+[-20,-15,"#0000a0"],
+[-15,-10,"#0000f3"],
+[-10,-5,"#0055fd"],
+[-5,0,"#57d4fd"],
+[0,5,"#f3f3bf"],
+[5,10,"#ebeb94"],
+[10,15,"#efd35d"],
+[15,20,"#f7b826"],
+[20,25,"#fd9600"],
+[25,30,"#fd4e00"],
+[30,35,"#f00000"],
+[35,40,"#bd0000"],
+[40,Infinity,"#880000"]
+];
 let fecha="",variable="pp24h",antelacion=0,ciclo="00",catalogo=[],iniciado=false,librerias=null,version=0;
 const ampliados=new Set(),tarjetas=new Map(),visores=new Map(),cache=new Map(),pendientes=new Set();
 const limites=[[-19,-82],[1,-68]];
