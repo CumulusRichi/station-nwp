@@ -1,5 +1,5 @@
 {
-  "actualizacion": "2026-10-16T19:19:44Z",
+  "actualizacion": "2026-10-16T20:19:24Z",
   "ciclos": {
     "2026100800": {
       "gfs": [
@@ -26,6 +26,56 @@
       "mpas15": [
         "t2m",
         "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_eqm": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_scal": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
         "tmax",
         "tmin",
         "pp24h"
@@ -96,6 +146,56 @@
         "tmax",
         "tmin",
         "pp24h"
+      ],
+      "eta22_eqm": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_scal": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
+        "tmax",
+        "tmin",
+        "pp24h"
       ]
     },
     "2026100912": {
@@ -163,6 +263,56 @@
         "tmax",
         "tmin",
         "pp24h"
+      ],
+      "eta22_eqm": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_scal": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
+        "tmax",
+        "tmin",
+        "pp24h"
       ]
     },
     "2026101012": {
@@ -220,6 +370,56 @@
       "mpas15": [
         "t2m",
         "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_eqm": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_scal": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
         "tmax",
         "tmin",
         "pp24h"
@@ -290,6 +490,56 @@
         "tmax",
         "tmin",
         "pp24h"
+      ],
+      "eta22_eqm": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_scal": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
+        "tmax",
+        "tmin",
+        "pp24h"
       ]
     },
     "2026101212": {
@@ -354,6 +604,56 @@
       "mpas15": [
         "t2m",
         "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_eqm": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_scal": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
         "tmax",
         "tmin",
         "pp24h"
@@ -424,6 +724,56 @@
         "tmax",
         "tmin",
         "pp24h"
+      ],
+      "eta22_eqm": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_scal": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
+        "tmax",
+        "tmin",
+        "pp24h"
       ]
     },
     "2026101412": {
@@ -488,6 +838,56 @@
       "mpas15": [
         "t2m",
         "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_eqm": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_scal": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
         "tmax",
         "tmin",
         "pp24h"

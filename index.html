@@ -53,13 +53,25 @@
 .tabla-indicadores td:first-child{white-space:nowrap}
 .resumen-estadisticos{font-size:12px;line-height:1.8;color:var(--muted)}
 @media(max-width:800px){.selector-variable{justify-content:center}.tabla-indicadores{min-width:0;font-size:11px}.tabla-indicadores th,.tabla-indicadores td{padding:8px}.tabla-indicadores td:first-child{white-space:normal}}
+.tipo-pronostico{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.tipo-pronostico button{padding:9px 17px;border:1px solid #b9cbd9;border-radius:999px;background:white;color:#526c82;cursor:pointer;font:600 12px var(--font)}
+.tipo-pronostico button[aria-pressed="true"]{background:#102f50;color:white;border-color:#102f50}
+.modelo-check.opcion-inactiva,.ciclo-check.opcion-inactiva,.tipo-pronostico button:disabled{opacity:.4;cursor:not-allowed}
+.modelo-check input:disabled,.ciclo-check input:disabled{cursor:not-allowed}
+.nota-ensamble{max-width:1040px;margin:10px auto 4px;padding:0 10px;font-size:11px;color:#65798b;line-height:1.6;text-align:center}
+.ensamble-leyenda{max-width:1040px;margin:0 auto;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fafbfd;text-align:center;font-size:11px;color:#526c82}
+.ensamble-corridas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 20px;margin:9px 0}
+.ensamble-corrida{display:inline-flex;align-items:center;gap:7px}
+.ensamble-corrida i{display:inline-block;width:24px;height:3px;background:var(--color)}
+.ensamble-miembros{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;font-size:10px;margin-top:9px}
+.ensamble-miembros span{padding:4px 7px;border:1px solid #dce4ea;border-radius:5px;background:white}
 </style>
 </head>
 <body>
 <a class="saltar-contenido" href="#contenidoPrincipal">Ir al contenido</a>
 <header class="masthead"><div class="masthead-bar"><a class="marca-plataforma" href="#inicio" aria-label="NWP-STATION, inicio"><span class="sello-senamhi">SENAMHI</span><span class="marca-separador"></span><span class="marca-texto"><strong>NWP-STATION</strong><small>Modelos y observaciones</small></span></a><nav class="nav" aria-label="Navegación principal"><a class="activo" data-seccion="inicio" href="#inicio" aria-current="page">Inicio</a><a data-seccion="pronosticos" href="#pronosticos">Pronósticos</a><a data-seccion="mapas" href="#mapas">Mapas</a><a data-seccion="validacion" href="#validacion">Validación</a></nav></div><div class="masthead-scale"></div></header>
 <main class="contenedor" id="contenidoPrincipal" tabindex="-1">
-<section class="pagina pagina-activa" id="paginaInicio" data-pagina="inicio" aria-labelledby="tituloInicio"><div class="portada"><div class="portada-texto"><p class="sobretitulo">SENAMHI · MODELAMIENTO ATMOSFÉRICO</p><h1 id="tituloInicio">NWP<span>-</span>STATION</h1><p class="portada-lema">El pronóstico, frente a la observación.</p><p class="portada-descripcion">Explora los modelos atmosféricos, compáralos con estaciones meteorológicas y consulta su desempeño en el Perú.</p><a class="boton-portada" href="#pronosticos">Explorar pronósticos <span aria-hidden="true">↗</span></a><div class="portada-modelos"><span>GFS</span><span>ECMWF / IFS</span><span>ETA</span><span>WRF</span><span>MPAS</span><span>ETA22-SCA</span><span>ETA22-EQM</span></div></div><div class="portada-arte" aria-hidden="true"><svg viewBox="0 0 560 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><radialGradient id="orbitaColor"><stop stop-color="#1976aa" stop-opacity=".38"/><stop offset="1" stop-color="#1976aa" stop-opacity="0"/></radialGradient><linearGradient id="trazoColor"><stop stop-color="#56c6c3"/><stop offset="1" stop-color="#b9ddff"/></linearGradient></defs><circle cx="300" cy="210" r="198" fill="url(#orbitaColor)"/><g stroke="#6596b7" stroke-opacity=".25"><circle cx="300" cy="210" r="145"/><ellipse cx="300" cy="210" rx="78" ry="145"/><ellipse cx="300" cy="210" rx="145" ry="54"/><ellipse cx="300" cy="210" rx="145" ry="103"/><path d="M155 210h290M300 65v290"/><circle cx="300" cy="210" r="177" stroke-dasharray="2 9"/></g><g stroke="url(#trazoColor)" stroke-width="1.7"><path d="M71 265c58-95 92 42 141-49s84-127 133-55 77 77 148-59"/><path d="M65 296c72-92 108 36 151-43s72-103 122-53 103 39 165-53" opacity=".35"/><path d="m173 171 62-33 58 48 62-62 66 75-41 75-88 23-63-55Z" stroke-opacity=".4" stroke-width="1"/></g><g fill="#d5edef" stroke="#0f3355" stroke-width="4"><circle cx="173" cy="171" r="5"/><circle cx="235" cy="138" r="6"/><circle cx="293" cy="186" r="6"/><circle cx="355" cy="124" r="5"/><circle cx="421" cy="199" r="6"/><circle cx="380" cy="274" r="5"/><circle cx="292" cy="297" r="6"/><circle cx="229" cy="242" r="5"/></g><circle cx="293" cy="186" r="13" stroke="#57c3c4" stroke-opacity=".45"/><circle cx="380" cy="274" r="12" stroke="#d5b96f" stroke-opacity=".5"/></svg><span class="arte-pie">MODELOS · ESTACIONES · EVALUACIÓN</span></div></div><div class="introduccion-secciones"><p class="sobretitulo">EXPLORA LA PLATAFORMA</p><h2>Tres formas de mirar el pronóstico.</h2></div><div class="tarjetas-inicio"><a class="tarjeta-inicio tarjeta-principal" href="#pronosticos"><span class="numero-tarjeta">01 / ESTACIONES</span><span class="icono-tarjeta" aria-hidden="true">↗</span><h3>Pronósticos</h3><p>Series observadas y pronosticadas, por estación, variable e inicialización.</p><span class="pie-tarjeta">Abrir el comparador <span aria-hidden="true">→</span></span></a><a class="tarjeta-inicio" href="#mapas"><span class="numero-tarjeta">02 / TERRITORIO</span><span class="estado-desarrollo">En desarrollo</span><h3>Mapas</h3><p>La distribución espacial de los campos pronosticados por los modelos.</p><span class="pie-tarjeta">Conocer la sección <span aria-hidden="true">→</span></span></a><a class="tarjeta-inicio" href="#validacion"><span class="numero-tarjeta">03 / DESEMPEÑO</span><span class="estado-desarrollo">En desarrollo</span><h3>Validación</h3><p>Evaluación de los modelos según el día de pronóstico.</p><span class="pie-tarjeta">Conocer la sección <span aria-hidden="true">→</span></span></a></div><section class="notas" id="descripcion"><div class="notas-titulo">Acerca de NWP-STATION</div><div class="notas-contenido"><p class="descripcion-texto"><strong>NWP-STATION</strong> es una plataforma del SENAMHI que reúne pronósticos de modelos atmosféricos y observaciones de estaciones automáticas y convencionales para facilitar su comparación y evaluar el desempeño de los modelos. Su nombre combina <strong>NWP</strong> (<em>Numerical Weather Prediction</em>, predicción numérica del tiempo) y <em>station</em>, en referencia a las estaciones meteorológicas. Permite consultar distintas inicializaciones de GFS, ECMWF/IFS, ETA, WRF y MPAS, además de los productos corregidos ETA22-SCA y ETA22-EQM, junto con los registros disponibles para cada estación. Presenta temperatura del aire a 2 m y precipitación acumulada en 6 horas hasta cinco días de pronóstico, así como temperaturas máxima y mínima y precipitación acumulada en 24 horas hasta siete días. Las series se complementan con indicadores estadísticos calculados para los últimos 30 días, que permiten examinar los errores y la correspondencia entre los valores pronosticados y observados.</p><div class="tabla-modelos-wrap"><table class="tabla-modelos"><thead><tr><th>MODELO</th><th>RESOLUCIÓN ESPACIAL</th><th>RESOLUCIÓN TEMPORAL</th><th>CICLOS USADOS</th></tr></thead><tbody><tr><td>GFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ECMWF / IFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ETA5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>WRF5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>MPAS15</td><td>15 km</td><td>3 h</td><td>00 UTC</td></tr><tr><td>ETA22-SCA</td><td>22 km (modelo base)</td><td>Diaria</td><td>00 UTC</td></tr><tr><td>ETA22-EQM</td><td>22 km (modelo base)</td><td>Diaria</td><td>00 UTC</td></tr></tbody></table></div><div class="notas-subtitulo">Cómo interpretar los estadísticos</div>
+<section class="pagina pagina-activa" id="paginaInicio" data-pagina="inicio" aria-labelledby="tituloInicio"><div class="portada"><div class="portada-texto"><p class="sobretitulo">SENAMHI · MODELAMIENTO ATMOSFÉRICO</p><h1 id="tituloInicio">NWP<span>-</span>STATION</h1><p class="portada-lema">El pronóstico, frente a la observación.</p><p class="portada-descripcion">Explora los modelos atmosféricos, compáralos con estaciones meteorológicas y consulta su desempeño en el Perú.</p><a class="boton-portada" href="#pronosticos">Explorar pronósticos <span aria-hidden="true">↗</span></a><div class="portada-modelos"><span>GFS</span><span>ECMWF / IFS</span><span>ETA</span><span>WRF</span><span>MPAS</span><span>ETA22-SCA</span><span>ETA22-EQM</span><span>WRF8 ENS</span></div></div><div class="portada-arte" aria-hidden="true"><svg viewBox="0 0 560 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><radialGradient id="orbitaColor"><stop stop-color="#1976aa" stop-opacity=".38"/><stop offset="1" stop-color="#1976aa" stop-opacity="0"/></radialGradient><linearGradient id="trazoColor"><stop stop-color="#56c6c3"/><stop offset="1" stop-color="#b9ddff"/></linearGradient></defs><circle cx="300" cy="210" r="198" fill="url(#orbitaColor)"/><g stroke="#6596b7" stroke-opacity=".25"><circle cx="300" cy="210" r="145"/><ellipse cx="300" cy="210" rx="78" ry="145"/><ellipse cx="300" cy="210" rx="145" ry="54"/><ellipse cx="300" cy="210" rx="145" ry="103"/><path d="M155 210h290M300 65v290"/><circle cx="300" cy="210" r="177" stroke-dasharray="2 9"/></g><g stroke="url(#trazoColor)" stroke-width="1.7"><path d="M71 265c58-95 92 42 141-49s84-127 133-55 77 77 148-59"/><path d="M65 296c72-92 108 36 151-43s72-103 122-53 103 39 165-53" opacity=".35"/><path d="m173 171 62-33 58 48 62-62 66 75-41 75-88 23-63-55Z" stroke-opacity=".4" stroke-width="1"/></g><g fill="#d5edef" stroke="#0f3355" stroke-width="4"><circle cx="173" cy="171" r="5"/><circle cx="235" cy="138" r="6"/><circle cx="293" cy="186" r="6"/><circle cx="355" cy="124" r="5"/><circle cx="421" cy="199" r="6"/><circle cx="380" cy="274" r="5"/><circle cx="292" cy="297" r="6"/><circle cx="229" cy="242" r="5"/></g><circle cx="293" cy="186" r="13" stroke="#57c3c4" stroke-opacity=".45"/><circle cx="380" cy="274" r="12" stroke="#d5b96f" stroke-opacity=".5"/></svg><span class="arte-pie">MODELOS · ESTACIONES · EVALUACIÓN</span></div></div><div class="introduccion-secciones"><p class="sobretitulo">EXPLORA LA PLATAFORMA</p><h2>Tres formas de mirar el pronóstico.</h2></div><div class="tarjetas-inicio"><a class="tarjeta-inicio tarjeta-principal" href="#pronosticos"><span class="numero-tarjeta">01 / ESTACIONES</span><span class="icono-tarjeta" aria-hidden="true">↗</span><h3>Pronósticos</h3><p>Series observadas y pronosticadas, por estación, variable e inicialización.</p><span class="pie-tarjeta">Abrir el comparador <span aria-hidden="true">→</span></span></a><a class="tarjeta-inicio" href="#mapas"><span class="numero-tarjeta">02 / TERRITORIO</span><span class="estado-desarrollo">En desarrollo</span><h3>Mapas</h3><p>La distribución espacial de los campos pronosticados por los modelos.</p><span class="pie-tarjeta">Conocer la sección <span aria-hidden="true">→</span></span></a><a class="tarjeta-inicio" href="#validacion"><span class="numero-tarjeta">03 / DESEMPEÑO</span><span class="estado-desarrollo">En desarrollo</span><h3>Validación</h3><p>Evaluación de los modelos según el día de pronóstico.</p><span class="pie-tarjeta">Conocer la sección <span aria-hidden="true">→</span></span></a></div><section class="notas" id="descripcion"><div class="notas-titulo">Acerca de NWP-STATION</div><div class="notas-contenido"><p class="descripcion-texto"><strong>NWP-STATION</strong> es una plataforma del SENAMHI que reúne pronósticos de modelos atmosféricos y observaciones de estaciones automáticas y convencionales para facilitar su comparación y evaluar el desempeño de los modelos. Su nombre combina <strong>NWP</strong> (<em>Numerical Weather Prediction</em>, predicción numérica del tiempo) y <em>station</em>, en referencia a las estaciones meteorológicas. Permite consultar distintas inicializaciones de GFS, ECMWF/IFS, ETA, WRF y MPAS, además de los productos corregidos ETA22-SCA y ETA22-EQM y del ensamble WRF8 ENS, junto con los registros disponibles para cada estación. Presenta temperatura del aire a 2 m y precipitación acumulada en 6 horas hasta cinco días de pronóstico, así como temperaturas máxima y mínima y precipitación acumulada en 24 horas hasta siete días. El ensamble WRF8 ENS se consulta en una gráfica independiente, con sus ocho miembros, su media y su dispersión. Los modelos que cuentan con estadísticos se complementan con indicadores de los últimos 30 días, que permiten examinar los errores y la correspondencia entre los valores pronosticados y observados.</p><div class="tabla-modelos-wrap"><table class="tabla-modelos"><thead><tr><th>MODELO</th><th>RESOLUCIÓN ESPACIAL</th><th>RESOLUCIÓN TEMPORAL</th><th>CICLOS USADOS</th></tr></thead><tbody><tr><td>GFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ECMWF / IFS</td><td>0.25° (~27 km)</td><td>3 h</td><td>00 y 12 UTC</td></tr><tr><td>ETA5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>WRF5</td><td>5 km</td><td>1 h</td><td>00 y 12 UTC</td></tr><tr><td>MPAS15</td><td>15 km</td><td>3 h</td><td>00 UTC</td></tr><tr><td>ETA22-SCA</td><td>0.1° (~11 km)</td><td>Diaria</td><td>00 UTC</td></tr><tr><td>ETA22-EQM</td><td>0.1° (~11 km)</td><td>Diaria</td><td>00 UTC</td></tr><tr><td>WRF8 ENS · 8 miembros</td><td>8 km</td><td>1 h</td><td>00 UTC</td></tr></tbody></table></div><div class="notas-subtitulo">Cómo interpretar los estadísticos</div>
 <p class="resumen-estadisticos">Los estadísticos evalúan el primer día de pronóstico durante un período de 30 días completos. El período evaluado se indica en cada tabla. Se utilizan únicamente comparaciones con datos observados y pronosticados válidos; los ciclos 00Z y 12Z se cuentan por separado. Para precipitación, el umbral seleccionado define el evento evaluado.</p>
 <div class="tabla-modelos-wrap"><table class="tabla-modelos tabla-indicadores"><thead><tr><th>INDICADOR</th><th>INTERPRETACIÓN</th></tr></thead><tbody>
 <tr><td>BIAS</td><td>Positivo: sobreestimación promedio. Negativo: subestimación promedio. El valor ideal es 0.</td></tr>
@@ -73,12 +85,13 @@
 </tbody></table></div>
 <div class="notas-subtitulo">Notas del producto</div>
 <div class="nota"><span class="nota-numero">1</span><span>Las observaciones y los pronósticos se actualizan periódicamente, según la disponibilidad de los datos. Los estadísticos se actualizan diariamente.</span></div>
-<div class="nota"><span class="nota-numero">2</span><span>ETA22-SCA y ETA22-EQM son productos de ETA22 con corrección de sesgo mediante SCAL y EQM, respectivamente. Se generan en el ciclo 00 UTC para temperatura máxima, temperatura mínima y precipitación acumulada en 24 horas. Ofrecen hasta cinco días de temperaturas y siete de precipitación en este visor.</span></div>
-<div class="nota"><span class="nota-numero">3</span><span>Los pronósticos contienen incertidumbre y la información es referencial; no reemplaza los productos oficiales del SENAMHI. La institución no se responsabiliza por interpretaciones o usos inadecuados de estos resultados.</span></div></div></section></section>
+<div class="nota"><span class="nota-numero">2</span><span>ETA22-SCA y ETA22-EQM son dos versiones de los pronósticos de ETA22 con corrección de sesgo, es decir, un ajuste para reducir errores sistemáticos. SCA y EQM identifican los métodos de corrección utilizados. Ambos productos presentan temperatura máxima, temperatura mínima y precipitación diaria en una grilla de 0.1° (~11 km); esta es la grilla del producto corregido, no una nueva resolución de simulación del modelo. Se generan a las 00 UTC y ofrecen hasta cinco días de temperaturas y siete de precipitación en este visor.</span></div>
+<div class="nota"><span class="nota-numero">3</span><span>WRF8 ENS reúne ocho pronósticos del modelo WRF a 8 km, obtenidos con distintas configuraciones físicas. Cada miembro calcula temperatura máxima, temperatura mínima y precipitación diaria. La gráfica muestra los miembros, su promedio y una franja entre el valor mínimo y el máximo de cada fecha. Esta franja permite apreciar cuánto difieren los pronósticos entre sí; no es un intervalo de confianza. Se genera a las 00 UTC y se muestran hasta siete días de pronóstico.</span></div>
+<div class="nota"><span class="nota-numero">4</span><span>Los pronósticos contienen incertidumbre y la información es referencial; no reemplaza los productos oficiales del SENAMHI. La institución no se responsabiliza por interpretaciones o usos inadecuados de estos resultados.</span></div></div></section></section>
 <section class="pagina" id="paginaPronosticos" data-pagina="pronosticos" aria-labelledby="tituloPronosticos" hidden><div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / PRONÓSTICOS</p><h1 id="tituloPronosticos">Elige una estación. Compara los modelos.</h1><p>Consulta las variables con observaciones disponibles y sus indicadores de desempeño.</p></div><p id="estadoVisor" class="estado-visor" role="status" hidden></p>
 
 <details class="panel-opciones" open><summary>Selección de estación</summary><div class="controles"><div class="grupo-control"><label class="titulo">Departamento</label><select id="departamentoSelect"></select></div><div class="grupo-control"><label class="titulo">Provincia</label><select id="provinciaSelect"></select></div><div class="grupo-control"><label class="titulo">Estación</label><select id="estacionSelect"></select></div><button id="btnResetEstacion" class="btn-reset" type="button">Restablecer</button></div></details>
-<section class="panel-mapa"><h2 class="titulo-panel">Ubicación de estaciones</h2><div id="mapa"></div><div class="mapa-leyenda"><span><i class="punto-red" style="background:white;border:1.5px solid #6b98c7"></i>Automáticas</span><span><i class="punto-red" style="background:white;border:1.5px solid #ce8589"></i>Convencionales</span><span><i class="punto-red" style="background:white;border:1.5px solid #9aa3ad"></i>Sin tipo identificado</span></div></section><section class="panel-pronostico"><div class="grupo-pronostico"><div class="titulo-pronostico">MODELOS</div><div class="modelos-checks"><label class="modelo-check"><input class="modelo-input" type="checkbox" value="gfs" checked><span class="indicador gfs"></span>GFS</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="ecmwf" checked><span class="indicador ecmwf"></span>ECMWF</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta5" checked><span class="indicador eta5"></span>ETA5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="wrf5" checked><span class="indicador wrf5"></span>WRF5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="mpas15" checked><span class="indicador mpas15"></span>MPAS15</label><label class="modelo-check" hidden><input class="modelo-input" type="checkbox" value="eta22_scal" checked><span class="indicador eta22_scal"></span>ETA22-SCA</label><label class="modelo-check" hidden><input class="modelo-input" type="checkbox" value="eta22_eqm" checked><span class="indicador eta22_eqm"></span>ETA22-EQM</label></div></div><div class="grupo-pronostico"><div class="titulo-pronostico">INICIALIZACIÓN DEL PRONÓSTICO</div><div id="ciclosChecks" class="ciclos-checks"></div></div></section>
+<section class="panel-mapa"><h2 class="titulo-panel">Ubicación de estaciones</h2><div id="mapa"></div><div class="mapa-leyenda"><span><i class="punto-red" style="background:white;border:1.5px solid #6b98c7"></i>Automáticas</span><span><i class="punto-red" style="background:white;border:1.5px solid #ce8589"></i>Convencionales</span><span><i class="punto-red" style="background:white;border:1.5px solid #9aa3ad"></i>Sin tipo identificado</span></div></section><section class="panel-pronostico"><div class="grupo-pronostico"><div class="titulo-pronostico">TIPO DE PRONÓSTICO</div><div class="tipo-pronostico" role="group" aria-label="Tipo de pronóstico"><button id="btnDeterministas" type="button" aria-pressed="true">Deterministas</button><button id="btnEnsamble" type="button" aria-pressed="false">WRF8 ENS</button></div></div><div class="grupo-pronostico" id="opcionesDeterministas"><div class="titulo-pronostico">MODELOS</div><div class="modelos-checks"><label class="modelo-check"><input class="modelo-input" type="checkbox" value="gfs" checked><span class="indicador gfs"></span>GFS</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="ecmwf" checked><span class="indicador ecmwf"></span>ECMWF</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta5" checked><span class="indicador eta5"></span>ETA5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="wrf5" checked><span class="indicador wrf5"></span>WRF5</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="mpas15" checked><span class="indicador mpas15"></span>MPAS15</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta22_scal" checked><span class="indicador eta22_scal"></span>ETA22-SCA</label><label class="modelo-check"><input class="modelo-input" type="checkbox" value="eta22_eqm" checked><span class="indicador eta22_eqm"></span>ETA22-EQM</label></div></div><div class="grupo-pronostico"><div class="titulo-pronostico">INICIALIZACIÓN DEL PRONÓSTICO</div><div id="ciclosChecks" class="ciclos-checks"></div></div></section>
 <section class="info-estacion" id="infoEstacion" aria-label="Información de la estación" aria-live="polite"><span class="info-estacion-vacia">Seleccione una estación para consultar su información.</span></section>
 <p class="mensaje-variables" id="mensajeVariables" role="status">Seleccione una estación para consultar sus variables disponibles.</p>
 <div class="selector-variable" id="selectorVariables"><button id="btnTemperatura" hidden class="activo" type="button" data-variable="t2m">Temperatura Horaria</button><button id="btnPrecipitacion" hidden type="button" data-variable="pp6h">Precipitación Acumulada 6h</button><button id="btnTmax" hidden type="button" data-variable="tmax">Temperatura Máxima</button><button id="btnTmin" hidden type="button" data-variable="tmin">Temperatura Mínima</button><button id="btnPP24h" hidden type="button" data-variable="pp24h">Precipitación Acumulada 24h</button></div>
@@ -87,6 +100,7 @@
 <section class="panel-grafica vista-variable" id="vistaTmax" hidden><div id="graficaTmax" class="grafica"></div><div id="leyendaTmax"></div><div id="estadisticosTmax"></div></section>
 <section class="panel-grafica vista-variable" id="vistaTmin" hidden><div id="graficaTmin" class="grafica"></div><div id="leyendaTmin"></div><div id="estadisticosTmin"></div></section>
 <section class="panel-grafica vista-variable" id="vistaPP24h" hidden><div id="graficaPP24h" class="grafica"></div><div id="leyendaPP24h"></div><div id="estadisticosPP24h"></div></section>
+<section class="panel-grafica" id="panelEnsamble" hidden><div id="graficaEnsamble" class="grafica"></div><div id="leyendaEnsamble" aria-live="polite"></div><p class="nota-ensamble">Líneas finas: miembros. Línea gruesa: media. Franja: mínimo–máximo entre los miembros disponibles; representa su dispersión. El número de miembros puede variar por fecha.</p></section>
 
 </section><section class="pagina" id="paginaMapas" data-pagina="mapas" aria-labelledby="tituloMapas" hidden>
 <style>
@@ -132,6 +146,13 @@
 #paginaMapas .cmp-leyenda{display:flex;justify-content:center;flex-wrap:wrap;gap:7px 12px;font-size:10px;color:#627c91;padding:17px 0 9px}
 #paginaMapas .cmp-leyenda span{display:inline-flex;align-items:center;gap:4px}
 #paginaMapas .cmp-leyenda i{width:18px;height:11px;border:1px solid #becdd7;border-radius:2px;display:inline-block}
+#paginaMapas .cmp-escala-lluvia{display:block;width:min(100%,1000px);margin:0 auto;padding:0 14px;text-align:center}
+#paginaMapas .cmp-barra-lluvia{height:18px;border-radius:9px;border:1px solid #bdcedb;box-shadow:0 2px 5px #17365312}
+#paginaMapas .cmp-marcas-lluvia{position:relative;height:28px;margin-top:5px}
+#paginaMapas .cmp-marcas-lluvia span{position:absolute;display:block;transform:translateX(-50%);font-size:10px;color:#526c82;white-space:nowrap}
+#paginaMapas .cmp-marcas-lluvia span:before{content:"";display:block;width:1px;height:5px;background:#9aafbf;margin:0 auto 3px}
+#paginaMapas .cmp-escala-lluvia small{font-size:10px;color:#718798}
+@media(max-width:700px){#paginaMapas .cmp-marcas-lluvia span:nth-child(even){display:none}#paginaMapas .cmp-marcas-lluvia span{font-size:9px}}
 #paginaMapas .cmp-escala-temperatura{display:block;width:min(100%,760px);margin:0 auto;padding:0 0 5px}
 #paginaMapas .cmp-escala-titulo{display:block;text-align:center;font-size:11px;letter-spacing:.06em;color:#355a75;margin-bottom:10px}
 #paginaMapas .cmp-barra-temperatura{height:18px;border-radius:9px;border:1px solid #bdcedb;box-shadow:0 2px 5px #17365312}
@@ -227,7 +248,10 @@ const inicio=sumar(fecha,-antelacion);document.getElementById("cmpContexto").tex
 document.getElementById("cmpTitulo").textContent=variables[variable].nombre+" · "+fechaLarga(fecha);
 const colores=variable==="pp24h"?lluvia:temperatura;
 const leyenda=document.getElementById("cmpLeyenda");
-if(variable==="pp24h")leyenda.innerHTML=`<strong>PRECIPITACIÓN (${variables[variable].unidad})</strong>`+colores.map(([a,b,c])=>`<span><i style="background:${c}"></i>${b===Infinity?"≥ "+a:a+"–"+b}</span>`).join("");
+if(variable==="pp24h"){
+const n=lluvia.length,gradiente=lluvia.map(([a,b,c],i)=>`${c} ${i/n*100}% ${(i+1)/n*100}%`).join(","),marcas=lluvia.map(([a],i)=>`<span style="left:${i/n*100}%">${a}</span>`).join("");
+leyenda.innerHTML=`<div class="cmp-escala-lluvia"><strong class="cmp-escala-titulo">PRECIPITACIÓN (mm en 24 h)</strong><div class="cmp-barra-lluvia" role="img" aria-label="Escala por intervalos de precipitación, desde 0.1 hasta 120 milímetros o más" style="background:linear-gradient(to right,${gradiente})"></div><div class="cmp-marcas-lluvia">${marcas}<span style="left:100%">+</span></div><small>Intervalos de color; valores inferiores a 0.1 mm, sin relleno.</small></div>`;
+}
 else{
 const posicion=v=>5+(v+20)/60*90,gradiente=temperatura.map(([a,b,c])=>`${c} ${a===-Infinity?0:posicion(a)}% ${b===Infinity?100:posicion(b)}%`).join(",");
 const marcas=[-20,-15,-10,-5,0,5,10,15,20,25,30,35,40].map(v=>`<span style="left:${posicion(v)}%" ${v%10?"data-intermedia":""}>${v}</span>`).join("");
@@ -281,6 +305,26 @@ pp24h:{boton:"btnPP24h",vista:"vistaPP24h",grafica:"graficaPP24h",leyenda:"leyen
 const VARIABLES_DIARIAS=["tmax","tmin","pp24h"];
 const DIAS_PRONOSTICO_DIARIO=7;
 let variableActiva="t2m";
+let tipoPronostico="deterministas";
+const MIEMBROS_ENSAMBLE=Array.from({length:8},(_,i)=>`wrf8_ens${String(i+1).padStart(2,"0")}`);
+const COLORES_ENSAMBLE=["#2166ac","#b54b35","#16816c","#7956a4","#b58413","#297d91","#a64179","#6d7049","#404e80","#a56535","#416c56","#73584e","#446b9a","#915888","#50836d","#8d7536","#51656b","#a05252"];
+function productoDisponible(modelo,variable){return Object.values(manifiesto?.ciclos||{}).some(c=>c[modelo]?.includes(variable));}
+function modelosDelProducto(variable){
+if(tipoPronostico==="ensamble")return MIEMBROS_ENSAMBLE.filter(m=>variable===null||productoDisponible(m,variable));
+return [...document.querySelectorAll(".modelo-input:checked")].map(i=>i.value).filter(m=>variable===null||((!MODELOS[m].variables||MODELOS[m].variables.includes(variable))&&productoDisponible(m,variable)));
+}
+function cicloDisponible(ciclo){return modelosDelProducto(variableActiva).some(m=>manifiesto?.ciclos[ciclo]?.[m]?.includes(variableActiva));}
+function actualizarOpcionesPronostico(){
+const diaria=VARIABLES_DIARIAS.includes(variableActiva),hayEnsamble=diaria&&MIEMBROS_ENSAMBLE.some(m=>productoDisponible(m,variableActiva));
+if(!diaria&&tipoPronostico==="ensamble")tipoPronostico="deterministas";
+const boton=document.getElementById("btnEnsamble");boton.disabled=!hayEnsamble;boton.title=hayEnsamble?"Ver los ocho miembros y su dispersión":diaria?"Sin CSV de ensamble disponibles para esta variable":"WRF8 ENS ofrece Tmax, Tmin y PP24h";
+for(const [id,tipo] of [["btnDeterministas","deterministas"],["btnEnsamble","ensamble"]])document.getElementById(id).setAttribute("aria-pressed",String(tipo===tipoPronostico));
+document.getElementById("opcionesDeterministas").hidden=tipoPronostico==="ensamble";
+document.querySelectorAll(".modelo-input").forEach(input=>{
+const admite=!MODELOS[input.value].variables||MODELOS[input.value].variables.includes(variableActiva),disponible=admite&&productoDisponible(input.value,variableActiva),label=input.closest(".modelo-check");
+label.hidden=false;input.disabled=!disponible;label.classList.toggle("opcion-inactiva",!disponible);label.setAttribute("aria-disabled",String(!disponible));label.title=disponible?"":admite?"Sin CSV disponibles para esta variable":"Este producto no ofrece esta variable";
+});
+}
 let solicitudDiaria=0;
 const ausentesDiarios=new Set();
 let manifiesto=null;
@@ -348,12 +392,13 @@ const codigo=document.getElementById("estacionSelect").value;
 const estacion=estaciones.find(e=>e.codigo===codigo),disponibles=estacion?.variablesDisponibles||[];
 const orden=Object.keys(VISTAS).filter(v=>disponibles.includes(v));
 if(!orden.includes(variableActiva))variableActiva=orden[0]||null;
-document.querySelectorAll(".modelo-input").forEach(input=>{const variables=MODELOS[input.value]?.variables;if(variables)input.closest(".modelo-check").hidden=!variables.includes(variableActiva);});
+actualizarOpcionesPronostico();actualizarSelectorCiclos();
+document.getElementById("panelEnsamble").hidden=!(tipoPronostico==="ensamble"&&orden.length>0);
 for(const [variable,vista] of Object.entries(VISTAS)){
 const visible=orden.includes(variable),boton=document.getElementById(vista.boton),panel=document.getElementById(vista.vista);
 boton.hidden=!visible;boton.classList.toggle("activo",visible&&variable===variableActiva);
 boton.setAttribute("aria-pressed",String(visible&&variable===variableActiva));
-panel.hidden=!visible;panel.classList.toggle("activa",visible&&variable===variableActiva);
+panel.hidden=!visible||tipoPronostico==="ensamble";panel.classList.toggle("activa",visible&&variable===variableActiva&&tipoPronostico==="deterministas");
 }
 const mensaje=document.getElementById("mensajeVariables");mensaje.hidden=orden.length>0;
 mensaje.textContent=codigo?"Esta estación no tiene observaciones válidas en el periodo disponible.":"Seleccione una estación para consultar sus variables disponibles.";
@@ -553,16 +598,16 @@ manifiesto=await respuesta.json();
 }
 
 function modelosSeleccionados(variable=variableActiva){
-return[...document.querySelectorAll(".modelo-input:checked")].map(input=>input.value).filter(modelo=>variable===null||!MODELOS[modelo].variables||MODELOS[modelo].variables.includes(variable));
+return modelosDelProducto(variable);
 }
 
 function etiquetaCiclo(ciclo){return `${ciclo.slice(6,8)}/${ciclo.slice(4,6)} ${ciclo.slice(8,10)}Z`;}
-function ciclosDisponibles(){if(!manifiesto)return[];const activos=modelosSeleccionados(null);return Object.keys(manifiesto.ciclos).filter(ciclo=>activos.some(modelo=>manifiesto.ciclos[ciclo][modelo]&&manifiesto.ciclos[ciclo][modelo].length>0)).sort();}
+function ciclosDisponibles(){return Object.keys(manifiesto?.ciclos||{}).sort();}
 function actualizarSelectorCiclos(){
 const contenedor=document.getElementById("ciclosChecks"),disponibles=ciclosDisponibles();
 if(!selectorCiclosInicializado){ciclosSeleccionados=new Set(disponibles);selectorCiclosInicializado=true;}else ciclosSeleccionados=new Set([...ciclosSeleccionados].filter(ciclo=>disponibles.includes(ciclo)));
 if(soloObservado)ciclosSeleccionados.clear();
-contenedor.innerHTML=`<button type="button" id="btnSoloObservado" class="ciclo-check" aria-pressed="${soloObservado}" style="background:${soloObservado?'#102f50':'#fff'};color:${soloObservado?'#fff':'#5a6675'}">Solo observado</button>`+(disponibles.length?disponibles.map(ciclo=>`<label class="ciclo-check"><input class="ciclo-input" type="checkbox" value="${ciclo}" ${ciclosSeleccionados.has(ciclo)?"checked":""}>${etiquetaCiclo(ciclo)}</label>`).join(""):'<span class="sin-ciclos">Sin inicializaciones disponibles para los modelos seleccionados.</span>');
+contenedor.innerHTML=`<button type="button" id="btnSoloObservado" class="ciclo-check" aria-pressed="${soloObservado}" style="background:${soloObservado?'#102f50':'#fff'};color:${soloObservado?'#fff':'#5a6675'}">Solo observado</button>`+(disponibles.length?disponibles.map(ciclo=>{const habilitado=cicloDisponible(ciclo);return `<label class="ciclo-check ${habilitado?"":"opcion-inactiva"}" aria-disabled="${!habilitado}" title="${habilitado?"":"Sin datos de esta variable para el producto y modelos seleccionados"}"><input class="ciclo-input" type="checkbox" value="${ciclo}" ${habilitado&&ciclosSeleccionados.has(ciclo)?"checked":""} ${habilitado?"":"disabled"}>${etiquetaCiclo(ciclo)}</label>`;}).join(""):'<span class="sin-ciclos">Sin inicializaciones disponibles para los modelos seleccionados.</span>');
 document.getElementById("btnSoloObservado").addEventListener("click",async()=>{soloObservado=true;ciclosSeleccionados.clear();actualizarSelectorCiclos();await actualizarGraficas();});
 contenedor.querySelectorAll(".ciclo-input").forEach(input=>input.addEventListener("change",async()=>{if(input.checked){soloObservado=false;ciclosSeleccionados.add(input.value);}else ciclosSeleccionados.delete(input.value);const boton=document.getElementById("btnSoloObservado");boton.setAttribute("aria-pressed",String(soloObservado));boton.style.background=soloObservado?"#102f50":"#fff";boton.style.color=soloObservado?"#fff":"#5a6675";await actualizarGraficas();}));
 }
@@ -672,7 +717,7 @@ return grupos.flat();
 }
 
 async function crearTrazasModelos(variable,codigo){
-const activos=modelosSeleccionados(),ciclos=[...ciclosSeleccionados].sort();
+const activos=modelosSeleccionados(),ciclos=[...ciclosSeleccionados].filter(cicloDisponible).sort();
 const grupos=await Promise.all(activos.map(modelo=>crearTrazasUnModelo(variable,codigo,modelo,ciclos)));
 const trazas=grupos.flat();
 aplicarHoverCoincidencias(variable,trazas);
@@ -749,7 +794,7 @@ async function crearTablaEstadisticosDiarios(variable,codigo){
 const vista=VISTAS[variable],contenedor=document.getElementById(vista.estadisticos);
 const solicitud=(solicitudesEstadisticosDiarios.get(variable)||0)+1;
 solicitudesEstadisticosDiarios.set(variable,solicitud);
-const vigente=()=>solicitudesEstadisticosDiarios.get(variable)===solicitud&&document.getElementById("estacionSelect").value===codigo&&variableActiva===variable;
+const vigente=()=>tipoPronostico==="deterministas"&&solicitudesEstadisticosDiarios.get(variable)===solicitud&&document.getElementById("estacionSelect").value===codigo&&variableActiva===variable;
 const titulo="DESEMPEÑO ÚLTIMOS 30 DÍAS · PRONÓSTICO A 1 DÍA";
 const bloque=mensaje=>`<div class="estadisticos-bloque"><div class="estadisticos-titulo">${titulo}</div><div class="estadisticos-vacio">${mensaje}</div></div>`;
 contenedor.innerHTML=bloque("Cargando estadísticos…");
@@ -844,6 +889,7 @@ const CONFIG_PLOTLY={responsive:true,displaylogo:false,scrollZoom:true};
 
 function mostrarSinEstacion(){
 actualizarInfoEstacion();actualizarVariablesDisponibles();
+Plotly.purge("graficaEnsamble");document.getElementById("graficaEnsamble").innerHTML="";document.getElementById("leyendaEnsamble").innerHTML="";
 for(const variable of VARIABLES_DIARIAS){
 const vista=VISTAS[variable];Plotly.purge(vista.grafica);
 document.getElementById(vista.grafica).innerHTML='<div class="mensaje-grafica">Seleccione una estación para visualizar los datos diarios.</div>';
@@ -865,7 +911,7 @@ const codigo=document.getElementById("estacionSelect").value;
 if(!codigo){mostrarSinEstacion();return;}
 try{
 const [observado,modelos]=await Promise.all([crearTrazaObservada(variable,codigo),crearTrazasModelos(variable,codigo)]);
-if(solicitud!==solicitudDiaria||codigo!==document.getElementById("estacionSelect").value||variable!==variableActiva)return;
+if(solicitud!==solicitudDiaria||codigo!==document.getElementById("estacionSelect").value||variable!==variableActiva||tipoPronostico!=="deterministas")return;
 const temperatura=variable==="t2m",vista=VISTAS[variable];
 const titulo=temperatura?"Temperatura del aire a 2 m":"Precipitación acumulada cada 6 horas";
 const unidad=temperatura?"Temperatura (°C)":"Precipitación (mm / 6 h)";
@@ -942,7 +988,7 @@ marker:{color,size:5},connectgaps:false,hovertemplate:hoverDiario(variable,model
 }
 
 async function crearTrazasModelosDiarios(variable,codigo){
-const ciclos=[...ciclosSeleccionados].sort();
+const ciclos=[...ciclosSeleccionados].filter(cicloDisponible).sort();
 const trazas=(await Promise.all(modelosSeleccionados().map(m=>crearTrazasDiariasUnModelo(variable,codigo,m,ciclos)))).flat();
 const puntos=new Map();
 for(const traza of trazas)traza.x.forEach((x,i)=>{if(!Number.isFinite(traza.y[i]))return;const clave=`${x}|${traza.y[i]}`;if(!puntos.has(clave))puntos.set(clave,[]);puntos.get(clave).push(traza);});
@@ -980,7 +1026,7 @@ const solicitud=++solicitudDiaria;
 if(!codigo){mostrarSinEstacion();return;}
 try{
 const [observado,modelos]=await Promise.all([crearTrazaObservadaDiaria(variable,codigo),crearTrazasModelosDiarios(variable,codigo),crearTablaEstadisticosDiarios(variable,codigo)]);
-if(solicitud!==solicitudDiaria||codigo!==document.getElementById("estacionSelect").value||variable!==variableActiva)return;
+if(solicitud!==solicitudDiaria||codigo!==document.getElementById("estacionSelect").value||variable!==variableActiva||tipoPronostico!=="deterministas")return;
 const grafica=document.getElementById(vista.grafica);
 if(!grafica.data)grafica.innerHTML="";
 if(!observado.y.some(Number.isFinite)&&modelos.length===0){
@@ -994,10 +1040,58 @@ if(solicitud!==solicitudDiaria)return;
 crearLeyendaPersonalizada(vista.leyenda,modelos);
 }catch(error){console.error(error);document.getElementById(vista.grafica).innerHTML='<div class="mensaje-grafica">No se pudieron cargar los datos diarios.</div>';}
 }
+function colorConAlfa(hex,alfa){const n=parseInt(hex.slice(1),16);return `rgba(${n>>16},${n>>8&255},${n&255},${alfa})`;}
+async function leerMiembroEnsamble(variable,codigo,miembro,ciclo){
+if(!manifiesto?.ciclos[ciclo]?.[miembro]?.includes(variable))return null;
+const ruta=`modelos/${ciclo}/${miembro}_${ciclo.slice(8,10)}_${variable}.csv`;
+if(ausentesDiarios.has(ruta))return null;
+try{const tabla=await cargarCSV(ruta),serie=filaASerieDiaria(obtenerFila(tabla,codigo),true);return serie.y.some(Number.isFinite)?{miembro,...serie}:null;}
+catch(error){ausentesDiarios.add(ruta);return null;}
+}
+async function crearTrazasEnsamble(variable,codigo){
+const ciclos=[...ciclosSeleccionados].filter(cicloDisponible).sort(),unidad=variable==="pp24h"?"mm":"°C",decimales=variable==="pp24h"?2:1;
+const grupos=await Promise.all(ciclos.map(async(ciclo,indice)=>{
+const series=(await Promise.all(MIEMBROS_ENSAMBLE.map(m=>leerMiembroEnsamble(variable,codigo,m,ciclo)))).filter(Boolean);
+if(!series.length)return {trazas:[],resumen:{ciclo,color:COLORES_ENSAMBLE[indice%COLORES_ENSAMBLE.length],miembros:0}};
+const color=COLORES_ENSAMBLE[indice%COLORES_ENSAMBLE.length],x=[...new Set(series.flatMap(s=>s.x))].sort();
+const porMiembro=series.map(s=>new Map(s.x.map((dia,i)=>[dia,s.y[i]]))),minimo=[],maximo=[],media=[],conteos=[];
+for(const dia of x){const validos=porMiembro.map(m=>m.get(dia)).filter(Number.isFinite);conteos.push(validos.length);minimo.push(validos.length?Math.min(...validos):null);maximo.push(validos.length?Math.max(...validos):null);media.push(validos.length?validos.reduce((a,b)=>a+b,0)/validos.length:null);}
+const customdata=x.map((dia,i)=>[`${dia.slice(5,7)}/${dia.slice(8,10)}`,conteos[i],minimo[i],maximo[i]]),grupo=`ens_${ciclo}`;
+const base={x,type:"scatter",mode:"lines",showlegend:false,connectgaps:false,legendgroup:grupo};
+const trazas=[{...base,y:minimo,line:{width:0,color},hoverinfo:"skip",meta:{tipo:"minimo",ciclo}},
+{...base,y:maximo,line:{width:0,color},fill:"tonexty",fillcolor:colorConAlfa(color,.12),hoverinfo:"skip",meta:{tipo:"maximo",ciclo}}];
+for(const serie of series){const numero=serie.miembro.slice(-2);trazas.push({...base,x:serie.x,y:serie.y,customdata:serie.customdata,name:`Miembro ${numero} ${etiquetaCiclo(ciclo)}`,mode:"lines+markers",line:{color,width:1},marker:{color,size:3},opacity:.45,meta:{tipo:"miembro",miembro:serie.miembro,ciclo},hovertemplate:`<b>Día: %{customdata}</b><br>WRF8 ENS · Miembro ${numero} ${etiquetaCiclo(ciclo)} (%{y:.${decimales}f} ${unidad})<extra></extra>`});}
+trazas.push({...base,y:media,customdata,name:`Media WRF8 ENS ${etiquetaCiclo(ciclo)}`,mode:"lines+markers",line:{color,width:3},marker:{color,size:5},meta:{tipo:"media",ciclo},hovertemplate:`<b>Día: %{customdata[0]}</b><br><b>Media WRF8 ENS ${etiquetaCiclo(ciclo)}</b> (%{y:.${decimales}f} ${unidad})<br>Miembros: %{customdata[1]}/8<br>Rango: %{customdata[2]:.${decimales}f}–%{customdata[3]:.${decimales}f} ${unidad}<extra></extra>`});
+return {trazas,resumen:{ciclo,color,miembros:series.length,minMiembros:Math.min(...conteos),maxMiembros:Math.max(...conteos),presentes:series.map(s=>s.miembro)}};
+}));return {trazas:grupos.flatMap(g=>g.trazas),resumen:grupos.map(g=>g.resumen)};
+}
+function leyendaEnsamble(resumen){
+const contenedor=document.getElementById("leyendaEnsamble");
+if(soloObservado){contenedor.innerHTML='<div class="ensamble-leyenda"><strong>OBSERVADO</strong> · Sin inicializaciones seleccionadas.</div>';return;}
+const ciclos=resumen.map(r=>`<span class="ensamble-corrida" style="--color:${r.color}"><i></i><strong>${etiquetaCiclo(r.ciclo)}</strong> · ${r.miembros?r.minMiembros===r.maxMiembros?`${r.minMiembros}/8 miembros por fecha`:`${r.minMiembros}–${r.maxMiembros}/8 miembros por fecha`:"Sin datos"}</span>`).join("");
+contenedor.innerHTML=`<div class="ensamble-leyenda"><strong>WRF8 ENS</strong><div class="ensamble-corridas">${ciclos||"Sin inicializaciones seleccionadas."}</div><div class="ensamble-miembros">${MIEMBROS_ENSAMBLE.map((m,i)=>`<span style="opacity:${resumen.some(r=>r.presentes?.includes(m))?1:.4}">Miembro ${String(i+1).padStart(2,"0")}</span>`).join("")}</div><div class="leyenda-observado">OBSERVADO<span class="leyenda-observado-linea"></span></div></div>`;
+}
+async function actualizarGraficaEnsamble(variable){
+const codigo=document.getElementById("estacionSelect").value,solicitud=++solicitudDiaria;
+if(!codigo||!VARIABLES_DIARIAS.includes(variable))return;
+try{
+const [observado,ensamble]=await Promise.all([crearTrazaObservadaDiaria(variable,codigo),crearTrazasEnsamble(variable,codigo)]);
+if(solicitud!==solicitudDiaria||tipoPronostico!=="ensamble"||variable!==variableActiva||codigo!==document.getElementById("estacionSelect").value)return;
+const grafica=document.getElementById("graficaEnsamble");if(!grafica.data)grafica.innerHTML="";
+const trazas=[...ensamble.trazas,observado],layout=crearLayoutDiario(variable,observado,ensamble.trazas),fechas=layout.xaxis.categoryarray;
+layout.title.text=`WRF8 ENS · ${VISTAS[variable].titulo}`;
+const cantidad=Math.max(2,Math.floor(Math.max(160,grafica.clientWidth-100)/45)),paso=Math.max(1,Math.ceil(fechas.length/cantidad));
+layout.xaxis.tickvals=fechas.filter((_,i)=>i%paso===0);layout.xaxis.ticktext=layout.xaxis.tickvals.map(d=>`${d.slice(8,10)}/${d.slice(5,7)}`);
+await Plotly.react(grafica,trazas,layout,CONFIG_PLOTLY);
+if(solicitud===solicitudDiaria)leyendaEnsamble(ensamble.resumen);
+}catch(error){if(solicitud===solicitudDiaria){console.error(error);Plotly.purge("graficaEnsamble");document.getElementById("graficaEnsamble").innerHTML='<div class="mensaje-grafica">No se pudieron cargar los datos del ensamble.</div>';document.getElementById("leyendaEnsamble").innerHTML="";}}
+}
+
 async function actualizarGraficas(){
 actualizarInfoEstacion();
 if(!actualizarVariablesDisponibles()){solicitudDiaria++;mostrarSinEstacion();return;}
 if(seccionActiva!=="pronosticos")return;
+if(tipoPronostico==="ensamble")return actualizarGraficaEnsamble(variableActiva);
 if(VARIABLES_DIARIAS.includes(variableActiva))return actualizarGraficaDiaria(variableActiva);
 const solicitud=++solicitudDiaria;
 return actualizarGraficasHorarias(variableActiva,solicitud);
@@ -1009,6 +1103,7 @@ clearTimeout(ajusteDiario);
 ajusteDiario=setTimeout(()=>{
 if(seccionActiva!=="pronosticos"||!VARIABLES_DIARIAS.includes(variableActiva))return;
 const grafica=document.getElementById(VISTAS[variableActiva].grafica);
+if(tipoPronostico==="ensamble"){const ens=document.getElementById("graficaEnsamble");if(ens.data)Plotly.Plots.resize(ens);return;}
 if(!grafica.data||!grafica.layout)return;
 const ticks=ticksDiarios(variableActiva,grafica.layout.xaxis.categoryarray||[]);
 Plotly.relayout(grafica,{"xaxis.tickvals":ticks.tickvals,"xaxis.ticktext":ticks.ticktext});
@@ -1027,7 +1122,7 @@ async function mostrarVariable(variable){
 const codigo=document.getElementById("estacionSelect").value;
 if(!VISTAS[variable]||!estaciones.find(e=>e.codigo===codigo)?.variablesDisponibles.includes(variable))return;
 variableActiva=variable;await actualizarGraficas();
-const grafica=document.getElementById(VISTAS[variable].grafica);
+const grafica=document.getElementById(tipoPronostico==="ensamble"?"graficaEnsamble":VISTAS[variable].grafica);
 if(grafica.data&&!grafica.closest("[hidden]"))requestAnimationFrame(()=>Plotly.Plots.resize(grafica));
 }
 async function prepararPronosticos(){
@@ -1062,6 +1157,9 @@ cargarProvincias();actualizarMapa();mostrarSinEstacion();
 });
 document.querySelectorAll(".selector-variable [data-variable]").forEach(b=>b.addEventListener("click",()=>mostrarVariable(b.dataset.variable)));
 
+for(const [id,tipo] of [["btnDeterministas","deterministas"],["btnEnsamble","ensamble"]])document.getElementById(id).addEventListener("click",async()=>{
+if(tipo===tipoPronostico)return;tipoPronostico=tipo;solicitudDiaria++;await actualizarGraficas();
+});
 async function iniciar(){await navegarSeccion();}
 
 iniciar();
