@@ -1,5 +1,5 @@
 {
-  "actualizacion": "2026-10-15T15:33:05Z",
+  "actualizacion": "2026-10-16T04:31:08Z",
   "ciclos": {
     "2026100700": {
       "gfs": [
@@ -524,6 +524,36 @@
       ]
     },
     "2026101500": {
+      "gfs": [
+        "t2m",
+        "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "ecmwf": [
+        "t2m",
+        "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta5": [
+        "t2m",
+        "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf5": [
+        "t2m",
+        "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ]
+    },
+    "2026101512": {
       "gfs": [
         "t2m",
         "pp6h",
