@@ -66,6 +66,22 @@
 .ensamble-corrida i{display:inline-block;width:24px;height:3px;background:var(--color)}
 .ensamble-miembros{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;font-size:10px;margin-top:9px}
 .ensamble-miembros span{padding:4px 7px;border:1px solid #dce4ea;border-radius:5px;background:white}
+/* Validación: estilos limitados a esta sección. */
+#paginaValidacion .val-tabs,#paginaValidacion .val-botones,#paginaValidacion .val-modelos{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+#paginaValidacion .val-tabs{margin:8px 0 22px;border-bottom:1px solid var(--line);padding-bottom:14px}
+#paginaValidacion button{font:600 12px var(--font);padding:9px 17px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--navy);cursor:pointer}
+#paginaValidacion button[aria-selected="true"],#paginaValidacion button[aria-pressed="true"]{background:#102f50;color:white;border-color:#102f50}
+#paginaValidacion button:focus-visible,#paginaValidacion select:focus-visible{outline:3px solid #83b4c8;outline-offset:2px}
+#paginaValidacion .val-controles{border:1px solid var(--line);background:white;border-radius:12px;padding:22px;margin-bottom:12px}
+#paginaValidacion .val-selectores{display:grid;grid-template-columns:1fr 2fr;gap:15px;max-width:900px;margin:auto}
+#paginaValidacion .val-selectores label{display:flex;flex-direction:column;gap:7px;font-size:12px;color:var(--navy);font-weight:600}
+#paginaValidacion select{width:100%;max-width:100%;min-width:0;padding:10px;border:1px solid var(--line);border-radius:7px;background:#fff;font:12px var(--font);color:var(--ink)}
+#paginaValidacion .val-info{text-align:center;color:var(--muted);font-size:12px;line-height:1.8;margin:14px auto}
+#paginaValidacion .val-grupo{margin:15px 0 0;text-align:center}#paginaValidacion .val-grupo>span{display:block;font-size:10px;font-weight:700;letter-spacing:.07em;margin-bottom:8px;color:#63798b}
+#paginaValidacion .val-modelos label{display:flex;align-items:center;gap:6px;font-size:12px;padding:6px;cursor:pointer}#paginaValidacion .val-color{width:16px;height:3px;border-radius:2px}
+#paginaValidacion .val-nota{font-size:11px;line-height:1.7;color:#637386;text-align:center;max-width:1040px;margin:12px auto}
+#paginaValidacion .val-grafica{width:100%;height:470px}#paginaValidacion .estadisticos-tabla{min-width:610px}
+@media(max-width:650px){#paginaValidacion .val-selectores{grid-template-columns:1fr}#paginaValidacion .val-controles{padding:15px 10px}#paginaValidacion button{font-size:11px;padding:9px 12px}#paginaValidacion .val-grafica{height:420px}#paginaValidacion .val-tabs{gap:5px}}
 </style>
 </head>
 <body>
@@ -281,7 +297,16 @@ document.getElementById("cmpRefrescar").addEventListener("click",refrescar);wind
 })();
 </script>
 </section>
-<section class="pagina" id="paginaValidacion" data-pagina="validacion" aria-labelledby="tituloValidacion" hidden><div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / VALIDACIÓN</p><h1 id="tituloValidacion">Cómo cambia el desempeño con el plazo.</h1><p>Evaluación de los modelos por día de pronóstico.</p></div><div class="panel-futuro"><div class="simbolo-futuro simbolo-validacion" aria-hidden="true"><span></span><span></span><span></span><span></span></div><span class="estado-desarrollo">En desarrollo</span><h2>La evaluación, día a día.</h2><p>Aquí podrás consultar el desempeño de los modelos para distintos días de pronóstico. Las tablas del primer día ya están disponibles en el comparador por estación.</p><a href="#pronosticos" class="enlace-texto">Consultar el primer día <span aria-hidden="true">→</span></a></div></section>
+<section class="pagina" id="paginaValidacion" data-pagina="validacion" aria-labelledby="tituloValidacion" hidden>
+<div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / VALIDACIÓN</p><h1 id="tituloValidacion">Desempeño por día de pronóstico</h1><p>Compara los pronósticos con las observaciones de cada fecha.</p></div>
+<div class="val-tabs" role="tablist" aria-label="Ámbito de validación"><button id="valTabEstacion" role="tab" aria-selected="true" aria-controls="valPorEstacion" data-val-tab="Estacion">Por estación</button><button id="valTabDepartamento" role="tab" aria-selected="false" aria-controls="valPorDepartamento" data-val-tab="Departamento" tabindex="-1">Por departamento</button><button id="valTabRegion" role="tab" aria-selected="false" aria-controls="valPorRegion" data-val-tab="Region" tabindex="-1">Por región</button></div>
+<div id="valPorEstacion" role="tabpanel" aria-labelledby="valTabEstacion">
+<section class="val-controles" aria-label="Opciones de validación"><div class="val-selectores"><label>Departamento<select id="valDepartamento"><option value="">Todos los departamentos</option></select></label><label>Estación<select id="valEstacion"><option value="">Seleccione una estación</option></select></label></div><div id="valInfo" class="val-info"></div><div class="val-grupo"><span>VARIABLE</span><div id="valVariables" class="val-botones"></div></div><div class="val-grupo"><span>DÍA DE PRONÓSTICO</span><div id="valHorizonte" class="val-botones"><button data-val-h="1" aria-pressed="true">D1</button><button data-val-h="2" aria-pressed="false">D2</button><button data-val-h="3" aria-pressed="false">D3</button></div></div><div class="val-grupo"><span>MODELOS</span><div id="valModelos" class="val-modelos"></div></div><div class="val-grupo"><span>CICLO EN LA GRÁFICA</span><div id="valCiclos" class="val-botones"><button data-val-c="ambos" aria-pressed="true">Ambos</button><button data-val-c="00" aria-pressed="false">00Z</button><button data-val-c="12" aria-pressed="false">12Z</button></div></div></section>
+<p id="valEstado" class="val-nota" role="status" aria-live="polite">Cargando estaciones…</p><section class="panel-grafica"><div id="valGrafica" class="val-grafica"></div></section><p class="val-nota">La gráfica utiliza las series conservadas y termina en la última fecha observada disponible. Línea continua: 00Z; discontinua: 12Z. El observado se muestra en negro.</p><div id="valTabla"></div><p class="val-nota">La tabla utiliza el periodo indicado en el CSV estadístico y reúne los ciclos disponibles de cada modelo. El selector 00Z/12Z afecta únicamente a la gráfica.</p>
+</div>
+<div id="valPorDepartamento" role="tabpanel" aria-labelledby="valTabDepartamento" hidden><div class="panel-futuro"><span class="estado-desarrollo">En preparación</span><h2>Validación por departamento</h2><p>Mapa y tabla comparativa de los modelos por departamento. Pendiente del cálculo de los estadísticos territoriales.</p></div></div>
+<div id="valPorRegion" role="tabpanel" aria-labelledby="valTabRegion" hidden><div class="panel-futuro"><span class="estado-desarrollo">En preparación</span><h2>Validación por región</h2><p>Mapa y tabla comparativa por región climática. Pendiente de definir las regiones y calcular sus estadísticos.</p></div></div>
+</section>
 </main>
 <footer class="footer"><div class="footer-scale"></div><div class="footer-inner"><strong>NWP-STATION</strong><span>SENAMHI · Subdirección de Cambio Climático y Modelamiento Atmosférico</span></div></footer>
 <script>
@@ -1151,6 +1176,7 @@ for(const pagina of document.querySelectorAll("[data-pagina]")){
 const activa=pagina.dataset.pagina===destino;pagina.hidden=!activa;pagina.classList.toggle("pagina-activa",activa);
 }
 window.scrollTo({top:0,behavior:"instant"});
+if(destino==="validacion"){await prepararValidacion();return;}
 if(destino!=="pronosticos")return;
 try{await prepararPronosticos();if(seccionActiva!==destino)return;mapa.invalidateSize();await actualizarGraficas();}catch(error){}
 }
@@ -1169,6 +1195,102 @@ const previa=seleccionesPorTipo[tipo];soloObservado=previa?.soloObservado||false
 if(!previa&&tipo==="deterministas")selectorCiclosInicializado=false;
 solicitudDiaria++;await actualizarGraficas();
 });
+// Validación por estación: fechas diarias locales, sin desplazamiento UTC.
+const val={variable:"tmax",horizonte:1,ciclo:"ambos",modelos:new Set(Object.keys(MODELOS)),umbral:"0p1",solicitud:0,listo:false};
+const valNombres={tmax:"Temperatura máxima",tmin:"Temperatura mínima",pp24h:"Precipitación acumulada 24 h"};
+function valFecha(fecha){return /^\d{8}$/.test(String(fecha))?`${String(fecha).slice(6,8)}/${String(fecha).slice(4,6)}/${String(fecha).slice(0,4)}`:String(fecha||"");}
+function valObjetivo(ciclo,modelo,variable,horizonte){
+const fecha=new Date(Date.UTC(+ciclo.slice(0,4),+ciclo.slice(4,6)-1,+ciclo.slice(6,8)));
+fecha.setUTCDate(fecha.getUTCDate()+horizonte-1+(variable==="tmin"&&ciclo.endsWith("12")&&!modelo.startsWith("eta22_")?1:0));
+return fecha.toISOString().slice(0,10).replaceAll("-","");
+}
+function valActualizarEstaciones(elegida=""){
+const departamento=document.getElementById("valDepartamento").value;
+const disponibles=estaciones.filter(e=>e.variablesDisponibles.some(v=>VARIABLES_DIARIAS.includes(v))&&(!departamento||e.departamento===departamento));
+const select=document.getElementById("valEstacion");select.replaceChildren(new Option("Seleccione una estación",""));
+for(const e of disponibles)select.add(new Option(`${e.estacion} · ${e.codigo} · ${e.provincia}`,e.codigo));
+select.value=disponibles.some(e=>e.codigo===elegida)?elegida:disponibles[0]?.codigo||"";
+}
+function valActualizarControles(){
+const estacion=estaciones.find(e=>e.codigo===document.getElementById("valEstacion").value),variables=VARIABLES_DIARIAS.filter(v=>estacion?.variablesDisponibles.includes(v));
+if(!variables.includes(val.variable))val.variable=variables[0]||null;
+document.getElementById("valVariables").innerHTML=variables.map(v=>`<button data-val-variable="${v}" aria-pressed="${v===val.variable}">${valNombres[v]}</button>`).join("");
+document.getElementById("valInfo").textContent=estacion?`${estacion.estacion} · Código: ${estacion.codigo} · ${tipoRed(estacion)} · ${estacion.departamento} / ${estacion.provincia}`:"Seleccione una estación con observaciones diarias.";
+document.getElementById("valModelos").innerHTML=Object.keys(MODELOS).filter(m=>Object.values(manifiesto?.ciclos||{}).some(c=>c[m]?.includes(val.variable))).map(m=>`<label><input type="checkbox" data-val-modelo="${m}" ${val.modelos.has(m)?"checked":""}><span class="val-color" style="background:${MODELOS[m].colores.at(-2)}"></span>${MODELOS[m].nombre}</label>`).join("");
+for(const b of document.querySelectorAll("#valHorizonte button"))b.setAttribute("aria-pressed",String(+b.dataset.valH===val.horizonte));
+for(const b of document.querySelectorAll("#valCiclos button"))b.setAttribute("aria-pressed",String(b.dataset.valC===val.ciclo));
+}
+async function valParalelo(tareas,limite=4){
+let siguiente=0;const resultados=Array(tareas.length);
+await Promise.all(Array.from({length:Math.min(limite,tareas.length)},async()=>{while(siguiente<tareas.length){const i=siguiente++;try{resultados[i]=await tareas[i]();}catch(error){resultados[i]=null;}}}));return resultados;
+}
+async function valSeries(variable,codigo,observado,horizonte,cicloElegido,modelos){
+const columnas=Object.keys(observado||{}).filter(c=>/^\d{8}$/.test(c)).sort(),validas=new Set(columnas.filter(c=>Number.isFinite(parseFloat(observado[c]))));
+if(!validas.size)return{trazas:[],fechas:[]};
+const ultima=[...validas].at(-1),fechas=columnas.filter(c=>c<=ultima),series=new Map(),tareas=[];
+for(const modelo of modelos)for(const ciclo of Object.keys(manifiesto?.ciclos||{}).sort()){
+if(!manifiesto.ciclos[ciclo][modelo]?.includes(variable)||(cicloElegido!=="ambos"&&!ciclo.endsWith(cicloElegido)))continue;
+const objetivo=valObjetivo(ciclo,modelo,variable,horizonte);if(!validas.has(objetivo))continue;
+tareas.push(async()=>{const datos=await cargarCSV(`modelos/${ciclo}/${modelo}_${ciclo.slice(8)}_${variable}.csv`),fila=obtenerFila(datos,codigo),valor=parseFloat(fila?.[objetivo]);return Number.isFinite(valor)?{modelo,ciclo,objetivo,valor}:null;});
+}
+const registros=await valParalelo(tareas);for(const r of registros.filter(Boolean)){const clave=`${r.modelo}|${r.ciclo.slice(8)}`;if(!series.has(clave))series.set(clave,new Map());series.get(clave).set(r.objetivo,r);}
+const x=fechas.map(f=>`${f.slice(0,4)}-${f.slice(4,6)}-${f.slice(6,8)}`),unidad=variable==="pp24h"?"mm":"°C",formato=variable==="pp24h"?".2f":".1f";
+const trazas=[{x,y:fechas.map(f=>{const n=parseFloat(observado[f]);return Number.isFinite(n)?n:null;}),type:"scatter",mode:"lines+markers",name:"OBSERVADO",line:{color:"#111111",width:3},marker:{size:6},connectgaps:false,hovertemplate:`<b>%{x|%d/%m}</b><br>OBSERVADO (%{y:${formato}} ${unidad})<extra></extra>`}];
+for(const [clave,puntos] of series){const [modelo,hora]=clave.split("|"),color=MODELOS[modelo].colores.at(-2);trazas.push({x,y:fechas.map(f=>puntos.get(f)?.valor??null),customdata:fechas.map(f=>puntos.has(f)?etiquetaCiclo(puntos.get(f).ciclo):""),type:"scatter",mode:"lines+markers",name:`${MODELOS[modelo].nombre} ${hora}Z`,legendgroup:modelo,line:{color,width:1.8,dash:hora==="12"?"dash":"solid"},marker:{size:5,symbol:hora==="12"?"diamond":"circle"},connectgaps:false,hovertemplate:`<b>%{x|%d/%m}</b><br>${MODELOS[modelo].nombre} %{customdata} (%{y:${formato}} ${unidad})<extra></extra>`});}
+return{trazas,fechas,comparaciones:registros.filter(Boolean).length};
+}
+function valTabla(datos,codigo,variable,horizonte,modelos,error=""){
+const contenedor=document.getElementById("valTabla"),filas=datos.filter(f=>String(f.codigo)===codigo&&String(f.horizonte||"D1").toUpperCase()===`D${horizonte}`&&modelos.includes(f.modelo));
+const periodos=[...new Set(filas.map(f=>`${valFecha(f.periodo_inicio)} al ${valFecha(f.periodo_fin)}`))];
+let html=`<div class="estadisticos-bloque"><div class="estadisticos-titulo">DESEMPEÑO ÚLTIMOS 30 DÍAS · PRONÓSTICO A ${horizonte} ${horizonte===1?"DÍA":"DÍAS"}</div>`;
+if(periodos.length)html+=`<div class="estadisticos-periodo">Periodo evaluado: ${periodos.map(escaparHTML).join(" · ")}</div>`;
+if(!filas.length){contenedor.innerHTML=html+`<div class="estadisticos-vacio">${escaparHTML(error||`Sin estadísticos D${horizonte} disponibles para esta selección.`)}</div></div>`;return;}
+const pp=variable==="pp24h",unidad=pp?"mm":"°C",errorUnidad=x=>{const v=valorEstadistico(x);return v==="S/D"?v:`${v} ${unidad}`;};
+if(pp)html+=`<div class="selector-umbral"><span>UMBRAL</span>${[["0p1","0.1"],["1","1"],["10","10"],["50","50"]].map(([k,n])=>`<button data-val-umbral="${k}" class="${k===val.umbral?"activo":""}">≥ ${n} mm</button>`).join("")}</div>`;
+const cab=pp?["MODELO","BIAS","RMSE","CORRELACIÓN","N.º DATOS","POD","FAR","CSI","N.º EVENTOS"]:["MODELO","BIAS","MAE","RMSE","CORRELACIÓN","N.º DATOS"];
+html+=`<div class="estadisticos-tabla-wrap"><table class="estadisticos-tabla"><thead><tr>${cab.map(c=>`<th>${c}</th>`).join("")}</tr></thead><tbody>`;
+for(const modelo of modelos){const f=filas.find(r=>r.modelo===modelo);if(!f)continue;const n=valor=>Number.isFinite(parseFloat(valor))?parseInt(valor,10):0;
+const celdas=pp?[MODELOS[modelo].nombre,errorUnidad(f.bias),errorUnidad(f.rmse),valorEstadistico(f.spearman),n(f.n),valorEstadistico(f[`pod_${val.umbral}`],3),valorEstadistico(f[`far_${val.umbral}`],3),valorEstadistico(f[`csi_${val.umbral}`],3),n(f[`eventos_${val.umbral}`])]:[MODELOS[modelo].nombre,errorUnidad(f.bias),errorUnidad(f.mae),errorUnidad(f.rmse),valorEstadistico(f.spearman),n(f.n)];
+html+=`<tr>${celdas.map(c=>`<td>${escaparHTML(c)}</td>`).join("")}</tr>`;}
+contenedor.innerHTML=html+"</tbody></table></div></div>";
+}
+async function valActualizar(){
+const solicitud=++val.solicitud;valActualizarControles();
+const codigo=document.getElementById("valEstacion").value,variable=val.variable,horizonte=val.horizonte,ciclo=val.ciclo,modelos=Object.keys(MODELOS).filter(m=>val.modelos.has(m)),estado=document.getElementById("valEstado");
+if(!codigo||!variable){Plotly.purge("valGrafica");document.getElementById("valTabla").innerHTML="";estado.textContent="Seleccione una estación con observaciones diarias.";return;}
+estado.textContent="Cargando comparaciones…";document.getElementById("valTabla").innerHTML="";
+try{
+const [obs,estadisticos]=await Promise.allSettled([cargarCSV(`observaciones/obs_${variable}.csv`),cargarEstadisticosDisponibles(variable)]);
+if(solicitud!==val.solicitud)return;
+valTabla(estadisticos.status==="fulfilled"?estadisticos.value:[],codigo,variable,horizonte,modelos,estadisticos.status==="rejected"?"Estadísticos no disponibles.":"");
+if(obs.status==="rejected")throw obs.reason;
+const resultado=await valSeries(variable,codigo,obtenerFila(obs.value,codigo),horizonte,ciclo,modelos);if(solicitud!==val.solicitud)return;
+const pasoTicks=Math.max(1,Math.ceil(resultado.fechas.length/Math.max(3,Math.floor(document.getElementById("valGrafica").clientWidth/75)))),fechasTicks=resultado.fechas.filter((f,i)=>i%pasoTicks===0||i===resultado.fechas.length-1);
+await Plotly.react("valGrafica",resultado.trazas,{title:{text:`${valNombres[variable]} · D${horizonte}`,font:{size:16}},margin:{l:60,r:20,t:55,b:100},paper_bgcolor:"#fff",plot_bgcolor:"#fff",font:{family:"Arial, sans-serif",color:"#263d52"},xaxis:{type:"date",tickmode:"array",tickvals:fechasTicks.map(f=>`${f.slice(0,4)}-${f.slice(4,6)}-${f.slice(6,8)}`),ticktext:fechasTicks.map(f=>`${f.slice(6,8)}/${f.slice(4,6)}`),title:{text:"Fecha observada"},showgrid:false},yaxis:{title:{text:variable==="pp24h"?"Precipitación (mm)":"Temperatura (°C)"},gridcolor:"#e7edf2",...(variable==="pp24h"?{rangemode:"tozero"}:{})},legend:{orientation:"h",y:-.23,x:.5,xanchor:"center",font:{size:10}},hovermode:"closest",uirevision:`${codigo}-${variable}`,annotations:resultado.comparaciones?[]:[{text:"Sin pronósticos comparables para esta selección",xref:"paper",yref:"paper",x:.5,y:.5,showarrow:false}]},CONFIG_PLOTLY);
+if(solicitud!==val.solicitud)return;
+estado.textContent=resultado.fechas.length?`Series disponibles: ${valFecha(resultado.fechas[0])} al ${valFecha(resultado.fechas.at(-1))} · D${horizonte} · ${resultado.comparaciones||0} comparaciones disponibles.`:"Sin observaciones disponibles.";
+}catch(error){if(solicitud===val.solicitud){estado.textContent="No se pudieron cargar las series. La tabla se muestra si sus estadísticos están disponibles.";Plotly.purge("valGrafica");console.warn(error);}}
+}
+async function prepararValidacion(){
+try{
+if(!val.listo){await Promise.all([manifiesto?Promise.resolve():cargarManifiesto(),estaciones.length?Promise.resolve():cargarEstaciones()]);
+const select=document.getElementById("valDepartamento");for(const d of [...new Set(estaciones.filter(e=>e.variablesDisponibles.some(v=>VARIABLES_DIARIAS.includes(v))).map(e=>e.departamento))].sort())select.add(new Option(d,d));
+valActualizarEstaciones(document.getElementById("estacionSelect").value);val.listo=true;}
+if(seccionActiva==="validacion")await valActualizar();
+}catch(error){document.getElementById("valEstado").textContent="No se pudieron cargar los datos. Vuelve a abrir Validación para reintentar.";console.warn(error);}
+}
+document.getElementById("valDepartamento").addEventListener("change",()=>{valActualizarEstaciones();valActualizar();});
+document.getElementById("valEstacion").addEventListener("change",valActualizar);
+document.getElementById("paginaValidacion").addEventListener("click",event=>{
+const b=event.target.closest("button");if(!b)return;
+if(b.dataset.valTab){for(const tab of document.querySelectorAll("[data-val-tab]")){const activa=tab===b;tab.setAttribute("aria-selected",String(activa));tab.tabIndex=activa?0:-1;document.getElementById(`valPor${tab.dataset.valTab}`).hidden=!activa;}if(b.dataset.valTab==="Estacion")requestAnimationFrame(()=>{if(document.getElementById("valGrafica").data)Plotly.Plots.resize("valGrafica");});return;}
+if(b.dataset.valVariable)val.variable=b.dataset.valVariable;else if(b.dataset.valH)val.horizonte=+b.dataset.valH;else if(b.dataset.valC)val.ciclo=b.dataset.valC;else if(b.dataset.valUmbral)val.umbral=b.dataset.valUmbral;else return;
+valActualizar();
+});
+document.getElementById("valModelos").addEventListener("change",event=>{const m=event.target.dataset.valModelo;if(!m)return;if(event.target.checked)val.modelos.add(m);else val.modelos.delete(m);valActualizar();});
+document.querySelector("#paginaValidacion .val-tabs").addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;event.preventDefault();const tabs=[...document.querySelectorAll("[data-val-tab]")],i=tabs.indexOf(document.activeElement),n=event.key==="Home"?0:event.key==="End"?tabs.length-1:(i+(event.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length;tabs[n].click();tabs[n].focus();});
+window.addEventListener("resize",()=>{if(seccionActiva==="validacion"&&!document.getElementById("valPorEstacion").hidden&&document.getElementById("valGrafica").data)Plotly.Plots.resize("valGrafica");});
+
 async function iniciar(){await navegarSeccion();}
 
 iniciar();
