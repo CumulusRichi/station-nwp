@@ -91,7 +91,7 @@
 <style>
 #paginaMapas .cmp-panel{background:white;border:1px solid var(--line);border-radius:12px;padding:20px;margin:15px 0 30px}
 #paginaMapas .cmp-etiqueta{display:block;font-size:10px;font-weight:750;letter-spacing:.06em;color:var(--navy);margin-bottom:9px}
-#paginaMapas .cmp-fechas{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding-bottom:17px;border-bottom:1px solid #dce5ec}
+#paginaMapas .cmp-fechas{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;padding-bottom:17px;border-bottom:1px solid #dce5ec}
 #paginaMapas .cmp-fechas button{border:1px solid #cbdce9;border-radius:8px;background:#f4f8fb;padding:9px 3px;color:#7290a6;cursor:pointer;font:11px var(--font)}
 #paginaMapas .cmp-fechas strong{display:block;font-size:21px;font-weight:650;color:#173b59;line-height:1.5}
 #paginaMapas .cmp-fechas small{font-size:9px;margin-left:3px;color:#267693}
@@ -199,7 +199,7 @@ function estado(texto,error=false){const e=document.getElementById("cmpEstado");
 function boton(texto,valor,activo,accion){const b=document.createElement("button");b.type="button";b.textContent=texto;b.dataset.valor=valor;b.classList.toggle("activo",activo);b.setAttribute("aria-pressed",String(activo));b.addEventListener("click",accion);return b;}
 function controles(){
 const actual=hoy();if(!fecha)fecha=actual;
-const fechas=document.getElementById("cmpFechas");fechas.replaceChildren();for(let i=-2;i<=2;i++){const f=sumar(actual,i),d=new Date(f+"T00:00:00Z"),b=boton("",f,f===fecha,()=>{fecha=f;actualizar();});b.dataset.fecha=f;b.setAttribute("aria-label",corta(f)+(f===actual?", hoy":""));const dia=new Intl.DateTimeFormat("es-PE",{weekday:"short",timeZone:"UTC"}).format(d),mes=new Intl.DateTimeFormat("es-PE",{month:"short",timeZone:"UTC"}).format(d);b.innerHTML=`${dia}<strong>${f.slice(8,10)}${f===actual?"<small>HOY</small>":""}</strong>${mes}`;fechas.appendChild(b);}
+const fechas=document.getElementById("cmpFechas");fechas.replaceChildren();for(let i=-3;i<=2;i++){const f=sumar(actual,i),d=new Date(f+"T00:00:00Z"),b=boton("",f,f===fecha,()=>{fecha=f;actualizar();});b.dataset.fecha=f;b.setAttribute("aria-label",corta(f)+(f===actual?", hoy":""));const dia=new Intl.DateTimeFormat("es-PE",{weekday:"short",timeZone:"UTC"}).format(d),mes=new Intl.DateTimeFormat("es-PE",{month:"short",timeZone:"UTC"}).format(d);b.innerHTML=`${dia}<strong>${f.slice(8,10)}${f===actual?"<small>HOY</small>":""}</strong>${mes}`;fechas.appendChild(b);}
 document.getElementById("cmpMes").textContent="FECHA VÁLIDA · "+new Intl.DateTimeFormat("es-PE",{month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(fecha+"T00:00:00Z")).toUpperCase();
 const vs=document.getElementById("cmpVariables");vs.replaceChildren();for(const [v,info] of Object.entries(variables))vs.appendChild(boton(info.nombre,v,variable===v,()=>{variable=v;actualizar();}));
 const as=document.getElementById("cmpAntelacion");as.replaceChildren();["Mismo día","1 día antes","2 días antes"].forEach((texto,i)=>as.appendChild(boton(texto,String(i),antelacion===i,()=>{antelacion=i;actualizar();})));
