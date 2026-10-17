@@ -1,5 +1,5 @@
 {
-  "actualizacion": "2026-10-16T20:19:24Z",
+  "actualizacion": "2026-10-17T03:25:44Z",
   "ciclos": {
     "2026100800": {
       "gfs": [
@@ -965,6 +965,46 @@
         "pp24h"
       ],
       "eta22_scal": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
         "tmax",
         "tmin",
         "pp24h"
