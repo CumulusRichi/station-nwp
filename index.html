@@ -66,22 +66,18 @@
 .ensamble-corrida i{display:inline-block;width:24px;height:3px;background:var(--color)}
 .ensamble-miembros{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;font-size:10px;margin-top:9px}
 .ensamble-miembros span{padding:4px 7px;border:1px solid #dce4ea;border-radius:5px;background:white}
-/* Validación: estilos limitados a esta sección. */
-#paginaValidacion .val-tabs,#paginaValidacion .val-botones,#paginaValidacion .val-modelos{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
-#paginaValidacion .val-tabs{margin:8px 0 22px;border-bottom:1px solid var(--line);padding-bottom:14px}
-#paginaValidacion button{font:600 12px var(--font);padding:9px 17px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--navy);cursor:pointer}
-#paginaValidacion button[aria-selected="true"],#paginaValidacion button[aria-pressed="true"]{background:#102f50;color:white;border-color:#102f50}
-#paginaValidacion button:focus-visible,#paginaValidacion select:focus-visible{outline:3px solid #83b4c8;outline-offset:2px}
-#paginaValidacion .val-controles{border:1px solid var(--line);background:white;border-radius:12px;padding:22px;margin-bottom:12px}
-#paginaValidacion .val-selectores{display:grid;grid-template-columns:1fr 2fr;gap:15px;max-width:900px;margin:auto}
-#paginaValidacion .val-selectores label{display:flex;flex-direction:column;gap:7px;font-size:12px;color:var(--navy);font-weight:600}
-#paginaValidacion select{width:100%;max-width:100%;min-width:0;padding:10px;border:1px solid var(--line);border-radius:7px;background:#fff;font:12px var(--font);color:var(--ink)}
-#paginaValidacion .val-info{text-align:center;color:var(--muted);font-size:12px;line-height:1.8;margin:14px auto}
-#paginaValidacion .val-grupo{margin:15px 0 0;text-align:center}#paginaValidacion .val-grupo>span{display:block;font-size:10px;font-weight:700;letter-spacing:.07em;margin-bottom:8px;color:#63798b}
-#paginaValidacion .val-modelos label{display:flex;align-items:center;gap:6px;font-size:12px;padding:6px;cursor:pointer}#paginaValidacion .val-color{width:16px;height:3px;border-radius:2px}
+/* Validación utiliza los mismos paneles y controles de Pronósticos. */
+#paginaValidacion .val-tabs{margin:8px 0 20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+#paginaValidacion .val-tabs button[aria-selected="true"]{background:#102f50;color:white;border-color:#102f50}
+#valMapa{width:100%;height:380px;border:1px solid var(--line);border-radius:var(--radius-sm);z-index:1}
+#valInfo{text-align:center}#valInfo .info-estacion-datos{justify-content:center}
+#valVariables{flex-wrap:wrap}#valEstacion{min-width:300px}
 #paginaValidacion .val-nota{font-size:11px;line-height:1.7;color:#637386;text-align:center;max-width:1040px;margin:12px auto}
 #paginaValidacion .val-grafica{width:100%;height:470px}#paginaValidacion .estadisticos-tabla{min-width:610px}
-@media(max-width:650px){#paginaValidacion .val-selectores{grid-template-columns:1fr}#paginaValidacion .val-controles{padding:15px 10px}#paginaValidacion button{font-size:11px;padding:9px 12px}#paginaValidacion .val-grafica{height:420px}#paginaValidacion .val-tabs{gap:5px}}
+#paginaValidacion button:focus-visible{outline:3px solid #83b4c8;outline-offset:2px}
+#paginaMapas .cmp-opciones button:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+@media(max-width:800px){#valMapa{height:330px}#valEstacion{width:100%;min-width:0}}
+@media(max-width:650px){#paginaValidacion .val-grafica{height:420px}#paginaValidacion .val-tabs{gap:5px}#paginaValidacion .val-tabs button{padding:9px 12px;font-size:11px}}
 </style>
 </head>
 <body>
@@ -259,7 +255,7 @@ const fechas=document.getElementById("cmpFechas");fechas.replaceChildren();for(l
 document.getElementById("cmpMes").textContent="FECHA VÁLIDA · "+new Intl.DateTimeFormat("es-PE",{month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(fecha+"T00:00:00Z")).toUpperCase();
 const vs=document.getElementById("cmpVariables");vs.replaceChildren();for(const [v,info] of Object.entries(variables))vs.appendChild(boton(info.nombre,v,variable===v,()=>{variable=v;actualizar();}));
 const as=document.getElementById("cmpAntelacion");as.replaceChildren();["Mismo día","1 día antes","2 días antes"].forEach((texto,i)=>as.appendChild(boton(texto,String(i),antelacion===i,()=>{antelacion=i;actualizar();})));
-const cs=document.getElementById("cmpCiclos");cs.replaceChildren();for(const c of ["00","12"])cs.appendChild(boton(c+" UTC",c,ciclo===c,()=>{ciclo=c;actualizar();}));
+const cs=document.getElementById("cmpCiclos");cs.replaceChildren();for(const c of ["00","12"]){const b=boton(c+" UTC",c,ciclo===c,()=>{ciclo=c;actualizar();});b.disabled=!catalogo.some(e=>e.modelo!=="observado"&&e.fecha===fecha&&e.variable===variable&&e.inicializacion===sumar(fecha,-antelacion).replaceAll("-","")+c);b.title=b.disabled?"Sin mapas de modelos para esta fecha, variable e inicialización":"";cs.appendChild(b);}
 const inicio=sumar(fecha,-antelacion);document.getElementById("cmpContexto").textContent=`Fecha válida: ${corta(fecha)} · Inicialización de todos los modelos: ${corta(inicio)}, ${ciclo} UTC · Antelación: ${antelacion} ${antelacion===1?"día":"días"}.`;
 document.getElementById("cmpTitulo").textContent=variables[variable].nombre+" · "+fechaLarga(fecha);
 const colores=variable==="pp24h"?lluvia:temperatura;
@@ -299,10 +295,14 @@ document.getElementById("cmpRefrescar").addEventListener("click",refrescar);wind
 </section>
 <section class="pagina" id="paginaValidacion" data-pagina="validacion" aria-labelledby="tituloValidacion" hidden>
 <div class="cabecera-seccion"><p class="sobretitulo">NWP-STATION / VALIDACIÓN</p><h1 id="tituloValidacion">Desempeño por día de pronóstico</h1><p>Compara los pronósticos con las observaciones de cada fecha.</p></div>
-<div class="val-tabs" role="tablist" aria-label="Ámbito de validación"><button id="valTabEstacion" role="tab" aria-selected="true" aria-controls="valPorEstacion" data-val-tab="Estacion">Por estación</button><button id="valTabDepartamento" role="tab" aria-selected="false" aria-controls="valPorDepartamento" data-val-tab="Departamento" tabindex="-1">Por departamento</button><button id="valTabRegion" role="tab" aria-selected="false" aria-controls="valPorRegion" data-val-tab="Region" tabindex="-1">Por región</button></div>
+<div class="val-tabs tipo-pronostico" role="tablist" aria-label="Ámbito de validación"><button id="valTabEstacion" role="tab" aria-selected="true" aria-controls="valPorEstacion" data-val-tab="Estacion">Por estación</button><button id="valTabDepartamento" role="tab" aria-selected="false" aria-controls="valPorDepartamento" data-val-tab="Departamento" tabindex="-1">Por departamento</button><button id="valTabRegion" role="tab" aria-selected="false" aria-controls="valPorRegion" data-val-tab="Region" tabindex="-1">Por región</button></div>
 <div id="valPorEstacion" role="tabpanel" aria-labelledby="valTabEstacion">
-<section class="val-controles" aria-label="Opciones de validación"><div class="val-selectores"><label>Departamento<select id="valDepartamento"><option value="">Todos los departamentos</option></select></label><label>Estación<select id="valEstacion"><option value="">Seleccione una estación</option></select></label></div><div id="valInfo" class="val-info"></div><div class="val-grupo"><span>VARIABLE</span><div id="valVariables" class="val-botones"></div></div><div class="val-grupo"><span>DÍA DE PRONÓSTICO</span><div id="valHorizonte" class="val-botones"><button data-val-h="1" aria-pressed="true">D1</button><button data-val-h="2" aria-pressed="false">D2</button><button data-val-h="3" aria-pressed="false">D3</button></div></div><div class="val-grupo"><span>MODELOS</span><div id="valModelos" class="val-modelos"></div></div><div class="val-grupo"><span>CICLO EN LA GRÁFICA</span><div id="valCiclos" class="val-botones"><button data-val-c="ambos" aria-pressed="true">Ambos</button><button data-val-c="00" aria-pressed="false">00Z</button><button data-val-c="12" aria-pressed="false">12Z</button></div></div></section>
-<p id="valEstado" class="val-nota" role="status" aria-live="polite">Cargando estaciones…</p><section class="panel-grafica"><div id="valGrafica" class="val-grafica"></div></section><p class="val-nota">La gráfica utiliza las series conservadas y termina en la última fecha observada disponible. Línea continua: 00Z; discontinua: 12Z. El observado se muestra en negro.</p><div id="valTabla"></div><p class="val-nota">La tabla utiliza el periodo indicado en el CSV estadístico y reúne los ciclos disponibles de cada modelo. El selector 00Z/12Z afecta únicamente a la gráfica.</p>
+<details class="panel-opciones" open><summary>Selección de estación</summary><div class="controles"><div class="grupo-control"><label class="titulo" for="valDepartamento">Departamento</label><select id="valDepartamento"><option value="">Seleccione departamento</option></select></div><div class="grupo-control"><label class="titulo" for="valProvincia">Provincia</label><select id="valProvincia"><option value="">Seleccione provincia</option></select></div><div class="grupo-control"><label class="titulo" for="valEstacion">Estación</label><select id="valEstacion"><option value="">Seleccione estación</option></select></div><button id="valReset" class="btn-reset" type="button">Restablecer</button></div></details>
+<section class="panel-mapa"><h2 class="titulo-panel">Ubicación de estaciones</h2><div id="valMapa" aria-label="Mapa de estaciones para validación"></div><div class="mapa-leyenda"><span><i class="punto-red" style="background:white;border:1.5px solid #6b98c7"></i>Automáticas</span><span><i class="punto-red" style="background:white;border:1.5px solid #ce8589"></i>Convencionales</span><span><i class="punto-red" style="background:white;border:1.5px solid #9aa3ad"></i>Sin tipo identificado</span></div></section>
+<section class="panel-pronostico" aria-label="Opciones de validación"><div class="grupo-pronostico"><div class="titulo-pronostico">DÍA DE PRONÓSTICO</div><div id="valHorizonte" class="tipo-pronostico"><button data-val-h="1" aria-pressed="true">D1</button><button data-val-h="2" aria-pressed="false">D2</button><button data-val-h="3" aria-pressed="false">D3</button></div></div><div class="grupo-pronostico"><div class="titulo-pronostico">MODELOS</div><div id="valModelos" class="modelos-checks"></div></div><div class="grupo-pronostico"><div class="titulo-pronostico">CICLO EN LA GRÁFICA</div><div id="valCiclos" class="tipo-pronostico"><button data-val-c="ambos" aria-pressed="true">Ambos</button><button data-val-c="00" aria-pressed="false">00Z</button><button data-val-c="12" aria-pressed="false">12Z</button></div></div></section>
+<section class="info-estacion" id="valInfo" aria-label="Información de la estación" aria-live="polite"></section>
+<div id="valVariables" class="selector-variable"></div>
+<p id="valEstado" class="val-nota" role="status" aria-live="polite">Cargando estaciones…</p><section id="valPanelGrafica" class="panel-grafica" hidden><div id="valGrafica" class="val-grafica"></div></section><p class="val-nota val-con-estacion" hidden>La gráfica utiliza las series conservadas y termina en la última fecha observada disponible. Línea continua: 00Z; discontinua: 12Z. El observado se muestra en negro.</p><div id="valTabla"></div><p class="val-nota val-con-estacion" hidden>La tabla utiliza el periodo indicado en el CSV estadístico y reúne los ciclos disponibles de cada modelo. El selector 00Z/12Z afecta únicamente a la gráfica.</p>
 </div>
 <div id="valPorDepartamento" role="tabpanel" aria-labelledby="valTabDepartamento" hidden><div class="panel-futuro"><span class="estado-desarrollo">En preparación</span><h2>Validación por departamento</h2><p>Mapa y tabla comparativa de los modelos por departamento. Pendiente del cálculo de los estadísticos territoriales.</p></div></div>
 <div id="valPorRegion" role="tabpanel" aria-labelledby="valTabRegion" hidden><div class="panel-futuro"><span class="estado-desarrollo">En preparación</span><h2>Validación por región</h2><p>Mapa y tabla comparativa por región climática. Pendiente de definir las regiones y calcular sus estadísticos.</p></div></div>
@@ -1204,19 +1204,104 @@ const fecha=new Date(Date.UTC(+ciclo.slice(0,4),+ciclo.slice(4,6)-1,+ciclo.slice
 fecha.setUTCDate(fecha.getUTCDate()+horizonte-1+(variable==="tmin"&&ciclo.endsWith("12")&&!modelo.startsWith("eta22_")?1:0));
 return fecha.toISOString().slice(0,10).replaceAll("-","");
 }
-function valActualizarEstaciones(elegida=""){
-const departamento=document.getElementById("valDepartamento").value;
-const disponibles=estaciones.filter(e=>e.variablesDisponibles.some(v=>VARIABLES_DIARIAS.includes(v))&&(!departamento||e.departamento===departamento));
-const select=document.getElementById("valEstacion");select.replaceChildren(new Option("Seleccione una estación",""));
-for(const e of disponibles)select.add(new Option(`${e.estacion} · ${e.codigo} · ${e.provincia}`,e.codigo));
-select.value=disponibles.some(e=>e.codigo===elegida)?elegida:disponibles[0]?.codigo||"";
+let valMapaObj=null,valCapa=null,valMarcadores={};
+function valEstacionesDiarias(){return estaciones.filter(e=>e.variablesDisponibles.some(v=>VARIABLES_DIARIAS.includes(v)));}
+function valActualizarProvincias(){
+const departamento=document.getElementById("valDepartamento").value,select=document.getElementById("valProvincia");select.replaceChildren(new Option("Seleccione provincia",""));
+if(departamento)for(const p of [...new Set(valEstacionesDiarias().filter(e=>e.departamento===departamento).map(e=>e.provincia))].sort((a,b)=>a.localeCompare(b,"es")))select.add(new Option(p,p));
+valActualizarEstaciones();
 }
+function valActualizarEstaciones(elegida=""){
+const departamento=document.getElementById("valDepartamento").value,provincia=document.getElementById("valProvincia").value,select=document.getElementById("valEstacion");
+select.replaceChildren(new Option("Seleccione estación",""));
+if(departamento&&provincia)for(const e of valEstacionesDiarias().filter(e=>e.departamento===departamento&&e.provincia===provincia))select.add(new Option(`${e.estacion} (${e.codigo})`,e.codigo));
+select.value=elegida;
+}
+async function valSeleccionarDesdeMapa(estacion){
+document.getElementById("valDepartamento").value=estacion.departamento;valActualizarProvincias();
+document.getElementById("valProvincia").value=estacion.provincia;valActualizarEstaciones(estacion.codigo);
+valActualizarMapa();valResaltarEstacion(estacion.codigo,true);await valActualizar();
+}
+function valIniciarMapa(){
+const tactil=window.matchMedia("(pointer:coarse)").matches||navigator.maxTouchPoints>0;
+valMapaObj=L.map("valMapa",{zoomControl:true,preferCanvas:true,renderer:L.canvas({tolerance:tactil?12:0})}).setView([-9.2,-75.0],5);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"&copy; OpenStreetMap"}).addTo(valMapaObj);
+valCapa=L.layerGroup().addTo(valMapaObj);
+}
+function valActualizarInfoEstacion(){
+const contenedor=document.getElementById("valInfo"),codigo=document.getElementById("valEstacion").value;
+const estacion=estaciones.find(e=>e.codigo===codigo);
+contenedor.replaceChildren();
+if(!estacion){const mensaje=document.createElement("span");mensaje.className="info-estacion-vacia";mensaje.textContent="Seleccione una estación para consultar su información.";contenedor.appendChild(mensaje);return;}
+const nombre=document.createElement("strong");nombre.textContent=estacion.estacion;contenedor.appendChild(nombre);
+const datos=document.createElement("div");datos.className="info-estacion-datos";
+const detalles=[`Código: ${estacion.codigo}`,`Tipo: ${tipoRed(estacion)}${estacion.categoria?` · ${estacion.categoria}`:""}`,`Departamento: ${estacion.departamento}`,`Provincia: ${estacion.provincia}`,`Latitud: ${estacion.latitud.toFixed(5)} · Longitud: ${estacion.longitud.toFixed(5)}`];
+for(const detalle of detalles){const texto=document.createElement("span");texto.textContent=detalle;datos.appendChild(texto);}
+contenedor.appendChild(datos);
+}
+function valPopupGrupo(grupo){
+const contenedor=document.createElement("div");
+const titulo=document.createElement("strong");titulo.textContent="Estaciones en esta ubicación";contenedor.appendChild(titulo);
+for(const estacion of grupo){
+const boton=document.createElement("button");boton.type="button";boton.className="popup-estacion";
+boton.style.borderLeft=`4px solid ${colorEstacion(estacion)}`;
+boton.textContent=`${estacion.estacion} (${estacion.codigo}) · ${tipoRed(estacion)}`;
+boton.addEventListener("click",async()=>{valMapaObj.closePopup();await valSeleccionarDesdeMapa(estacion);});
+contenedor.appendChild(boton);
+}return contenedor;
+}
+function valActualizarMapa(){
+if(!valMapaObj)return;
+const departamento=document.getElementById("valDepartamento").value;
+const provincia=document.getElementById("valProvincia").value;
+const codigo=document.getElementById("valEstacion").value;
+let filtradas=valEstacionesDiarias();
+if(departamento)filtradas=filtradas.filter(e=>e.departamento===departamento);
+if(provincia)filtradas=filtradas.filter(e=>e.provincia===provincia);
+valCapa.clearLayers();valMarcadores={};const limites=[],grupos=new Map();
+for(const estacion of filtradas){
+const clave=`${estacion.latitud}|${estacion.longitud}`;
+if(!grupos.has(clave))grupos.set(clave,[]);grupos.get(clave).push(estacion);
+}
+for(const grupo of grupos.values()){
+const estacion=grupo[0];let marcador;
+if(grupo.length===1){
+marcador=L.circleMarker([estacion.latitud,estacion.longitud],estiloMarcador(estacion,estacion.codigo===codigo));
+marcador.bindTooltip(`${estacion.estacion} (${estacion.codigo}) · ${tipoRed(estacion)}`,{direction:"top"});
+marcador.bindPopup(`<strong>${escaparHTML(estacion.estacion)}</strong><br>${escaparHTML(estacion.provincia)}, ${escaparHTML(estacion.departamento)}<br>Código: ${escaparHTML(estacion.codigo)}<br>${tipoRed(estacion)}`);
+marcador.on("click",async()=>{await valSeleccionarDesdeMapa(estacion);});
+}else{
+marcador=L.marker([estacion.latitud,estacion.longitud],{icon:iconoGrupo(grupo,codigo),estacionesGrupo:grupo});
+marcador.bindTooltip(`${grupo.length} estaciones en esta ubicación`,{direction:"top"});
+marcador.bindPopup(valPopupGrupo(grupo));
+}
+marcador.options.estacionReferencia=estacion;
+marcador.addTo(valCapa);
+for(const e of grupo)valMarcadores[e.codigo]=marcador;
+limites.push([estacion.latitud,estacion.longitud]);
+}
+if(limites.length===1)valMapaObj.setView(limites[0],11);
+else if(limites.length>1)valMapaObj.fitBounds(limites,{padding:[30,30],maxZoom:11});
+valResaltarEstacion(codigo,false);
+}
+function valResaltarEstacion(codigo,centrar=true){
+for(const marcador of new Set(Object.values(valMarcadores))){
+const grupo=marcador.options.estacionesGrupo;
+if(grupo){marcador.setIcon(iconoGrupo(grupo,codigo));marcador.setZIndexOffset(grupo.some(e=>e.codigo===codigo)?1000:0);}
+else{
+const estacion=marcador.options.estacionReferencia;
+if(estacion)marcador.setStyle(estiloMarcador(estacion,estacion.codigo===codigo));
+if(estacion&&estacion.codigo===codigo)marcador.bringToFront();
+}}
+if(centrar&&valMarcadores[codigo])valMapaObj.panTo(valMarcadores[codigo].getLatLng());
+}
+
 function valActualizarControles(){
 const estacion=estaciones.find(e=>e.codigo===document.getElementById("valEstacion").value),variables=VARIABLES_DIARIAS.filter(v=>estacion?.variablesDisponibles.includes(v));
 if(!variables.includes(val.variable))val.variable=variables[0]||null;
-document.getElementById("valVariables").innerHTML=variables.map(v=>`<button data-val-variable="${v}" aria-pressed="${v===val.variable}">${valNombres[v]}</button>`).join("");
-document.getElementById("valInfo").textContent=estacion?`${estacion.estacion} · Código: ${estacion.codigo} · ${tipoRed(estacion)} · ${estacion.departamento} / ${estacion.provincia}`:"Seleccione una estación con observaciones diarias.";
-document.getElementById("valModelos").innerHTML=Object.keys(MODELOS).filter(m=>Object.values(manifiesto?.ciclos||{}).some(c=>c[m]?.includes(val.variable))).map(m=>`<label><input type="checkbox" data-val-modelo="${m}" ${val.modelos.has(m)?"checked":""}><span class="val-color" style="background:${MODELOS[m].colores.at(-2)}"></span>${MODELOS[m].nombre}</label>`).join("");
+document.getElementById("valVariables").innerHTML=variables.map(v=>`<button data-val-variable="${v}" class="${v===val.variable?"activo":""}" aria-pressed="${v===val.variable}">${valNombres[v]}</button>`).join("");
+valActualizarInfoEstacion();
+document.getElementById("valModelos").innerHTML=Object.keys(MODELOS).filter(m=>Object.values(manifiesto?.ciclos||{}).some(c=>c[m]?.includes(val.variable))).map(m=>`<label class="modelo-check"><input type="checkbox" data-val-modelo="${m}" ${val.modelos.has(m)?"checked":""}><span class="indicador ${m}"></span>${MODELOS[m].nombre}</label>`).join("");
 for(const b of document.querySelectorAll("#valHorizonte button"))b.setAttribute("aria-pressed",String(+b.dataset.valH===val.horizonte));
 for(const b of document.querySelectorAll("#valCiclos button"))b.setAttribute("aria-pressed",String(b.dataset.valC===val.ciclo));
 }
@@ -1257,6 +1342,7 @@ contenedor.innerHTML=html+"</tbody></table></div></div>";
 async function valActualizar(){
 const solicitud=++val.solicitud;valActualizarControles();
 const codigo=document.getElementById("valEstacion").value,variable=val.variable,horizonte=val.horizonte,ciclo=val.ciclo,modelos=Object.keys(MODELOS).filter(m=>val.modelos.has(m)),estado=document.getElementById("valEstado");
+document.getElementById("valPanelGrafica").hidden=!codigo||!variable;for(const nota of document.querySelectorAll("#paginaValidacion .val-con-estacion"))nota.hidden=!codigo||!variable;
 if(!codigo||!variable){Plotly.purge("valGrafica");document.getElementById("valTabla").innerHTML="";estado.textContent="Seleccione una estación con observaciones diarias.";return;}
 estado.textContent="Cargando comparaciones…";document.getElementById("valTabla").innerHTML="";
 try{
@@ -1274,16 +1360,21 @@ estado.textContent=resultado.fechas.length?`Series disponibles: ${valFecha(resul
 async function prepararValidacion(){
 try{
 if(!val.listo){await Promise.all([manifiesto?Promise.resolve():cargarManifiesto(),estaciones.length?Promise.resolve():cargarEstaciones()]);
-const select=document.getElementById("valDepartamento");for(const d of [...new Set(estaciones.filter(e=>e.variablesDisponibles.some(v=>VARIABLES_DIARIAS.includes(v))).map(e=>e.departamento))].sort())select.add(new Option(d,d));
-valActualizarEstaciones(document.getElementById("estacionSelect").value);val.listo=true;}
-if(seccionActiva==="validacion")await valActualizar();
+const select=document.getElementById("valDepartamento");select.replaceChildren(new Option("Seleccione departamento",""));for(const d of [...new Set(valEstacionesDiarias().map(e=>e.departamento))].sort((a,b)=>a.localeCompare(b,"es")))select.add(new Option(d,d));
+valIniciarMapa();valActualizarProvincias();
+const previa=valEstacionesDiarias().find(e=>e.codigo===document.getElementById("estacionSelect").value);
+if(previa){select.value=previa.departamento;valActualizarProvincias();document.getElementById("valProvincia").value=previa.provincia;valActualizarEstaciones(previa.codigo);}
+val.listo=true;valActualizarMapa();}
+if(seccionActiva==="validacion"){valMapaObj.invalidateSize();await valActualizar();}
 }catch(error){document.getElementById("valEstado").textContent="No se pudieron cargar los datos. Vuelve a abrir Validación para reintentar.";console.warn(error);}
 }
-document.getElementById("valDepartamento").addEventListener("change",()=>{valActualizarEstaciones();valActualizar();});
-document.getElementById("valEstacion").addEventListener("change",valActualizar);
+document.getElementById("valDepartamento").addEventListener("change",()=>{valActualizarProvincias();valActualizarMapa();valActualizar();});
+document.getElementById("valProvincia").addEventListener("change",()=>{valActualizarEstaciones();valActualizarMapa();valActualizar();});
+document.getElementById("valEstacion").addEventListener("change",()=>{valResaltarEstacion(document.getElementById("valEstacion").value,true);valActualizar();});
+document.getElementById("valReset").addEventListener("click",()=>{document.getElementById("valDepartamento").value="";valActualizarProvincias();valActualizarMapa();if(valMapaObj)valMapaObj.setView([-9.2,-75],5);valActualizar();});
 document.getElementById("paginaValidacion").addEventListener("click",event=>{
 const b=event.target.closest("button");if(!b)return;
-if(b.dataset.valTab){for(const tab of document.querySelectorAll("[data-val-tab]")){const activa=tab===b;tab.setAttribute("aria-selected",String(activa));tab.tabIndex=activa?0:-1;document.getElementById(`valPor${tab.dataset.valTab}`).hidden=!activa;}if(b.dataset.valTab==="Estacion")requestAnimationFrame(()=>{if(document.getElementById("valGrafica").data)Plotly.Plots.resize("valGrafica");});return;}
+if(b.dataset.valTab){for(const tab of document.querySelectorAll("[data-val-tab]")){const activa=tab===b;tab.setAttribute("aria-selected",String(activa));tab.tabIndex=activa?0:-1;document.getElementById(`valPor${tab.dataset.valTab}`).hidden=!activa;}if(b.dataset.valTab==="Estacion")requestAnimationFrame(()=>{if(valMapaObj)valMapaObj.invalidateSize();if(document.getElementById("valGrafica").data)Plotly.Plots.resize("valGrafica");});return;}
 if(b.dataset.valVariable)val.variable=b.dataset.valVariable;else if(b.dataset.valH)val.horizonte=+b.dataset.valH;else if(b.dataset.valC)val.ciclo=b.dataset.valC;else if(b.dataset.valUmbral)val.umbral=b.dataset.valUmbral;else return;
 valActualizar();
 });
