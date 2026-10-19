@@ -129,7 +129,11 @@ html[data-tema="oscuro"] #paginaValidacion .val-nota{color:var(--muted)}
 </style><style>
 /* Tres accesos principales con una ilustración propia. */
 .tarjetas-inicio .tarjeta-inicio{padding:0;overflow:hidden;min-height:0}.tarjetas-inicio .tarjeta-inicio>svg{display:block;flex:0 0 auto;width:100%;height:auto;border-radius:0}.tarjeta-contenido{display:flex;flex-direction:column;flex:1;padding:24px 26px 22px}.tarjetas-inicio .tarjeta-inicio h3{margin:17px 0 10px}.tarjetas-inicio .tarjeta-inicio p{max-width:none;min-height:62px}.tarjetas-inicio .pie-tarjeta{margin-top:auto}.tarjetas-inicio .tarjeta-principal{border-top-width:1px}@media(max-width:800px){.tarjeta-contenido{padding:21px}.tarjetas-inicio .tarjeta-inicio p{min-height:0}}
-</style></head>
+</style><style>
+/* Validación: colores y límites por intervalos, iguales para todos los modelos. */
+.dep-leyenda .territorio-barra.discreta{display:flex;overflow:hidden;box-sizing:border-box}.dep-leyenda .territorio-tramo{display:block;flex:1;height:100%;min-height:10px;border-left:1px solid rgba(255,255,255,.55);box-sizing:border-box}.dep-leyenda .territorio-tramo:first-child{border-left:0}.dep-leyenda .territorio-marcas.discretas{display:block;position:relative;height:17px;margin-top:5px}.dep-leyenda .territorio-marcas.discretas span{display:block;position:absolute;white-space:nowrap;transform:translateX(-50%)}.dep-leyenda .territorio-marcas.discretas .inicio{transform:none}.dep-leyenda .territorio-marcas.discretas .fin{transform:translateX(-100%)}.dep-leyenda .territorio-unidad{line-height:1.6}.dep-leyenda .territorio-sin-datos{max-width:850px;text-align:center;line-height:1.65}
+</style>
+</head>
 <body>
 <a class="saltar-contenido" href="#contenidoPrincipal">Ir al contenido</a>
 <header class="masthead"><div class="masthead-bar"><a aria-label="NWP-STATION, inicio" class="marca-plataforma" href="#inicio"><span class="sello-senamhi">SENAMHI</span><span class="marca-separador"></span><span class="marca-texto"><strong>NWP-STATION</strong><small>Modelos y observaciones</small></span></a><nav aria-label="Navegación principal" class="nav"><a aria-current="page" class="activo" data-seccion="inicio" href="#inicio">Inicio</a><a data-seccion="pronosticos" href="#pronosticos">Pronósticos</a><a data-seccion="mapas" href="#mapas">Mapas</a><a data-seccion="validacion" href="#validacion">Validación</a></nav><button aria-label="Activar modo oscuro" aria-pressed="false" class="tema-control tema-boton" id="temaApariencia" type="button">☾</button></div><div class="masthead-scale"></div></header>
@@ -852,20 +856,37 @@ for(const b of document.querySelectorAll(`#${id} button`)){const h=Number(b.data
 }
 function notaVentana(variable,ciclo){return `Antelación desde la inicialización ${ciclo}Z.${variable==="tmin"&&ciclo==="12"?" La primera ventana corresponde a la mañana del día siguiente.":""}${variable!=="pp24h"&&ciclo==="00"?" ETA22-SCA/EQM se evalúan por la fecha diaria del producto; sus intervalos intradiarios no están confirmados.":""}`;}
 const cacheEscalasTerritoriales=new WeakMap();
+function bigotesTerritoriales(valores){
+const ordenados=valores.filter(Number.isFinite).sort((a,b)=>a-b);if(!ordenados.length)return{inferior:0,superior:0};
+// Interpolación de cuartiles usada por los boxplots de Plotly (método linear).
+const cuartil=p=>{const i=Math.max(0,Math.min(ordenados.length-1,p*ordenados.length-.5)),a=Math.floor(i),b=Math.ceil(i);return ordenados[a]+(ordenados[b]-ordenados[a])*(i-a);};
+const q1=cuartil(.25),q3=cuartil(.75),riq=q3-q1,inferior=q1-1.5*riq,superior=q3+1.5*riq;
+const interiores=ordenados.filter(v=>v>=inferior&&v<=superior);return{inferior:interiores[0]??q1,superior:interiores.at(-1)??q3};
+}
+function redondearLimiteVisual(valor){if(!(valor>0))return 1;const paso=10**Math.floor(Math.log10(valor))/5;return Number((Math.ceil(valor/paso-1e-12)*paso).toPrecision(12));}
 function escalaTerritorialComun(datos,catalogo,metrica,umbral){
-const divergente=["#2166ac","#67a9cf","#d1e5f0","#fddbc7","#ef8a62","#b2182b"],secuencial=["#edf4f8","#d3e5ef","#a9cddf","#79b1cd","#448ead","#175674"];
-if(metrica==="spearman")return{min:-1,max:1,colores:[...divergente].reverse()};
-if(["pod","far","csi"].includes(metrica))return{min:0,max:1,colores:secuencial};
+const menorMejor=["#1a9850","#70b6b0","#3288bd","#9e7bba","#d73027"],mayorMejor=[...menorMejor].reverse(),sesgo=["#2166ac","#92c5de","#f7f7f7","#f4a582","#b2182b"];
+if(metrica==="spearman")return{min:-1,max:1,colores:mayorMejor,criterio:"Mayor correspondencia hacia +1"};
+if(["pod","far","csi"].includes(metrica))return{min:0,max:1,colores:metrica==="far"?menorMejor:mayorMejor,criterio:metrica==="far"?"Menor es mejor":"Mayor es mejor"};
 let cache=cacheEscalasTerritoriales.get(datos);if(!cache){cache=new Map();cacheEscalasTerritoriales.set(datos,cache);}
 const clave=`${metrica}|${umbral}`;const previa=cache.get(clave);if(previa?.catalogo===catalogo)return previa.escala;
 const sumas=new Map();
 for(const f of datos){const ciclo=cicloEstadistico(f),valor=parseFloat(f[metrica]),meta=catalogo.get(String(f.codigo||"").trim());if(!ciclo||!MODELOS[f.modelo]||!(+f.n>0)||!Number.isFinite(valor)||!meta)continue;
 for(const campo of ["departamento","region"]){const nombre=String(meta[campo]||"").trim().normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z0-9]+/g," ").trim();if(!nombre||nombre==="SIN DEPARTAMENTO")continue;const k=JSON.stringify([campo,nombre,f.modelo,ciclo,f.horizonte||"D1"]),acum=sumas.get(k)||[0,0];acum[0]+=valor;acum[1]++;sumas.set(k,acum);}}
-let maximo=0;for(const [s,n] of sumas.values()){const v=s/n;maximo=Math.max(maximo,metrica==="bias"?Math.abs(v):v);}
-const magnitud=10**Math.floor(Math.log10(maximo||1)),limite=([1,2,2.5,5,10].find(x=>x*magnitud>=maximo-1e-12)||10)*magnitud;
-const escala={min:metrica==="bias"?-limite:0,max:limite,colores:metrica==="bias"?divergente:secuencial};cache.set(clave,{catalogo,escala});return escala;
+const valores=[...sumas.values()].map(([s,n])=>s/n),bigotes=bigotesTerritoriales(valores),bias=metrica==="bias";
+const limite=redondearLimiteVisual(bias?Math.max(Math.abs(bigotes.inferior),Math.abs(bigotes.superior)):bigotes.superior);
+const escala={min:bias?-limite:0,max:limite,colores:bias?sesgo:menorMejor,criterio:bias?"Cero es ideal · azul: subestimación; rojo: sobreestimación":"Menor es mejor",bigoteInferior:bigotes.inferior,bigoteSuperior:bigotes.superior};
+escala.saturaInferior=valores.some(v=>v<escala.min);escala.saturaSuperior=valores.some(v=>v>escala.max);cache.set(clave,{catalogo,escala});return escala;
 }
-function colorEscalaTerritorial(escala,valor){if(valor===null)return "#b8c3cc";const posicion=Math.max(0,Math.min(1,(valor-escala.min)/(escala.max-escala.min)))*(escala.colores.length-1),i=Math.min(escala.colores.length-2,Math.floor(posicion)),peso=posicion-i;const canal=(color,k)=>parseInt(color.slice(k,k+2),16);return "#"+[1,3,5].map(k=>Math.round(canal(escala.colores[i],k)*(1-peso)+canal(escala.colores[i+1],k)*peso).toString(16).padStart(2,"0")).join("");}
+function colorEscalaTerritorial(escala,valor){if(valor===null||!Number.isFinite(valor))return "#b8c3cc";const fraccion=(valor-escala.min)/(escala.max-escala.min),i=Math.max(0,Math.min(escala.colores.length-1,Math.floor(fraccion*escala.colores.length)));return escala.colores[i];}
+function leyendaEscalaTerritorial(escala,indicador,unidad){
+const n=escala.colores.length,paso=(escala.max-escala.min)/n,decimales=Math.min(5,Math.max(1,-Math.floor(Math.log10(paso))+1));
+const tramos=escala.colores.map((color,i)=>{const a=escala.min+paso*i,b=a+paso;return `<span class="territorio-tramo" style="background:${color}" title="${a.toFixed(decimales)} a ${b.toFixed(decimales)}${unidad?' '+unidad:''}"></span>`;}).join("");
+const valores=Array.from({length:n+1},(_,i)=>escala.min+paso*i);if(escala.min<0&&escala.max>0&&!valores.some(v=>Math.abs(v)<1e-10))valores.push(0);valores.sort((a,b)=>a-b);
+const ticks=valores.map(v=>{const posicion=(v-escala.min)/(escala.max-escala.min)*100,extremo=v===escala.min?" inicio":v===escala.max?" fin":"",signo=v===escala.min&&escala.saturaInferior?"≤ ":v===escala.max&&escala.saturaSuperior?"≥ ":"";return `<span class="${extremo.trim()}" style="left:${posicion}%">${signo}${v.toFixed(decimales)}</span>`;}).join("");
+const satura=escala.saturaInferior||escala.saturaSuperior;
+return `<div class="territorio-escala"><div class="territorio-barra discreta" role="img" aria-label="Escala por intervalos de ${indicador}" data-min="${escala.min}" data-max="${escala.max}">${tramos}</div><div class="territorio-marcas discretas">${ticks}</div><div class="territorio-unidad">${indicador}${unidad?' ('+unidad+')':''} · ${escala.criterio}</div></div><span class="territorio-sin-datos">Sin datos: gris · Escala común a modelos, ciclos y horizontes.${escala.bigoteSuperior!==undefined?' Límites visuales según bigotes (1.5 × RIQ), con redondeo fino.':''}${satura?' Los valores fuera de escala usan el color extremo; su valor exacto se conserva en el mapa y las tablas.':''}</span>`;
+}
 
 function valorEstadistico(valor,decimales=2){
 if(valor===undefined||valor===null||valor===""||valor==="S/D") return "S/D";
@@ -1490,8 +1511,7 @@ if(!dep.mapa||!dep.geo)return;const escala=depEscala();
 const estilo=f=>{const clave=depClave(depNombre(f)),media=depResumen(dep.grupos.get(clave)?.modelos.get(dep.modelo)||[],dep.metrica).media;return{color:clave===dep.seleccion?"#183e60":"#718596",weight:clave===dep.seleccion?2.8:.8,fillColor:colorEscalaTerritorial(escala,media),fillOpacity:.85};};
 if(!dep.capa){dep.capa=L.geoJSON(dep.geo,{style:estilo,onEachFeature:(f,capa)=>{capa.bindTooltip("");capa.on("click",()=>{dep.seleccion=depClave(depNombre(f));depActualizarVista();});}}).addTo(dep.mapa);dep.mapa.fitBounds(dep.capa.getBounds(),{padding:[15,15]});}else dep.capa.setStyle(estilo);
 dep.capa.eachLayer(capa=>{const nombre=depNombre(capa.feature),r=depResumen(dep.grupos.get(depClave(nombre))?.modelos.get(dep.modelo)||[],dep.metrica);capa.setTooltipContent(`<strong>${escaparHTML(nombre)}</strong><br>${MODELOS[dep.modelo].nombre} · ${depEtiquetas[dep.metrica]}: ${depFormatear(r.media)}<br>Promedio de ${r.n} estaciones`);});
-const n=escala.colores.length,gradiente=escala.colores.map((c,i)=>`${c} ${i/(n-1)*100}%`).join(","),ticks=Array.from({length:n+1},(_,i)=>`<span>${(escala.min+(escala.max-escala.min)*i/n).toFixed(["pod","far","csi","spearman"].includes(dep.metrica)?2:1)}</span>`).join("");
-ui.getElementById("depLeyenda").innerHTML=`<div class="territorio-escala"><div class="territorio-barra" style="background:linear-gradient(90deg,${gradiente})"></div><div class="territorio-marcas">${ticks}</div><div class="territorio-unidad">${depEtiquetas[dep.metrica]}${depUnidad()?" ("+depUnidad()+")":""}</div></div><span class="territorio-sin-datos">Sin datos: gris · Escala común a modelos, ciclos y horizontes del periodo disponible.</span>`;
+ui.getElementById("depLeyenda").innerHTML=leyendaEscalaTerritorial(escala,depEtiquetas[dep.metrica],depUnidad());
 ui.getElementById("depTituloMapa").innerHTML=`${MODELOS[dep.modelo].nombre} · ${depEtiquetas[dep.metrica]}<small>Promedio entre estaciones · ${nombreDia(dep.horizonte)} · ${val.ciclo}Z</small>`;
 }
 
