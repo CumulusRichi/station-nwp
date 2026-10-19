@@ -1,34 +1,32 @@
-# station-nwp
+# NWP-STATION
 
-Plataforma web para comparar pronósticos de modelos atmosféricos con observaciones de estaciones meteorológicas automáticas y convencionales.
+Plataforma web para comparar pronósticos de modelos atmosféricos con observaciones meteorológicas y evaluar su desempeño en el Perú.
 
 ## Modelos
 
-GFS, ECMWF / IFS, ETA, WRF y MPAS.
+GFS, ECMWF, ETA5, WRF5 y MPAS15; productos corregidos ETA22-SCA y ETA22-EQM; y ensamble WRF8 ENS de ocho miembros.
 
 ## Variables
 
-- Temperatura horaria del aire a 2 m.
+- Temperatura del aire a 2 m.
 - Precipitación acumulada en 6 horas.
 - Temperatura máxima y mínima diaria.
 - Precipitación acumulada en 24 horas.
 
 ## Funcionalidades
 
-Selección de estaciones en un mapa, comparación de series observadas y pronosticadas, y consulta de distintas inicializaciones de los modelos. Los horizontes de pronóstico son de hasta 5 días para temperatura horaria y precipitación acumulada en 6 horas, y hasta 7 días para las variables diarias.
-
-Indicadores de desempeño disponibles.
+- **Pronósticos:** series por estación, distintas inicializaciones y consulta independiente del ensamble. Hasta 5 días para las variables horarias y de 6 horas, y hasta 7 días para las diarias, según disponibilidad.
+- **Mapas:** comparación interactiva de campos observados y pronosticados, con zoom sincronizado.
+- **Validación:** evaluación de las tres primeras ventanas diarias completas, por estación, departamento y región climática. Estadísticos de los últimos 30 días, separados por inicialización 00Z y 12Z.
 
 ## Sitio web
 
 https://cumulusrichi.github.io/station-nwp/
 
-Los datos se procesan automáticamente y se actualizan conforme están disponibles nuevas observaciones y pronósticos.
+Actualización automática según la disponibilidad de observaciones y pronósticos.
 
 Desarrollado por la **Subdirección de Cambio Climático y Modelamiento Atmosférico del SENAMHI**.
 
 ## Uso
 
-Los pronósticos contienen incertidumbre inherente a los modelos numéricos. La información es referencial y no reemplaza los productos oficiales emitidos por el SENAMHI.
-
-El SENAMHI no se responsabiliza por interpretaciones o usos inadecuados de estos resultados.
+La información contiene incertidumbre, es referencial y no reemplaza los productos oficiales del SENAMHI. La institución no se responsabiliza por interpretaciones o usos inadecuados de estos resultados.
