@@ -1,5 +1,5 @@
 {
-  "actualizacion": "2026-10-20T15:11:18Z",
+  "actualizacion": "2026-10-20T16:23:44Z",
   "ciclos": {
     "2026101200": {
       "gfs": [
@@ -631,6 +631,46 @@
         "tmax",
         "tmin",
         "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
+        "tmax",
+        "tmin",
+        "pp24h"
       ]
     },
     "2026101712": {
@@ -708,6 +748,46 @@
         "tmax",
         "tmin",
         "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
+        "tmax",
+        "tmin",
+        "pp24h"
       ]
     },
     "2026101812": {
@@ -782,6 +862,46 @@
         "pp24h"
       ],
       "eta22_scal": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
         "tmax",
         "tmin",
         "pp24h"
