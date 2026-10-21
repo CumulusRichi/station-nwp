@@ -13,7 +13,7 @@ function headersPrivados(headers = {}) {
   h.set('Vary', 'Cookie');
   h.set('X-Content-Type-Options', 'nosniff');
   h.set('X-Frame-Options', 'DENY');
-  h.set('Referrer-Policy', 'same-origin');
+  h.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   h.set('Cross-Origin-Resource-Policy', 'same-origin');
   return h;
 }
