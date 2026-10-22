@@ -9,7 +9,7 @@ const permitidos=[/^index\.html$/, /^observaciones\/(metadata|obs_(t2m|pp6h|tmax
   /^estadisticos\/estadisticos_(t2m|pp6h|tmax|tmin|pp24h)_\d{8}\.csv$/,
   /^modelos\/ciclos\.json$/, /^modelos\/20\d{6}(00|12)\/[^/]+\.csv$/,
   /^mapas\/(departamentos|sectores_climaticos)\.geojson$/,
-  /^mapas\/(prec|tmax|tmin)_\d{8}\.tif$/,
+  /^mapas\/(prec|tmax|tmin|piscopp)_\d{8}\.tif$/,
   /^mapas\/20\d{6}(00|12)\/[^/]+\.tif$/];
 const obligatorios=['index.html','observaciones/metadata.csv','modelos/ciclos.json',
   'mapas/departamentos.geojson','mapas/sectores_climaticos.geojson',
