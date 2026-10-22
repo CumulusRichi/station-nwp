@@ -1,5 +1,5 @@
 {
-  "actualizacion": "2026-10-22T14:31:46Z",
+  "actualizacion": "2026-10-22T15:30:46Z",
   "ciclos": {
     "2026101400": {
       "gfs": [
@@ -873,6 +873,13 @@
         "pp24h"
       ],
       "wrf5": [
+        "t2m",
+        "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "mpas15": [
         "t2m",
         "pp6h",
         "tmax",
