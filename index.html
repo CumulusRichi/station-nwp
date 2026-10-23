@@ -373,6 +373,49 @@ body.hmap-activo .contenedor{width:100%;max-width:none}
 .s-val-opciones{align-self:start}#paginaValidacion .s-val-ubicacion .r-val-seleccion{height:auto}
 
 </style>
+<style id="ajusteHorizontal">
+/* Mapas: solo el tamaño de los botones y los dos rótulos solicitados. */
+#paginaMapas #cmpSelectoresCapas .hmap-producto{padding:5px 8px;min-height:29px}
+#paginaMapas #cmpSelectoresCapas .hmap-categoria-titulo{display:none}
+/* Filtros de validación fuera de la cuadrícula del mapa, con todo el ancho disponible. */
+#paginaValidacion .r-val-filtros{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(120px,.4fr) minmax(360px,1fr);gap:12px;align-items:stretch;padding:12px;margin:12px 0}
+#paginaValidacion .r-val-filtros>div{width:auto;padding:0;min-width:0;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch}
+#paginaValidacion .r-val-filtros>div+div{margin:0;padding:0 0 0 12px;border-top:0;border-left:1px solid var(--line)}
+#paginaValidacion .r-val-filtros .val-etiqueta,#paginaValidacion .r-val-filtros .titulo-pronostico{margin:0 0 6px;font-size:11px;line-height:15px}
+#paginaValidacion .r-val-filtros .val-inicializacion{width:100%;padding:0;border:0}
+#paginaValidacion .r-val-filtros .tipo-pronostico,#paginaValidacion .r-val-filtros .selector-variable{width:100%;justify-content:center;align-items:stretch;gap:5px;flex-wrap:nowrap;margin:0}
+#paginaValidacion .r-val-filtros .r-val-variable button{flex:1 1 0;max-width:240px;min-width:0}
+#paginaValidacion .r-val-filtros .r-val-dias{grid-column:auto}
+#paginaValidacion .r-val-filtros .r-val-dias>.tipo-pronostico{max-width:none}
+#paginaValidacion .r-val-filtros .r-val-dias button{flex:1;min-width:0;max-width:none}
+#paginaValidacion .r-val-filtros button{min-height:42px;height:42px;font-size:11px;padding:6px 8px}
+/* La información correspondiente a cada ámbito permanece debajo de su botón de acción. */
+#paginaValidacion .r-val-controles .r-val-metadata{margin:12px 0 0;padding:10px 0 0;border-top:1px solid var(--line);background:none}
+#paginaValidacion .r-val-controles .r-val-metadata .info-estacion{padding:0;margin:0;text-align:center;font-size:12px;line-height:1.65;overflow-wrap:anywhere}
+#paginaValidacion .r-val-controles .r-val-metadata .info-estacion-datos{justify-content:center;gap:3px 10px}
+#paginaValidacion .r-val-controles .r-val-metadata .ventana-nota{margin:6px 0 0;text-align:center;font-size:10px;line-height:1.55;max-width:none}
+#paginaValidacion .r-val-controles .panel-pronostico{margin:10px 0 0;padding:9px 0 0;border:0;border-top:1px solid var(--line);background:none}
+#paginaValidacion .r-val-controles .panel-pronostico .modelos-checks{gap:5px;justify-content:center}
+#paginaValidacion .r-val-controles .val-nota{margin:7px 0 0;font-size:10px;text-align:center;line-height:1.45}
+#paginaValidacion #depEstado:empty,#paginaValidacion #regEstado:empty{display:none}
+#paginaValidacion .resultados-titulo,#paginaValidacion .h-contexto{scroll-margin-top:calc(var(--hmap-top,90px) + 14px)}
+@media(max-width:1100px){
+#paginaValidacion .r-val-filtros{grid-template-columns:minmax(0,1fr) minmax(140px,.35fr)}
+#paginaValidacion .r-val-filtros .r-val-dias{grid-column:1 / -1;padding:10px 0 0;border-left:0;border-top:1px solid var(--line)}
+#paginaValidacion .r-val-filtros .r-val-dias>.tipo-pronostico{max-width:580px;margin:auto}
+}
+@media(max-width:700px){
+#paginaValidacion .r-val-filtros{grid-template-columns:minmax(0,1fr) auto;gap:12px 9px;padding:11px 9px}
+#paginaValidacion .r-val-filtros>div+div{padding-left:9px}
+#paginaValidacion .r-val-filtros .r-val-variable .tipo-pronostico,#paginaValidacion .r-val-filtros #valVariables{flex-wrap:wrap}
+#paginaValidacion .r-val-filtros .r-val-variable button{flex:1 1 140px;max-width:none}
+#paginaValidacion .r-val-filtros button{min-height:44px;height:44px;padding:6px;font-size:11px}
+#paginaValidacion .r-val-filtros #validacionCiclos{flex-wrap:wrap;max-width:80px;margin:auto}
+#paginaValidacion .r-val-filtros #validacionCiclos button{min-width:64px}
+#paginaValidacion .r-val-filtros .r-val-dias{padding:10px 0 0;border-left:0}
+}
+
+</style>
 </head>
 <body>
 <a class="saltar-contenido" href="#contenidoPrincipal">Ir al contenido</a>
@@ -1746,7 +1789,7 @@ const depRutaGeoJSON=ruta;
 const ui={getElementById:id=>document.getElementById(id==="valPorDepartamento"?vista:id.replace(/^dep/,prefijo)),querySelectorAll:selector=>document.querySelectorAll(selector.replace(/#dep/g,"#"+prefijo))};
 let catalogoTerritorial=new Map();const sinGrupo=new Set();
 function nombreGrupo(f){const codigo=String(f.codigo||"").trim(),meta=catalogoTerritorial.get(codigo),nombre=String(meta?.[regional?"region":"departamento"]||"").trim();if(!nombre||depClave(nombre)==="SIN DEPARTAMENTO"){sinGrupo.add(codigo);return "";}return nombre;}
-function textoEstado(periodos=[]){return `${valNombres[dep.variable]} · ${nombreDia(dep.horizonte)} · ${val.ciclo}Z · ${dep.grupos.size} ${regional?"regiones":"departamentos"} con datos${periodos.length?" · Periodo: "+periodos.join("; "):""}.${sinGrupo.size?` ${sinGrupo.size} estaciones sin ${regional?"región":"departamento"} en el catálogo.`:""}`;}
+function textoEstado(){return "";}
 
 function depClave(valor){return String(valor||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z0-9]+/g," ").trim();}
 function depNombre(f){const p=f.properties||{};return String(p.nombre||p.sectores||p.NOMBDEP||p.NOMBDEPTO||p.DEPARTAMEN||p.DEPARTAMENTO||p.NOMBRE||p.name||"").trim();}
@@ -1854,7 +1897,7 @@ iniciar();
 <script>
 (()=>{'use strict';const videos=[...document.querySelectorAll('video[data-arte-video]')],visibles=new Set(),reducir=matchMedia('(prefers-reduced-motion: reduce)'),conexion=navigator.connection;const tema=()=>document.documentElement.dataset.tema==='oscuro'?'oscuro':'claro';function actualizar(v){const prefijo=`assets/${v.dataset.arteVideo}-${tema()}`;v.poster=prefijo+'.webp';if(document.hidden||!visibles.has(v)||reducir.matches||conexion?.saveData){v.pause();return;}const archivo=prefijo+'.mp4';if(v.dataset.archivo!==archivo){v.pause();v.src=archivo;v.dataset.archivo=archivo;v.load();}v.muted=true;v.defaultMuted=true;v.play()?.catch(()=>{});}const refrescar=()=>videos.forEach(actualizar);if('IntersectionObserver'in window){const io=new IntersectionObserver(es=>{for(const e of es){e.isIntersecting?visibles.add(e.target):visibles.delete(e.target);actualizar(e.target);}},{threshold:.12});videos.forEach(v=>io.observe(v));}new MutationObserver(refrescar).observe(document.documentElement,{attributes:true,attributeFilter:['data-tema']});document.addEventListener('visibilitychange',refrescar);reducir.addEventListener('change',refrescar);conexion?.addEventListener?.('change',refrescar);refrescar();})();
 </script>
-<script id="interfazCentrada">
+<script id="interfazHorizontal">
 (()=>{'use strict';
 const $=id=>document.getElementById(id),crear=(tag,clase,texto)=>{const e=document.createElement(tag);if(clase)e.className=clase;if(texto!==undefined)e.textContent=texto;return e;};
 function panelFijo(panel){if(panel.tagName!=='DETAILS')return panel;const fijo=crear('section',panel.className);const titulo=panel.querySelector(':scope > summary');if(titulo){const h=crear('h2','r-selector-titulo',titulo.textContent);titulo.replaceWith(h);}fijo.append(...panel.childNodes);panel.replaceWith(fijo);return fijo;}
@@ -1864,7 +1907,7 @@ const pron=$('paginaPronosticos'),selector=panelFijo(pron.querySelector('.panel-
 const validacion=$('paginaValidacion'),barra=validacion.querySelector('.val-barra'),ambito=barra.querySelector('.val-ambito'),ciclo=barra.querySelector('.val-inicializacion'),filaSeleccion=crear('section','r-val-seleccion'),controles=crear('div','r-val-controles'),paneles=new Map(),filasCiclo=new Map(),ubicaciones=new Map();ambito.querySelector('.val-etiqueta').textContent='SELECCIÓN';barra.before(filaSeleccion);filaSeleccion.append(ambito,controles);
 for(const [nombre,prefijo] of [['Estacion','val'],['Departamento','dep'],['Region','reg']]){
 const root=$('valPor'+nombre),panel=panelFijo(root.querySelector('.panel-opciones'));panel.id='rControles'+nombre;controles.append(panel);paneles.set(nombre,panel);
-const mapa=root.querySelector('.panel-mapa'),ubicacion=crear('div','s-val-ubicacion'),izquierda=crear('div','s-val-opciones');mapa.before(ubicacion);ubicacion.append(izquierda,mapa);ubicaciones.set(nombre,izquierda);const meta=root.querySelector('.val-dia-panel'),filtros=crear('section','r-val-filtros'),v=crear('div','r-val-variable'),etiqueta=crear('span','val-etiqueta','VARIABLE'),dias=crear('div','r-val-dias'),cicloSlot=crear('div','r-val-ciclo');v.append(etiqueta,$('variables'+nombre));dias.append(meta.querySelector('.titulo-pronostico'),$(prefijo+'Horizonte'));filtros.append(v,cicloSlot,dias);mapa.after(filtros);filasCiclo.set(nombre,cicloSlot);meta.classList.add('r-val-metadata');
+const mapa=root.querySelector('.panel-mapa'),ubicacion=crear('div','s-val-ubicacion'),izquierda=crear('div','s-val-opciones');mapa.before(ubicacion);ubicacion.append(izquierda,mapa);ubicaciones.set(nombre,izquierda);const meta=root.querySelector('.val-dia-panel'),filtros=crear('section','r-val-filtros'),v=crear('div','r-val-variable'),etiqueta=crear('span','val-etiqueta','VARIABLE'),dias=crear('div','r-val-dias'),cicloSlot=crear('div','r-val-ciclo');v.append(etiqueta,$('variables'+nombre));dias.append(meta.querySelector('.titulo-pronostico'),$(prefijo+'Horizonte'));filtros.append(v,cicloSlot,dias);ubicacion.after(filtros);filasCiclo.set(nombre,cicloSlot);meta.classList.add('r-val-metadata');panel.append(meta);if(prefijo==='val')panel.append(root.querySelector('.panel-pronostico'));panel.append($(prefijo+'Estado'));
 }
 barra.remove();function seleccionActiva(){const nombre=document.querySelector('[data-val-tab][aria-selected="true"]').dataset.valTab;for(const [n,p] of paneles)p.hidden=n!==nombre;filasCiclo.get(nombre).append(ciclo);ubicaciones.get(nombre).append(filaSeleccion);}
 seleccionActiva();validacion.addEventListener('click',e=>{if(e.target.closest('[data-val-tab]')){seleccionActiva();requestAnimationFrame(ajustar);}});
