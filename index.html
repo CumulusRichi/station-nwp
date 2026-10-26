@@ -426,7 +426,9 @@ body.hmap-activo .contenedor{width:100%;max-width:none}
 </style>
 
 <style id="vistaCuatroMapas">
-#paginaMapas .cmp-vistas{display:flex;justify-content:center;gap:5px;margin:12px 0 8px}
+#paginaMapas .cmp-vistas{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin:12px 0 8px}
+#paginaMapas #cmpVistaTitulo{flex:0 0 100%;margin:0 0 2px;text-align:center}
+#paginaValidacion .ventana-nota:empty{display:none}
 #paginaMapas .cmp-vistas button{font:inherit;font-size:11px;padding:7px 9px;min-height:32px;border:1px solid var(--line);border-radius:2px;background:var(--surface);color:var(--navy);cursor:pointer}
 #paginaMapas .cmp-vistas button.activo{background:#174b76;border-color:#174b76;color:#fff}
 #paginaMapas .cmp-vistas button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
@@ -683,7 +685,8 @@ function elegirFechaInicial(){if(fechaInicialElegida)return;fechaInicialElegida=
 async function refrescar(){const b=document.getElementById('cmpRefrescar');b.disabled=true;destruir();estado('Consultando mapas disponibles…');try{await listado();elegirFechaInicial();cache.clear();actualizar();}catch(error){catalogo=[];actualizar();estado(error.message,true);}finally{b.disabled=false;}}
 function abrir(){if(pagina.hidden)return;if(!iniciado){iniciado=true;fecha=hoy();controles();refrescar();}else requestAnimationFrame(ajustarVisores);}
 const vistas=document.createElement('div');vistas.id='cmpVistas';vistas.className='cmp-vistas';vistas.setAttribute('role','group');vistas.setAttribute('aria-label','Vista de mapas');
-for(const [valor,texto] of [['comparacion','Comparación'],['cuatro','4 mapas']]){const b=boton(texto,valor,valor===vistaMapas,()=>{if(vistaMapas===valor)return;vistaMapas=valor;cantidadCapas=valor==='cuatro'?4:2;for(const otro of vistas.querySelectorAll('button')){const activo=otro.dataset.valor===valor;otro.classList.toggle('activo',activo);otro.setAttribute('aria-pressed',String(activo));}actualizar();});vistas.append(b);}
+const tituloVista=document.createElement('span');tituloVista.id='cmpVistaTitulo';tituloVista.className='cmp-etiqueta';tituloVista.textContent='VISTA';vistas.setAttribute('aria-labelledby',tituloVista.id);vistas.append(tituloVista);
+for(const [valor,texto] of [['comparacion','Comparación'],['cuatro','Múltiple']]){const b=boton(texto,valor,valor===vistaMapas,()=>{if(vistaMapas===valor)return;vistaMapas=valor;cantidadCapas=valor==='cuatro'?4:2;for(const otro of vistas.querySelectorAll('button')){const activo=otro.dataset.valor===valor;otro.classList.toggle('activo',activo);otro.setAttribute('aria-pressed',String(activo));}actualizar();});vistas.append(b);}
 document.getElementById('cmpContexto').after(vistas);
 window.nwpComparador={ajustar:ajustarVisores,encuadrar(){vistaCompartida=null;ajustarVisores();},};
 document.getElementById('cmpRefrescar').addEventListener('click',refrescar);new MutationObserver(()=>requestAnimationFrame(abrir)).observe(pagina,{attributes:true,attributeFilter:['hidden']});window.addEventListener('hashchange',()=>requestAnimationFrame(abrir));window.addEventListener('DOMContentLoaded',abrir,{once:true});requestAnimationFrame(abrir);
@@ -1198,7 +1201,7 @@ function intervaloValidacion(variable,horizonte,ciclo){const base={tmax:[17,28],
 function actualizarBotonesHorizonte(id,variable,horizonte,ciclo,datos=[]){
 for(const b of document.querySelectorAll(`#${id} button`)){const h=Number(b.dataset.valH||b.dataset.depH),intervalo=intervaloValidacion(variable,h,ciclo);b.setAttribute("aria-pressed",String(h===horizonte));b.innerHTML=`<span>${nombreDia(h)}</span><small>${intervalo||"Ventana diaria"}</small>`;b.setAttribute("aria-label",`${nombreDia(h)}, ${intervalo}, desde la inicialización ${ciclo}Z`);}
 }
-function notaVentana(variable,ciclo){return `Antelación desde la inicialización ${ciclo}Z.${variable==="tmin"&&ciclo==="12"?" La primera ventana corresponde a la mañana del día siguiente.":""}${variable!=="pp24h"&&ciclo==="00"?" ETA22-SCA/EQM se evalúan por la fecha diaria del producto; sus intervalos intradiarios no están confirmados.":""}`;}
+function notaVentana(variable,ciclo){return variable==="tmin"&&ciclo==="12"?"La primera ventana corresponde a la mañana del día siguiente.":"";}
 const cacheEscalasTerritoriales=new WeakMap();
 function bigotesTerritoriales(valores){
 const ordenados=valores.filter(Number.isFinite).sort((a,b)=>a-b);if(!ordenados.length)return{inferior:0,superior:0};
