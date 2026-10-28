@@ -1,0 +1,10 @@
+AREQUIPA
+    Station name                                 	RS_Arequipa
+    Release point latitude                       	16.40°S
+    Release point longitude                      	71.55°W
+    Release point height from sea level          	2311 m
+    Surface pressure                             	/////
+    Surface temperature                          	/////
+    Surface wind direction                       	/////
+    Surface wind speed                           	/////
+
