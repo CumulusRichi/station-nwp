@@ -5,7 +5,9 @@ import {fileURLToPath} from 'node:url';
 
 const base=path.dirname(fileURLToPath(import.meta.url)), destino=path.join(base,'dist');
 const MAX_ARCHIVOS=20000, MAX_TAMANO=25*1024*1024;
-const permitidos=[/^assets\/(portada|pronosticos|mapas|validacion)-(claro|oscuro)\.(mp4|webp)$/, /^index\.html$/, /^observaciones\/(metadata|obs_(t2m|pp6h|tmax|tmin|pp24h))\.csv$/,
+const permitidos=[
+  /^(observaciones|modelos)\/rs_(arequipa|iquitos|junin|lima|puno|trujillo)\.csv$/,
+  /^estadisticos\/(obs|mod)_indices\.csv$/,/^assets\/(portada|pronosticos|mapas|validacion)-(claro|oscuro)\.(mp4|webp)$/, /^index\.html$/, /^observaciones\/(metadata|obs_(t2m|pp6h|tmax|tmin|pp24h))\.csv$/,
   /^estadisticos\/estadisticos_(t2m|pp6h|tmax|tmin|pp24h)_\d{8}\.csv$/,
   /^modelos\/ciclos\.json$/, /^modelos\/20\d{6}(00|12)\/[^/]+\.csv$/,
   /^mapas\/(departamentos|sectores_climaticos)\.geojson$/,
@@ -78,4 +80,5 @@ await writeFile(path.join(destino,'catalogos/mapas.json'),JSON.stringify(mapas))
 await writeFile(path.join(destino,'catalogos/estadisticos.json'),JSON.stringify(estadisticos));
 console.log(`Preparados ${archivos.length+2} archivos (${(total/1024/1024).toFixed(1)} MiB) para Cloudflare.`);
 console.log('Catálogos locales de mapas y estadísticos actualizados. No se modificaron los datos de origen.');
+
 
