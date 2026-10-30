@@ -90,7 +90,7 @@
 @media(max-width:800px){#depMapa,#regMapa{height:350px}#depCajas,#regCajas{height:440px}#depDepartamento,#regDepartamento,#depModelo,#regModelo,#depMetrica,#regMetrica{min-width:0;width:100%}}
 </style>
 <script>function temaActual(){return document.documentElement.dataset.tema||"claro";}
-function coloresApariencia(){return temaActual()==="oscuro"?{fondo:"#192d29",texto:"#e7efea",rejilla:"#355047",neutro:"#f0f4f7"}:{fondo:"#ffffff",texto:"#1a302d",rejilla:"#e0e9e3",neutro:"#111111"};}
+function coloresApariencia(){return temaActual()==="oscuro"?{fondo:"#162330",texto:"#dbe5ee",rejilla:"#344655",neutro:"#f0f4f7"}:{fondo:"#ffffff",texto:"#263d52",rejilla:"#e7edf2",neutro:"#111111"};}
 try{document.documentElement.dataset.tema=localStorage.getItem("nwp-apariencia")==="oscuro"?"oscuro":"claro";}catch{document.documentElement.dataset.tema="claro";}
 if(window.Plotly){const dibujar=Plotly.react.bind(Plotly);Plotly.react=function(destino,datos,layout,config){const c=coloresApariencia(),trazas=datos.map(t=>/observado|^media$/i.test(t.name||"")?{...t,line:{...t.line,color:c.neutro},marker:{...t.marker,color:c.neutro}}:t),eje=e=>({...e,color:c.texto,gridcolor:c.rejilla,zerolinecolor:c.rejilla,title:e?.title?{...e.title,font:{...e.title.font,color:c.texto}}:undefined});return dibujar(destino,trazas,{...layout,paper_bgcolor:c.fondo,plot_bgcolor:c.fondo,title:layout?.title?{...(typeof layout.title==="string"?{text:layout.title}:layout.title),font:{...layout.title?.font,color:c.texto}}:undefined,font:{...layout?.font,family:getComputedStyle(document.documentElement).getPropertyValue("--font").trim(),color:c.texto},xaxis:eje(layout?.xaxis),yaxis:eje(layout?.yaxis),legend:{...layout?.legend,font:{...layout?.legend?.font,family:getComputedStyle(document.documentElement).getPropertyValue("--font").trim(),color:c.texto}},hoverlabel:{...layout?.hoverlabel,bgcolor:c.fondo,font:{...layout?.hoverlabel?.font,family:getComputedStyle(document.documentElement).getPropertyValue("--font").trim(),color:c.texto}},annotations:layout?.annotations?.map(a=>({...a,font:{...a.font,color:c.texto}}))},config);};}
 function iniciarApariencia(){const control=document.getElementById("temaApariencia"),actualizar=()=>{const oscuro=temaActual()==="oscuro";control.innerHTML=oscuro?'☀':'☾';control.setAttribute("aria-label",oscuro?"Activar modo claro":"Activar modo oscuro");control.title=control.getAttribute("aria-label");control.setAttribute("aria-pressed",String(oscuro));};actualizar();control.addEventListener("click",()=>{document.documentElement.dataset.tema=temaActual()==="oscuro"?"claro":"oscuro";try{localStorage.setItem("nwp-apariencia",temaActual());}catch{}actualizar();for(const g of document.querySelectorAll(".js-plotly-plot"))if(g.data&&g.layout)Plotly.react(g,g.data,g.layout,g._context).catch(console.warn);});}
@@ -477,158 +477,6 @@ body.hmap-activo .contenedor{width:100%;max-width:none}
 #paginaPronosticos #sondeoResultado{scroll-margin-top:110px}
 #paginaPronosticos .sondeo-fechas input,#paginaPronosticos #sondeoCiclos input{accent-color:var(--blue)}
 @media(max-width:650px){#paginaPronosticos #sondeoGrafica{height:550px}#paginaPronosticos .sondeo-leyenda{gap:8px 13px;font-size:11px}#paginaPronosticos .sondeo-tabla th,#paginaPronosticos .sondeo-tabla td{padding:5px 7px}#paginaPronosticos .sondeo-viento{font-size:12px}#paginaPronosticos .sondeo-tabla-wrap{padding:6px}#paginaPronosticos .mapa-leyenda{gap:5px}}
-</style>
-<style id="consoleDesignSystem">
-/* NWP-STATION — consola técnica. Referencia Sauce Labs, geometría recta. */
-:root{--font:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;--navy:#142c29;--navy-700:#29433e;--ink:#1a302d;--muted:#536b65;--surface:#fff;--canvas:#edf3f0;--accent:#edf7f2;--line:#cad7d0;--blue:#236947;--blue-600:#236947;--radius:0px;--radius-sm:0px;--shadow:none;--console-shell:#132322;--console-deep:#0e1a19;--console-signal:#3ddc91;--console-action:#216c49;--console-active-ink:#fff;--console-select:#e2f1e8;--console-select-line:#5a8c70;--font-data:ui-monospace,'Cascadia Code',Consolas,monospace}
-html[data-tema='oscuro']{color-scheme:dark;--navy:#e8f1ed;--navy-700:#cadbd2;--ink:#e7efea;--muted:#a6bcb2;--surface:#192d29;--canvas:#0e1a19;--accent:#213b32;--line:#355047;--blue:#3ddc91;--blue-600:#3ddc91;--console-action:#3ddc91;--console-active-ink:#10231b;--console-select:#234235;--console-select-line:#73b393}
-html body{background:var(--canvas);color:var(--ink);font-family:var(--font);font-size:14px;-webkit-font-smoothing:antialiased}
-html body :is(button,select,input,textarea,table){font-family:var(--font)}
-html body :is(button,a,select,input):focus-visible{outline:2px solid var(--blue);outline-offset:3px}
-html body :is(.nav a,.tema-boton,.portada,.tarjeta-inicio,.arte-panel,.cabecera-animacion,.cabecera,.panel-opciones,.panel-mapa,.panel-pronostico,.panel-grafica,.info-estacion,.leyenda-pronosticos,.estadisticos-bloque,.sondeo-tabla-wrap,.notas,.mensaje-variables,.estado-visor,.modelo-check,.ciclo-check,.modelo-ensamble,.btn-reset,.selector-variable button,.tipo-pronostico button,.selector-umbral button,.val-tabs button,.val-umbral button,select){border-radius:0!important;box-shadow:none!important}
-html body .contenedor{width:min(calc(100% - 48px),1320px);padding-bottom:40px}
-html body .pagina{padding-top:24px}
-html body .masthead{background:var(--console-shell);border-bottom:1px solid #3b5149;box-shadow:none}
-html body .masthead-bar{max-width:1368px;min-height:72px;padding:12px 24px;gap:24px}
-html body .masthead-scale,html body .footer-scale{display:none}
-html body .marca-plataforma{color:#f2f7f4;gap:16px}
-html body .sello-senamhi{font-size:16px;font-weight:650;letter-spacing:.09em}
-html body .marca-separador{background:#466057;height:30px}
-html body .marca-texto strong{font-size:15px;font-weight:600;letter-spacing:.08em}
-html body .marca-texto small{font-size:11px;color:#b4c8bd}
-html body .nav{gap:0;align-self:stretch;align-items:stretch}
-html body .nav a{display:flex;align-items:center;justify-content:center;padding:10px 18px;font-size:13px;font-weight:500;color:#cadbd2;border-bottom:2px solid transparent;background:none}
-html body .nav a:hover{background:#1c3530;color:#fff}
-html body .nav a.activo{background:#213e32;color:#b4f3cd;border-bottom-color:#3ddc91}
-html body .tema-boton{border:1px solid #536b60!important;color:#dcebe2!important;background:transparent!important;min-width:33px;min-height:33px;margin-left:0}
-html body .portada{background:var(--console-shell);border:1px solid #344e43;grid-template-columns:1fr 1.05fr;min-height:340px;color:#f4f8f5;gap:16px;overflow:hidden}
-html body .portada:before{display:none}
-html body .portada-texto{padding:36px 0 34px 36px;align-self:center}
-html body .portada .sobretitulo{font-family:var(--font-data);font-size:11px;color:#b1c7b9;letter-spacing:.07em;line-height:1.6}
-html body .portada h1{font-size:clamp(36px,4.4vw,62px);font-weight:500;letter-spacing:-.045em;line-height:1.1;margin:20px 0 18px;color:#fff}
-html body .portada h1 span{color:#c2d7c8}
-html body .portada-lema{font-size:clamp(20px,2vw,26px);font-weight:400;color:#e0ece3;line-height:1.4;margin-bottom:14px}
-html body .portada-descripcion{font-size:14px;line-height:1.7;color:#afc5b7;text-align:left!important;max-width:440px}
-html body .portada-modelos{gap:8px 15px;font-family:var(--font-data);font-size:10px;letter-spacing:.02em;color:#bfd2c5;margin-top:24px;line-height:1.5}
-html body .portada-arte{padding:20px;align-self:stretch;display:flex;align-items:center;border-left:1px solid #344e43;background:var(--console-deep);height:auto}
-html body .portada-arte .arte-panel{width:100%;border:1px solid #344e43;overflow:hidden}
-html body .portada-arte video{display:block;width:100%;height:auto}
-html body .introduccion-secciones{display:flex;align-items:baseline;justify-content:space-between;gap:18px;margin:28px 0 14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
-html body .introduccion-secciones .sobretitulo{font-family:var(--font-data);font-size:11px;font-weight:400;color:var(--muted);letter-spacing:.06em;margin:0}
-html body .introduccion-secciones h2{font-size:23px;font-weight:500;letter-spacing:-.025em;color:var(--ink)}
-html body .tarjetas-inicio{gap:16px}
-html body .tarjetas-inicio .tarjeta-inicio{border:1px solid var(--line);background:var(--surface);transform:none;transition:border-color .15s}
-html body .tarjetas-inicio .tarjeta-inicio:hover{border-color:var(--muted);transform:none}
-html body .tarjeta-inicio .arte-panel{border-bottom:1px solid var(--line);overflow:hidden;max-height:190px}
-html body .tarjeta-inicio .arte-panel video{display:block;max-height:190px;object-fit:cover}
-html body .tarjeta-contenido{padding:20px 22px}
-html body .numero-tarjeta{font-family:var(--font-data);color:var(--muted);font-size:10px;letter-spacing:.07em;font-weight:400}
-html body .tarjetas-inicio .tarjeta-inicio h3{font-size:24px;font-weight:500;letter-spacing:-.025em;color:var(--ink);margin:12px 0 10px}
-html body .tarjetas-inicio .tarjeta-inicio p{font-size:14px;line-height:1.6;color:var(--muted);min-height:0}
-html body .pie-tarjeta{font-size:12px;font-weight:500;color:var(--ink);border-color:var(--line);padding-top:12px}
-html body .notas{background:var(--surface);border:1px solid var(--line);margin-top:28px}
-html body .notas-titulo{padding:18px 24px;font-size:19px;font-weight:500;letter-spacing:-.015em;background:var(--console-shell);color:#e9f4ed}
-html body .notas-contenido{padding:20px 24px}
-html body :is(.descripcion-texto,.resumen-estadisticos,.nota){font-size:14px;line-height:1.7;color:var(--muted)}
-html body .notas-subtitulo{font-size:15px;font-weight:600;color:var(--ink);margin-top:22px}
-html body .nota-numero{border-radius:0;background:var(--accent);border:1px solid var(--line);color:var(--ink);font-family:var(--font-data);font-size:11px;width:22px;height:22px;flex-basis:22px}
-html body .tabla-modelos{background:var(--surface);font-size:12px}
-html body .tabla-modelos :is(th,td){border-color:var(--line);padding:8px 10px}
-html body .tabla-modelos th{background:var(--accent);color:var(--ink);font-size:11px;font-weight:600;letter-spacing:.025em}
-html body .tabla-modelos td:first-child{color:var(--ink);font-weight:600}
-html body .cabecera-seccion{padding:0 0 16px;margin-bottom:16px;gap:20px;border-bottom:1px solid var(--line);grid-template-columns:minmax(0,1fr) 175px}
-html body .cabecera-seccion h1{font-size:clamp(26px,2.8vw,36px);font-weight:500;line-height:1.2;letter-spacing:-.03em;color:var(--ink)}
-html body .cabecera-texto>.sobretitulo{font:11px/1.5 var(--font-data);letter-spacing:.055em;color:var(--muted);margin-bottom:9px}
-html body .cabecera-texto>p:last-child{font-size:14px;line-height:1.6;color:var(--muted);text-align:left!important}
-html body .cabecera-animacion{width:175px;max-width:175px;justify-self:end;border:1px solid var(--line);overflow:hidden}
-html body :is(.panel-opciones,.panel-mapa,.panel-pronostico,.panel-grafica,.estadisticos-bloque,.info-estacion,.leyenda-pronosticos,.sondeo-tabla-wrap){background:var(--surface);border-color:var(--line)}
-html body .panel-opciones summary{font-size:13px;font-weight:600;color:var(--ink);border-color:var(--line);padding:11px 14px;letter-spacing:.01em}
-html body .controles{background:var(--surface);gap:12px}
-html body .grupo-control label.titulo{font-size:12px;font-weight:500;color:var(--ink)}
-html body select{min-height:34px;padding:7px 9px;font-size:13px;border-color:var(--line);background:var(--surface);color:var(--ink)}
-html body .btn-reset{min-height:32px;font-size:12px;font-weight:500;background:var(--surface);color:var(--ink);border-color:var(--line)}
-html body .btn-reset:hover{background:var(--accent);border-color:var(--console-select-line)}
-html body :is(.modelo-check,.ciclo-check,.selector-variable button,.tipo-pronostico button,.selector-umbral button,.val-tabs button,.val-umbral button){color:var(--ink);background:var(--surface);border:1px solid var(--line);font-weight:500;transition:background .15s,border-color .15s}
-html body :is(.modelo-check,.ciclo-check){padding:5px 9px;font-size:12px;gap:5px}
-html body :is(.ciclo-check input,.modelo-check input){accent-color:var(--console-action)}
-html body :is(.modelo-check,.ciclo-check):has(input:checked){background:var(--console-select);border-color:var(--console-select-line);color:var(--ink)}
-html body .titulo-pronostico{font:11px/1.5 var(--font-data);letter-spacing:.05em;color:var(--muted);margin-bottom:7px}
-html body .grupo-pronostico+.grupo-pronostico{border-color:var(--line)}
-html body :is(.tipo-pronostico button,.selector-variable button){font-size:13px;padding:8px 13px;line-height:1.3}
-html body :is(.nav a,.selector-variable button,.tipo-pronostico button,.val-tabs button){min-height:32px}
-html body :is(.tipo-pronostico button[aria-pressed='true'],.selector-variable button.activo,.selector-umbral button.activo,.val-tabs button[aria-selected='true'],.val-umbral button[aria-pressed='true']){background:var(--console-action)!important;border-color:var(--console-action)!important;color:var(--console-active-ink)!important}
-html body .titulo-panel{font-size:14px;font-weight:500;color:var(--ink)}
-html body .info-estacion{font-size:12px;color:var(--muted);border-left:2px solid var(--console-select-line)}
-html body .info-estacion strong{font-size:14px;font-weight:600;color:var(--ink)}
-html body :is(.estadisticos-tabla,.sondeo-tabla){font-size:12px;color:var(--ink)}
-html body :is(.estadisticos-tabla,.sondeo-tabla) :is(th,td){border-color:var(--line);padding:6px 8px}
-html body :is(.estadisticos-tabla,.sondeo-tabla) th{font-weight:600;background:var(--accent);color:var(--ink)}
-html body :is(.estadisticos-tabla,.sondeo-tabla) td{font-variant-numeric:tabular-nums}
-html body :is(.estadisticos-titulo,.sondeo-tabla caption){font-size:13px;font-weight:600;color:var(--ink)}
-html body :is(.estadisticos-periodo,.nota-diaria,.val-nota,.ventana-nota){font-size:12px;line-height:1.5;color:var(--muted)}
-html body .leyenda-pronosticos{background:var(--surface)}
-html body :is(.leyenda-modelo-titulo,.leyenda-ciclo,.leyenda-observado){color:var(--ink);font-size:11px}
-html body .mapa-leyenda{color:var(--muted)}
-html body #paginaPronosticos .grupo-control:has(#sondajeSelect){grid-column:1/-1}
-html body .footer{background:var(--console-shell)!important;color:#b6ccbf;border-top:1px solid #355047}
-html body .footer-inner{max-width:1320px;min-height:60px;font-size:11px;padding:16px 0}
-html body .footer strong{font-weight:500;color:#e0efe6;letter-spacing:.06em}
-html body button:disabled{opacity:.5;cursor:not-allowed}
-/* El mapa mantiene el espacio de trabajo y las escalas científicas originales. */
-html body #paginaMapas .hmap-sidebar{background:var(--surface);border:1px solid var(--line);border-radius:0;box-shadow:none}
-html body #paginaMapas .hmap-side-title{background:var(--console-shell)!important;color:#e4f1e9!important;border-bottom:1px solid #355047;font:11px/1.5 var(--font-data);letter-spacing:.05em;padding:11px 12px}
-html body #paginaMapas .cmp-etiqueta{font:11px/1.5 var(--font-data);color:var(--muted);letter-spacing:.04em}
-html body #paginaMapas :is(.cmp-contexto,.cmp-resumen){background:var(--surface);border-color:var(--line);color:var(--muted);border-radius:0}
-html body #paginaMapas :is(.cmp-contexto strong,.cmp-contexto dt,.cmp-contexto dd){color:var(--ink)}
-html body #paginaMapas :is(.cmp-fechas button,.cmp-opciones button,.hmap-producto){border-radius:0!important;box-shadow:none!important;background:var(--surface);border:1px solid var(--line);color:var(--ink);font-weight:500}
-html body #paginaMapas .cmp-fechas button strong{color:var(--ink);font-weight:600}
-html body #paginaMapas .cmp-fechas button.activo{background:var(--console-select);border-color:var(--console-select-line)}
-html body #paginaMapas :is(.cmp-opciones button.activo,.hmap-producto.activo){background:var(--console-action)!important;border-color:var(--console-action)!important;color:var(--console-active-ink)!important}
-html body #paginaMapas #cmpSelectoresCapas>div{background:transparent;box-shadow:none}
-html body #paginaMapas #cmpLeyenda{background:var(--surface);border-color:var(--line);border-radius:0;box-shadow:none;padding:4px 10px 1px}
-html body #paginaMapas #cmpLeyenda .cmp-escala-titulo{font:10px/1.5 var(--font-data);color:var(--ink);margin-bottom:3px}
-html body #paginaMapas #cmpLeyenda :is(.cmp-barra-temperatura,.cmp-barra-lluvia){height:10px;border-radius:0;box-shadow:none}
-html body #paginaMapas #cmpLeyenda :is(.cmp-marcas-temperatura,.cmp-marcas-lluvia){height:19px;margin-top:2px}
-html body #paginaMapas #cmpLeyenda :is(.cmp-marcas-temperatura,.cmp-marcas-lluvia) span{color:var(--muted)}
-html body #paginaValidacion :is(.val-selector-panel,.val-dia-panel,.dep-modelo-elegido){border-radius:0;background:var(--surface);border-color:var(--line)}
-html body #paginaValidacion :is(.val-tabs button,.val-umbral button){font-size:12px;line-height:1.35}
-html body #paginaValidacion :is(.dep-tabla,.val-tabla){font-size:12px}
-html body #paginaValidacion :is(.dep-tabla,.val-tabla) :is(th,td){border-color:var(--line)}
-@media(max-width:800px){
- html body .contenedor{width:calc(100% - 24px)}
- html body .masthead-bar{min-height:70px;padding:10px 12px;gap:8px}
- html body .marca-plataforma{width:auto;flex:1;gap:10px}
- html body .marca-texto strong{font-size:13px}
- html body .sello-senamhi{font-size:14px}
- html body .marca-texto small{font-size:10px}
- html body .tema-boton{margin-left:auto}
- html body .nav{order:3;width:100%;justify-content:center}
- html body .nav a{flex:1;font-size:13px;padding:8px 10px}
- html body .portada{grid-template-columns:1fr;gap:0;min-height:0}
- html body .portada-texto{padding:26px 22px}
- html body .portada h1{font-size:clamp(32px,8.6vw,54px);white-space:normal}
- html body .portada .sobretitulo{font-size:10px}
- html body .portada-descripcion{font-size:14px}
- html body .portada-modelos{font-size:10px;margin-top:18px}
- html body .portada-arte{width:100%;border-left:0;border-top:1px solid #344e43;padding:12px;height:auto}
- html body .introduccion-secciones{display:block;margin-top:24px}
- html body .introduccion-secciones .sobretitulo{margin-bottom:8px}
- html body .introduccion-secciones h2{font-size:22px}
- html body .tarjetas-inicio{gap:14px}
- html body .tarjeta-contenido{padding:18px}
- html body .cabecera-seccion{grid-template-columns:minmax(0,1fr) 100px;gap:10px}
- html body .cabecera-seccion h1{font-size:25px}
- html body .cabecera-texto>p:last-child{font-size:13px}
- html body .cabecera-animacion{width:100px;max-width:100px}
- html body .notas-contenido{padding:18px}
- html body .notas-titulo{padding:16px 18px}
- html body #paginaPronosticos #btnResetEstacion{width:100%;grid-column:1/-1;margin:0}
- html body :is(.estadisticos-tabla-wrap,.sondeo-tabla-wrap){overflow-x:auto}
- html body .estadisticos-tabla{min-width:600px;font-size:12px}
-}
-@media(max-width:420px){html body .nav a{font-size:12px;padding:8px}html body .cabecera-seccion{grid-template-columns:minmax(0,1fr) 82px}html body .cabecera-animacion{width:82px;max-width:82px}html body .cabecera-seccion h1{font-size:24px}}
-@media(prefers-reduced-motion:reduce){html body *,html body *:before,html body *:after{transition:none!important;scroll-behavior:auto!important}}
-html[data-tema='oscuro'] body .nav a.activo{background:#213e32!important;border-color:#3ddc91!important;color:#b4f3cd!important}
 </style>
 </head>
 <body>
@@ -2276,6 +2124,5 @@ montar();return{get activo(){return estado.activo;},cargarMapa,redVisible,selecc
 </script>
 </body>
 </html>
-
 
 
