@@ -1,123 +1,6 @@
 {
-  "actualizacion": "2026-10-31T04:37:27Z",
+  "actualizacion": "2026-10-31T15:36:56Z",
   "ciclos": {
-    "2026102000": {
-      "gfs": [
-        "t2m",
-        "pp6h",
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "ecmwf": [
-        "t2m",
-        "pp6h",
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "eta5": [
-        "t2m",
-        "pp6h",
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "wrf5": [
-        "t2m",
-        "pp6h",
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "mpas15": [
-        "t2m",
-        "pp6h",
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "eta22_eqm": [
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "eta22_scal": [
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "wrf8_ens01": [
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "wrf8_ens02": [
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "wrf8_ens03": [
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "wrf8_ens04": [
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "wrf8_ens05": [
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "wrf8_ens06": [
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "wrf8_ens07": [
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "wrf8_ens08": [
-        "tmax",
-        "tmin",
-        "pp24h"
-      ]
-    },
-    "2026102012": {
-      "gfs": [
-        "t2m",
-        "pp6h",
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "ecmwf": [
-        "t2m",
-        "pp6h",
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "eta5": [
-        "t2m",
-        "pp6h",
-        "tmax",
-        "tmin",
-        "pp24h"
-      ],
-      "wrf5": [
-        "t2m",
-        "pp6h",
-        "tmax",
-        "tmin",
-        "pp24h"
-      ]
-    },
     "2026102100": {
       "gfs": [
         "t2m",
@@ -1202,6 +1085,46 @@
         "tmax",
         "tmin",
         "pp24h"
+      ],
+      "wrf8_ens01": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens02": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens03": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens04": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens05": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens06": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens07": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "wrf8_ens08": [
+        "tmax",
+        "tmin",
+        "pp24h"
       ]
     },
     "2026103012": {
@@ -1229,6 +1152,39 @@
       "wrf5": [
         "t2m",
         "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ]
+    },
+    "2026103100": {
+      "gfs": [
+        "t2m",
+        "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "ecmwf": [
+        "t2m",
+        "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "mpas15": [
+        "t2m",
+        "pp6h",
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_eqm": [
+        "tmax",
+        "tmin",
+        "pp24h"
+      ],
+      "eta22_scal": [
         "tmax",
         "tmin",
         "pp24h"
