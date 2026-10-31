@@ -478,6 +478,38 @@ body.hmap-activo .contenedor{width:100%;max-width:none}
 #paginaPronosticos .sondeo-fechas input,#paginaPronosticos #sondeoCiclos input{accent-color:var(--blue)}
 @media(max-width:650px){#paginaPronosticos #sondeoGrafica{height:550px}#paginaPronosticos .sondeo-leyenda{gap:8px 13px;font-size:11px}#paginaPronosticos .sondeo-tabla th,#paginaPronosticos .sondeo-tabla td{padding:5px 7px}#paginaPronosticos .sondeo-viento{font-size:12px}#paginaPronosticos .sondeo-tabla-wrap{padding:6px}#paginaPronosticos .mapa-leyenda{gap:5px}}
 </style>
+<style id="vistaVerificacionEspacial">
+/* Tercera vista: estilos limitados al visor de Mapas. */
+#paginaMapas #cmpVistas button[data-valor="fss"]{flex-basis:100%}
+#paginaMapas #cmpVistas button:disabled{opacity:.45;cursor:not-allowed}
+#paginaMapas #cmpDisposicion.hmap-fss{overflow:auto;background:var(--surface);overscroll-behavior:contain}
+#paginaMapas .hmap-fss>:is(#cmpPaneles,#cmpSelectoresCapas,#cmpDivisor,#cmpLeyenda){display:none!important}
+#paginaMapas #cmpFss{padding:16px;min-height:100%;color:var(--ink);font-family:var(--font)}
+#paginaMapas #cmpFss[hidden]{display:none!important}
+#paginaMapas #cmpFss h2{font-size:22px;color:var(--ink);margin:0 0 4px;font-weight:700}
+#paginaMapas #cmpFss h3{font-size:14px;margin:0 0 8px;color:var(--ink)}
+#paginaMapas .fss-subtitulo,#paginaMapas .fss-nota{font-size:12px;color:var(--muted);line-height:1.5;margin:5px 0 12px}
+#paginaMapas .fss-controles{display:flex;align-items:center;flex-wrap:wrap;gap:12px 24px;padding:10px 12px;border:1px solid var(--line);background:var(--accent);margin:12px 0}
+#paginaMapas .fss-control{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+#paginaMapas .fss-control>strong{font-size:11px;letter-spacing:.04em}
+#paginaMapas .fss-ref{font-size:12px;border-left:3px solid var(--blue);padding:5px 10px;background:var(--surface)}
+#paginaMapas .fss-umbrales{display:flex;flex-wrap:wrap;gap:4px}
+#paginaMapas .fss-umbrales button{font:600 12px var(--font);padding:7px 12px;min-height:32px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:2px;cursor:pointer}
+#paginaMapas .fss-umbrales button.activo{background:#174b76;color:white;border-color:#174b76}
+#paginaMapas .fss-umbrales button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+#paginaMapas .fss-marco{border:1px solid var(--line);padding:12px;margin-top:12px;background:var(--surface)}
+#paginaMapas #cmpFssGrafica{width:100%;height:clamp(275px,43vh,470px);min-width:0}
+#paginaMapas .fss-scroll{overflow-x:auto;max-width:100%}
+#paginaMapas .fss-tabla{border-collapse:collapse;width:100%;min-width:510px;font-size:12px;color:var(--ink)}
+#paginaMapas .fss-tabla th,#paginaMapas .fss-tabla td{padding:8px;border:1px solid var(--line);text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums}
+#paginaMapas .fss-tabla thead{background:var(--accent)}
+#paginaMapas .fss-tabla th:first-child{text-align:left}
+#paginaMapas .fss-tabla small{display:block;font-size:10px;font-weight:400;color:var(--muted);margin-top:3px}
+#paginaMapas .fss-muestra{display:inline-block;width:18px;height:3px;margin:0 6px 3px 0;vertical-align:middle}
+#paginaMapas #cmpFssEstado{padding:12px;border:1px solid var(--line);background:var(--accent);font-size:13px;line-height:1.5;margin:10px 0}
+#paginaMapas #cmpFssEstado:empty{display:none}
+@media(max-width:600px){#paginaMapas #cmpFss{padding:10px}#paginaMapas #cmpFss h2{font-size:18px}#paginaMapas .fss-controles{gap:9px;padding:8px}#paginaMapas .fss-marco{padding:8px}#paginaMapas #cmpFssGrafica{height:300px}.fss-tabla th,.fss-tabla td{padding:6px!important}}
+</style>
 </head>
 <body>
 <a class="saltar-contenido" href="#contenidoPrincipal">Ir al contenido</a>
@@ -659,6 +691,7 @@ function paddingPeru(m){return Math.min(170,m.getSize().y*.3);}
 function encuadrarPeru(m){const y=paddingPeru(m)/2;m.fitBounds(limites,{paddingTopLeft:[15,y],paddingBottomRight:[15,y],animate:false});}
 function limitarZoom(mapa){const minimo=Math.max(0,Math.floor(mapa.getBoundsZoom(L.latLngBounds(limites),false,L.point(30,paddingPeru(mapa)))));mapa.setMinZoom(minimo);return minimo;}
 function ajustarVisores(){
+const fg=document.getElementById('cmpFssGrafica');if(vistaMapas==='fss'&&fg?.data&&fg.offsetWidth)Plotly.Plots.resize(fg).catch(()=>{});
 sincronizando=true;
 try{for(const {mapa} of visores.values()){if(!mapa.getContainer().offsetWidth||!mapa.getContainer().offsetHeight)continue;mapa.invalidateSize({pan:false});const minimo=limitarZoom(mapa);if(vistaCompartida)mapa.setView(vistaCompartida.centro,Math.max(minimo,vistaCompartida.zoom),{animate:false,reset:true});else encuadrarPeru(mapa);}}finally{sincronizando=false;}
 }
@@ -701,7 +734,7 @@ const enLectura=new Map();
 function nombreProducto(p){return p==='obs_interpolado'?'INTERPOLADO':p==='obs_pisco'?'PISCO':nombres[p]||p;}
 function entradaProducto(p){return p.startsWith('obs_')?catalogo.find(e=>e.modelo==='observado'&&e.fecha===fecha&&e.variable===variable&&e.fuente===(p==='obs_pisco'?'pisco':'interpolado')):catalogo.find(e=>e.modelo===p&&e.fecha===fecha&&e.variable===variable&&e.inicializacion===inicializacion());}
 function destruir(){++version;for(const c of pendientes)c.abort();pendientes.clear();enLectura.clear();sincronizando=true;try{for(const v of visores.values()){v.mapa.off('moveend');v.mapa.remove();}visores.clear();}finally{sincronizando=false;}for(const id of ['cmpPaneles','cmpSelectoresCapas','cmpDivisor'])document.getElementById(id)?.replaceChildren();}
-function datosContexto(){const destino=document.getElementById('cmpContexto');if(!destino)return;const modelo=productos.slice(0,cantidadCapas).some(p=>!p.startsWith('obs_')),lista=document.createElement('dl');const filas=[['Fecha válida',corta(fecha)],['Variable',variables[variable].nombre]];if(modelo)filas.push(['Inicialización',corta(sumar(fecha,-antelacion))+' · '+ciclo+' UTC'],['Antelación',antelacion+' '+(antelacion===1?'día':'días')]);filas.push(['Período local',variable==='pp24h'?corta(fecha)+' 07:00 → '+corta(sumar(fecha,1))+' 07:00':corta(fecha)+(variable==='tmin'?' · 01:00–11:00':' · 12:00–23:00')]);for(const [etiqueta,valor] of filas){const fila=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=etiqueta;dd.textContent=valor;fila.append(dt,dd);lista.append(fila);}destino.replaceChildren(lista);const nota=document.createElement('small');nota.textContent='Hora local de Perú.'+(variable==='pp24h'?' Precipitación mínima representada: 0.1 mm.':'')+' Interpolado y PISCO son productos basados en observaciones.';destino.append(nota);}
+function datosContexto(){const destino=document.getElementById('cmpContexto');if(!destino)return;const modelo=vistaMapas==='fss'||productos.slice(0,cantidadCapas).some(p=>!p.startsWith('obs_')),lista=document.createElement('dl');const filas=[['Fecha válida',corta(fecha)],['Variable',variables[variable].nombre]];if(modelo)filas.push(['Inicialización',corta(sumar(fecha,-antelacion))+' · '+ciclo+' UTC'],['Antelación',antelacion+' '+(antelacion===1?'día':'días')]);filas.push(['Período local',variable==='pp24h'?corta(fecha)+' 07:00 → '+corta(sumar(fecha,1))+' 07:00':corta(fecha)+(variable==='tmin'?' · 01:00–11:00':' · 12:00–23:00')]);for(const [etiqueta,valor] of filas){const fila=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=etiqueta;dd.textContent=valor;fila.append(dt,dd);lista.append(fila);}destino.replaceChildren(lista);const nota=document.createElement('small');nota.textContent='Hora local de Perú.'+(variable==='pp24h'?' Precipitación mínima representada: 0.1 mm.':'')+' Interpolado y PISCO son productos basados en observaciones.';destino.append(nota);}
 function actualizarCortes(){if(vistaMapas==='cuatro')return;const area=document.getElementById('cmpDisposicion');area.style.setProperty('--corte-1',cortes[0]+'%');area.style.setProperty('--corte-2',(cortes[1]??100)+'%');for(let i=0;i<cantidadCapas;i++){const panel=document.getElementById('cmpCapa'+i);if(panel){const izquierda=i===0?0:cortes[i-1],derecha=i===cantidadCapas-1?0:100-cortes[i];panel.style.clipPath=`inset(0 ${derecha}% 0 ${izquierda}%)`;}}for(let i=0;i<cantidadCapas-1;i++){const b=document.getElementById('cmpMando'+i);if(!b)continue;const minimo=i===0?0:cortes[i-1]+8,maximo=i===cantidadCapas-2?100:cortes[i+1]-8;b.parentElement.style.left=cortes[i]+'%';b.setAttribute('aria-valuemin',String(Math.floor(minimo)));b.setAttribute('aria-valuemax',String(Math.ceil(maximo)));b.setAttribute('aria-valuenow',String(Math.round(cortes[i])));b.setAttribute('aria-valuetext',Math.round(cortes[i])+' % del ancho del mapa');}}
 function ponerCorte(i,valor){const minimo=i===0?0:cortes[i-1]+8,maximo=i===cantidadCapas-2?100:cortes[i+1]-8;cortes[i]=Math.max(minimo,Math.min(maximo,valor));actualizarCortes();}
 function crearMandos(){if(vistaMapas==='cuatro')return;const root=document.getElementById('cmpDivisor'),area=document.getElementById('cmpDisposicion');for(let i=0;i<cantidadCapas-1;i++){const linea=document.createElement('div');linea.className='hmap-divisor';const b=document.createElement('button');b.type='button';b.id='cmpMando'+i;b.className='hmap-mando';b.textContent='↔';b.setAttribute('role','slider');b.setAttribute('aria-label','Divisoria '+(i+1)+' entre las capas '+(i+1)+' y '+(i+2));b.setAttribute('aria-orientation','horizontal');let pulsado=false;b.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();e.stopPropagation();pulsado=true;b.setPointerCapture(e.pointerId);});b.addEventListener('pointermove',e=>{if(!pulsado)return;const r=area.getBoundingClientRect();if(r.width)ponerCorte(i,(e.clientX-r.left)/r.width*100);});for(const evento of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(evento,()=>{pulsado=false;});b.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const paso=e.shiftKey?10:2;ponerCorte(i,e.key==='Home'?0:e.key==='End'?100:cortes[i]+(e.key==='ArrowLeft'?-paso:paso));});linea.append(b);root.append(linea);}actualizarCortes();}
@@ -725,14 +758,85 @@ async function agregarDepartamentos(mapa,token){try{const geo=await cargarDepart
 async function cargarPanel(i,entrada,token){const div=document.getElementById('cmpMapa_panel'+i),producto=productos[i],esObs=producto.startsWith('obs_'),titulo=nombreProducto(producto),variableActual=variable,unidad=variables[variableActual].unidad,escala=variableActual==='pp24h'?lluvia:temperatura;try{if(token!==version)return;const mapa=L.map(div,{zoomControl:vistaMapas==='cuatro'||i===cantidadCapas-1,scrollWheelZoom:true});if(vistaCompartida)mapa.setView(vistaCompartida.centro,vistaCompartida.zoom,{animate:false,reset:true});else encuadrarPeru(mapa);visores.set('panel'+i,{mapa});limitarZoom(mapa);mapa.on('moveend',()=>sincronizarVista(mapa));L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(mapa);agregarDepartamentos(mapa,token);if(!entrada){const n=document.createElement('div');n.className='hmap-sin-datos';n.textContent=nombreProducto(producto)+': sin datos para esta selección.';div.parentElement.append(n);return;}await preparar();if(token!==version)return;const raster=await leerRaster(entrada.ruta);if(token!==version)return;if(entrada.fuente==='pisco'&&Number.isFinite(raster.noDataValue))raster.noDataValue=Math.fround(raster.noDataValue);const valido=v=>v!==null&&v!==undefined&&Number.isFinite(v)&&v!==raster.noDataValue;
 const capa=new GeoRasterLayer({georaster:raster,opacity:.78,resolution:128,resampleMethod:'nearest',pixelValuesToColorFn:valores=>{const v=valores[0];if(!valido(v)||(variableActual==='pp24h'&&v<.1))return null;return escala.find(([a,b])=>v>=a&&v<b)?.[2]||null;}});capa.addTo(mapa);mapa.on('click',e=>{const p=Number(raster.projection)===3857?L.CRS.EPSG3857.project(e.latlng):{x:e.latlng.lng,y:e.latlng.lat},fila=Math.floor((raster.ymax-p.y)/raster.pixelHeight),col=Math.floor((p.x-raster.xmin)/raster.pixelWidth);let valor='Sin datos en esta ubicación';if(fila>=0&&fila<raster.height&&col>=0&&col<raster.width){const v=raster.values[0][fila][col];if(valido(v))valor=`<strong>${v.toFixed(variableActual==='pp24h'?2:1)} ${unidad}</strong>`;}L.popup().setLatLng(e.latlng).setContent(`<strong>${titulo} · ${variables[variableActual].nombre}</strong><br>${valor}${esObs?'':`<br>Inicialización: ${corta(entrada.inicio)} ${entrada.ciclo} UTC`}<br>Fecha válida: ${corta(entrada.fecha)}`).openOn(mapa);});
 }catch(error){if(token!==version||error.name==='AbortError')return;const v=visores.get('panel'+i);if(v){v.mapa.remove();visores.delete('panel'+i);}vacio(div,'No se pudo cargar '+titulo,error.message);}}
-function actualizar(foco){destruir();document.getElementById('cmpDisposicion').classList.toggle('hmap-cuatro',vistaMapas==='cuatro');controles();selectoresCapas();datosContexto();const token=version,root=document.getElementById('cmpPaneles');for(let i=0;i<cantidadCapas;i++){const panel=document.createElement('article');panel.id='cmpCapa'+i;panel.className='hmap-capa';const d=document.createElement('div');d.id='cmpMapa_panel'+i;d.className='cmp-mapa';panel.append(d);root.append(panel);cargarPanel(i,entradaProducto(productos[i]),token);}crearMandos();const existentes=catalogo.filter(e=>e.modelo!=='observado'&&e.fecha===fecha&&e.variable===variable&&e.inicializacion===inicializacion());document.getElementById('cmpResumen').textContent=existentes.length+' de '+Object.keys(nombres).length+' modelos disponibles';estado('');const modo=document.getElementById('cmpNumeroCapas');if(modo){modo.textContent=cantidadCapas===2?'Comparar 3 TIFF':'Comparar 2 TIFF';modo.setAttribute('aria-pressed',String(cantidadCapas===3));}if(Number.isInteger(foco))document.querySelector('#cmpSeleccionCapa'+foco+' [aria-pressed="true"]')?.focus({preventScroll:true});requestAnimationFrame(ajustarVisores);}
+function actualizar(foco){destruir();if(vistaMapas==='fss'&&variable!=='pp24h')vistaMapas='comparacion';actualizarVistasFss();const areaFss=document.getElementById('cmpDisposicion');areaFss.classList.toggle('hmap-fss',vistaMapas==='fss');const panelFss=document.getElementById('cmpFss');if(panelFss)panelFss.hidden=vistaMapas!=='fss';if(vistaMapas==='fss'){areaFss.classList.remove('hmap-cuatro');controles();datosContexto();estado('');mostrarFss(version);return;}document.getElementById('cmpDisposicion').classList.toggle('hmap-cuatro',vistaMapas==='cuatro');controles();selectoresCapas();datosContexto();const token=version,root=document.getElementById('cmpPaneles');for(let i=0;i<cantidadCapas;i++){const panel=document.createElement('article');panel.id='cmpCapa'+i;panel.className='hmap-capa';const d=document.createElement('div');d.id='cmpMapa_panel'+i;d.className='cmp-mapa';panel.append(d);root.append(panel);cargarPanel(i,entradaProducto(productos[i]),token);}crearMandos();const existentes=catalogo.filter(e=>e.modelo!=='observado'&&e.fecha===fecha&&e.variable===variable&&e.inicializacion===inicializacion());document.getElementById('cmpResumen').textContent=existentes.length+' de '+Object.keys(nombres).length+' modelos disponibles';estado('');const modo=document.getElementById('cmpNumeroCapas');if(modo){modo.textContent=cantidadCapas===2?'Comparar 3 TIFF':'Comparar 2 TIFF';modo.setAttribute('aria-pressed',String(cantidadCapas===3));}if(Number.isInteger(foco))document.querySelector('#cmpSeleccionCapa'+foco+' [aria-pressed="true"]')?.focus({preventScroll:true});requestAnimationFrame(ajustarVisores);}
+// FSS precalculado: no descarga ni remuestrea TIFF en esta vista.
+let fssPromesa=null,fssUmbral=10;
+const fssVentanas=[1,3,5,9,15],fssUmbrales=[.1,1,5,10,25,50];
+const fssColores={gfs:'#1976d2',ecmwf:'#df3636',eta5:'#348e3b',wrf5:'#b58a00',mpas15:'#8e35b0',eta22_scal:'#8d6657',eta22_eqm:'#008a9b'};
+function fssNumero(v){return v===null||v===undefined||String(v).trim()===''?null:Number.isFinite(Number(v))?Number(v):null;}
+function fssFiltrar(filas,f,inicio,u){return filas.filter(r=>r.observado==='piscopp'&&r.variable==='pp24h'&&r.fecha_valida===f&&r.inicializacion===inicio&&fssNumero(r.umbral_mm)===u&&fssNumero(r.cobertura_minima_ventana)===.5&&fssNumero(r.antelacion_dias)===antelacion&&fssNumero(r.dia_pronostico)===antelacion+1);}
+async function cargarFss(){
+if(!fssPromesa)fssPromesa=(async()=>{
+const r=await fetch('estadisticos/estadisticos_fss_pp24h.csv',{cache:'no-cache'});
+if(!r.ok)throw new Error(r.status===404?'El archivo estadisticos/estadisticos_fss_pp24h.csv todavía no está publicado.':'No se pudo leer el CSV de FSS (HTTP '+r.status+').');
+const texto=await r.text();if(/^\s*</.test(texto))throw new Error('Se recibió una página HTML en lugar del CSV de FSS.');
+const p=Papa.parse(texto,{header:true,skipEmptyLines:'greedy',transformHeader:h=>h.replace(/^\uFEFF/,'').trim()});
+if(p.errors.length)throw new Error('CSV de FSS no válido: '+p.errors[0].message);
+const requeridos=['observado','variable','fecha_valida','inicializacion','ciclo_utc','antelacion_dias','dia_pronostico','modelo','umbral_mm','ventana_celdas','cobertura_minima_ventana','fss','estado','firma_mascara'];
+if(requeridos.some(k=>!p.meta.fields.includes(k)))throw new Error('El CSV no tiene la estructura esperada de calcular_fss_pp24h.py.');
+const claves=new Set();for(const f of p.data){
+if(f.variable!=='pp24h'||f.observado!=='piscopp')continue;
+const clave=[f.observado,f.variable,f.fecha_valida,f.inicializacion,f.modelo,f.umbral_mm,f.ventana_celdas,f.cobertura_minima_ventana].join('|');
+if(claves.has(clave))throw new Error('El CSV de FSS contiene resultados duplicados.');claves.add(clave);
+if(f.inicializacion.slice(8)!==f.ciclo_utc)throw new Error('Ciclo e inicialización no coinciden en el CSV de FSS.');
+if(f.estado==='ok'&&(fssNumero(f.fss)===null||Number(f.fss)<0||Number(f.fss)>1))throw new Error('Hay un FSS marcado como válido sin un número entre 0 y 1.');
+}return p.data;
+})().catch(e=>{fssPromesa=null;throw e;});return fssPromesa;
+}
+function prepararFss(){
+let p=document.getElementById('cmpFss');if(p)return p;
+p=document.createElement('section');p.id='cmpFss';p.hidden=true;p.setAttribute('aria-label','Verificación espacial de precipitación');
+p.innerHTML='<h2>Verificación espacial</h2><p class="fss-subtitulo" id="cmpFssContexto"></p><div class="fss-controles"><div class="fss-control"><strong>REFERENCIA</strong><span class="fss-ref">PISCO</span></div><div class="fss-control"><strong>UMBRAL (mm en 24 h)</strong><div class="fss-umbrales" id="cmpFssUmbrales" role="group" aria-label="Umbral de precipitación para FSS"></div></div></div><p id="cmpFssEstado" role="status" aria-live="polite"></p><div class="fss-marco" id="cmpFssMarco" hidden><h3>Concordancia según el tamaño de ventana</h3><div id="cmpFssGrafica" aria-label="FSS de cada modelo según el tamaño de ventana"></div></div><div class="fss-marco" id="cmpFssTablaMarco" hidden><h3>FSS por modelo y ventana</h3><div class="fss-scroll" id="cmpFssTabla"></div></div><p class="fss-nota" id="cmpFssSoporte"></p><p class="fss-nota">Más cerca de 1: mayor concordancia de las fracciones de superficie con precipitación ≥ umbral. No es un porcentaje de aciertos. Cada punto resume el dominio nacional evaluable; no depende del zoom.</p>';
+document.getElementById('cmpDisposicion').append(p);
+for(const u of fssUmbrales)document.getElementById('cmpFssUmbrales').append(boton(String(u),String(u),u===fssUmbral,()=>{fssUmbral=u;actualizar();}));
+return p;
+}
+function actualizarVistasFss(){
+for(const b of document.querySelectorAll('#cmpVistas button')){const activo=b.dataset.valor===vistaMapas;b.classList.toggle('activo',activo);b.setAttribute('aria-pressed',String(activo));if(b.dataset.valor==='fss'){b.disabled=variable!=='pp24h';b.title=b.disabled?'Disponible para precipitación acumulada en 24 horas':'Verificación espacial con FSS';}}
+}
+async function mostrarFss(token){
+const f=fecha,inicio=inicializacion(),u=fssUmbral,panel=prepararFss();panel.hidden=false;
+const aviso=document.getElementById('cmpFssEstado'),marco=document.getElementById('cmpFssMarco'),tablaMarco=document.getElementById('cmpFssTablaMarco');
+marco.hidden=true;tablaMarco.hidden=true;document.getElementById('cmpFssSoporte').textContent='';
+document.getElementById('cmpFssContexto').textContent='Precipitación acumulada en 24 horas · Fecha válida '+corta(f)+' · Inicialización '+corta(sumar(f,-antelacion))+' '+ciclo+' UTC · Dominio nacional';
+for(const b of document.querySelectorAll('#cmpFssUmbrales button')){const activo=Number(b.dataset.valor)===u;b.classList.toggle('activo',activo);b.setAttribute('aria-pressed',String(activo));}
+aviso.textContent='Cargando resultados FSS…';
+try{
+const todas=await cargarFss();if(token!==version||vistaMapas!=='fss')return;
+const filas=fssFiltrar(todas,f,inicio,u),validas=filas.filter(r=>r.estado==='ok'&&fssNumero(r.fss)!==null&&Object.hasOwn(nombres,r.modelo)&&fssVentanas.includes(Number(r.ventana_celdas)));
+const disponibles=Object.keys(nombres).filter(m=>validas.some(r=>r.modelo===m));
+document.getElementById('cmpResumen').textContent=disponibles.length+' de '+Object.keys(nombres).length+' modelos con FSS disponible';
+if(!validas.length){
+const faltaObs=filas.some(r=>r.estado==='sin_observado');
+aviso.textContent=faltaObs?'Sin PISCO disponible para verificar esta fecha. No se asigna FSS cero.':filas.length?'No hay FSS numéricos para esta selección. '+(filas.some(r=>r.estado==='sin_eventos_en_ventanas_evaluadas')?'No se identificaron eventos en las ventanas evaluadas.':'Revise los estados del CSV calculado.'):'Sin resultados FSS para esta fecha, inicialización y ciclo. Genere o publique el CSV actualizado.';
+return;
+}
+if(new Set(validas.map(r=>r.firma_mascara)).size>1)throw new Error('Los modelos seleccionados no comparten una misma máscara de evaluación.');
+aviso.textContent=disponibles.length<Object.keys(nombres).length?'Resultados disponibles para '+disponibles.length+' modelos. — indica un resultado no disponible.':'';
+const tabla=document.createElement('table');tabla.className='fss-tabla';const thead=tabla.createTHead(),cabecera=thead.insertRow();
+const th=document.createElement('th');th.scope='col';th.textContent='Modelo';cabecera.append(th);
+const ref=validas[0];for(const w of fssVentanas){const c=document.createElement('th');c.scope='col';c.textContent=w+'×'+w;const s=document.createElement('small');const ejemplo=validas.find(r=>Number(r.ventana_celdas)===w),ancho=fssNumero(ejemplo?.alto_grados);s.textContent=ancho===null?'celdas':'≈ '+Math.round(ancho*111.2)+' km';c.append(s);cabecera.append(c);}
+const cuerpo=tabla.createTBody(),trazas=[];
+for(const m of Object.keys(nombres)){
+const registros=filas.filter(r=>r.modelo===m),resultados=fssVentanas.map(w=>registros.find(r=>Number(r.ventana_celdas)===w)),valores=resultados.map(r=>r?.estado==='ok'?fssNumero(r.fss):null);
+const fila=cuerpo.insertRow(),etiqueta=document.createElement('th');etiqueta.scope='row';const marca=document.createElement('span');marca.className='fss-muestra';marca.style.backgroundColor=fssColores[m];etiqueta.append(marca,document.createTextNode(m==='ecmwf'?'ECMWF':nombres[m]));fila.append(etiqueta);
+for(let i=0;i<valores.length;i++){const td=fila.insertCell();td.textContent=valores[i]===null?'—':valores[i].toFixed(3);td.title=valores[i]===null?(resultados[i]?.detalle||resultados[i]?.estado||'Modelo no disponible para esta selección'):'FSS: '+valores[i];}
+if(valores.some(v=>v!==null))trazas.push({x:fssVentanas,y:valores,name:m==='ecmwf'?'ECMWF':nombres[m],type:'scatter',mode:'lines+markers',connectgaps:false,line:{color:fssColores[m],width:2},marker:{color:fssColores[m],size:6},hovertemplate:'<b>%{fullData.name}</b><br>Ventana: %{x}×%{x} celdas<br>FSS: %{y:.3f}<extra></extra>'});
+}
+document.getElementById('cmpFssTabla').replaceChildren(tabla);marco.hidden=false;tablaMarco.hidden=false;
+const n=fssNumero(ref.n_celdas_comunes),porcentaje=fssNumero(ref.porcentaje_celdas_pisco_evaluables);
+document.getElementById('cmpFssSoporte').textContent='Cobertura mínima de ventana: 50 % de celdas con datos válidos. '+(n===null?'':n.toLocaleString('es-PE')+' celdas comunes'+(porcentaje===null?'':' ('+porcentaje.toFixed(1)+' % de las celdas válidas de PISCO)')+'. ')+'Los anchos en km son aproximados en dirección norte–sur. — no significa cero.';
+await Plotly.react('cmpFssGrafica',trazas,{margin:{l:52,r:14,t:10,b:90},font:{size:12},xaxis:{title:{text:'Tamaño de ventana (celdas)'},tickmode:'array',tickvals:fssVentanas,ticktext:fssVentanas.map(w=>w+'×'+w),range:[.6,15.4],fixedrange:true},yaxis:{title:{text:'FSS'},range:[0,1],dtick:.2,fixedrange:true},legend:{orientation:'h',x:.5,xanchor:'center',y:-.25,yanchor:'top',font:{size:12}},hovermode:'closest',uirevision:f+'|'+inicio+'|'+u},{responsive:true,displayModeBar:false,displaylogo:false});
+}catch(e){if(token!==version||vistaMapas!=='fss')return;marco.hidden=true;tablaMarco.hidden=true;aviso.textContent=e.message;document.getElementById('cmpResumen').textContent='FSS no disponible';}
+}
+
 let fechaInicialElegida=false;
 function elegirFechaInicial(){if(fechaInicialElegida)return;fechaInicialElegida=true;const actual=hoy(),primera=sumar(actual,-3),fechas=catalogo.filter(e=>e.modelo==='observado'&&e.variable===variable&&e.fecha>=primera&&e.fecha<=actual).map(e=>e.fecha).sort();if(!fechas.length)return;fecha=fechas.at(-1);productos[0]=catalogo.some(e=>e.modelo==='observado'&&e.variable===variable&&e.fecha===fecha&&e.fuente==='interpolado')?'obs_interpolado':'obs_pisco';productos[1]='gfs';}
-async function refrescar(){const b=document.getElementById('cmpRefrescar');b.disabled=true;destruir();estado('Consultando mapas disponibles…');try{await listado();elegirFechaInicial();cache.clear();actualizar();}catch(error){catalogo=[];actualizar();estado(error.message,true);}finally{b.disabled=false;}}
+async function refrescar(){fssPromesa=null;const b=document.getElementById('cmpRefrescar');b.disabled=true;destruir();estado('Consultando mapas disponibles…');try{await listado();elegirFechaInicial();cache.clear();actualizar();}catch(error){catalogo=[];actualizar();estado(error.message,true);}finally{b.disabled=false;}}
 function abrir(){if(pagina.hidden)return;if(!iniciado){iniciado=true;fecha=hoy();controles();refrescar();}else requestAnimationFrame(ajustarVisores);}
 const vistas=document.createElement('div');vistas.id='cmpVistas';vistas.className='cmp-vistas';vistas.setAttribute('role','group');vistas.setAttribute('aria-label','Vista de mapas');
 const tituloVista=document.createElement('span');tituloVista.id='cmpVistaTitulo';tituloVista.className='cmp-etiqueta';tituloVista.textContent='VISTA';vistas.setAttribute('aria-labelledby',tituloVista.id);vistas.append(tituloVista);
-for(const [valor,texto] of [['comparacion','Comparación'],['cuatro','Múltiple']]){const b=boton(texto,valor,valor===vistaMapas,()=>{if(vistaMapas===valor)return;vistaMapas=valor;cantidadCapas=valor==='cuatro'?4:2;for(const otro of vistas.querySelectorAll('button')){const activo=otro.dataset.valor===valor;otro.classList.toggle('activo',activo);otro.setAttribute('aria-pressed',String(activo));}actualizar();});vistas.append(b);}
+for(const [valor,texto] of [['comparacion','Comparación'],['cuatro','Múltiple'],['fss','Verificación espacial']]){const b=boton(texto,valor,valor===vistaMapas,()=>{if(vistaMapas===valor)return;vistaMapas=valor;cantidadCapas=valor==='cuatro'?4:2;for(const otro of vistas.querySelectorAll('button')){const activo=otro.dataset.valor===valor;otro.classList.toggle('activo',activo);otro.setAttribute('aria-pressed',String(activo));}actualizar();});vistas.append(b);}
 document.getElementById('cmpContexto').after(vistas);
 window.nwpComparador={ajustar:ajustarVisores,encuadrar(){vistaCompartida=null;ajustarVisores();},};
 document.getElementById('cmpRefrescar').addEventListener('click',refrescar);new MutationObserver(()=>requestAnimationFrame(abrir)).observe(pagina,{attributes:true,attributeFilter:['hidden']});window.addEventListener('hashchange',()=>requestAnimationFrame(abrir));window.addEventListener('DOMContentLoaded',abrir,{once:true});requestAnimationFrame(abrir);
@@ -2124,5 +2228,6 @@ montar();return{get activo(){return estado.activo;},cargarMapa,redVisible,selecc
 </script>
 </body>
 </html>
+
 
 
